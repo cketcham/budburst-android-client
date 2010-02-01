@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import edu.ucla.cens.budburst.R;
-import edu.ucla.cens.budburst.data.Database.Row;
 
 import android.content.Context;
 import android.database.Cursor;

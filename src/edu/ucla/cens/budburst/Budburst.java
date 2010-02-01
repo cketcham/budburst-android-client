@@ -1,20 +1,14 @@
 package edu.ucla.cens.budburst;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import edu.ucla.cens.budburst.data.Database;
-import edu.ucla.cens.budburst.data.SpeciesDatabase;
-import edu.ucla.cens.budburst.data.SpeciesDatabase.SpeciesRow;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.app.Activity;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.Log;
+import edu.ucla.cens.budburst.data.PhenophaseDatabase;
+import edu.ucla.cens.budburst.data.Row;
+import edu.ucla.cens.budburst.data.SpeciesDatabase;
 
 public class Budburst extends Activity {
     private static final String TAG = "Budburst";
@@ -26,9 +20,15 @@ public class Budburst extends Activity {
         setContentView(R.layout.main);
         
         SpeciesDatabase sdb = new SpeciesDatabase(this);
-        SpeciesRow row = (SpeciesRow) sdb.find("_id=3 or _id=5").get(0);
-        Log.d(TAG, row.common_name);
-        row.common_name = "blah";
+        ArrayList<Row> rows = sdb.find("_id=3 or _id=5");
+        for(Iterator<Row> i = rows.iterator(); i.hasNext();)
+        	Log.d(TAG, i.next().toString());
+        
+        PhenophaseDatabase pdb = new PhenophaseDatabase(this);
+        pdb.openRead();
+        ArrayList<Row> prows = pdb.find("_id=3 or _id=5");
+        for(Iterator<Row> i = prows.iterator(); i.hasNext();)
+        	Log.d(TAG, i.next().toString());
     }
     
 	

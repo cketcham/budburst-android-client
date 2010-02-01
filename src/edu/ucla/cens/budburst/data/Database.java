@@ -1,8 +1,7 @@
 package edu.ucla.cens.budburst.data;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-
-import edu.ucla.cens.budburst.data.SpeciesDatabase.SpeciesRow;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,47 +17,14 @@ public class Database{
 
 	private String name;
 
-	private String[] fields;
-
 	private Row rowInstance;
 	private static SQLiteDatabase db;
 
 	private static final String TAG = "Database";
 
-	public interface DatabaseRow {
-		public ContentValues vals();
-	}
-
-	public abstract static class Row implements DatabaseRow{
-		public Context context; 
-		public Long id;
-
-		public Row(Context context) {
-			this.context = context;
-		}
-
-		public ContentValues vals() {
-			ContentValues vals = new ContentValues();
-
-			vals.put(Database.KEY_ID, this.id);
-
-			return vals;
-		}
-		
-		public abstract Row newRow();
-
-		public int readCursor(Cursor c) {
-			int next = 0;
-			id = c.getLong(next++);
-			return next;
-		}
-
-	}
-
-	public Database(SQLiteOpenHelper helper, String name, String [] fields, Row row) {
+	public Database(SQLiteOpenHelper helper, String name, Row row) {
 		dbHelper = helper;
 		this.name = name;
-		this.fields = fields;
 		this.rowInstance = row;
 	}
 
@@ -75,14 +41,14 @@ public class Database{
 
 	public ArrayList<Row> find(String filter) {
 		openRead();
-		ArrayList<Row> ret = CursorToArrayList(db.query(name, fields, filter, null, null, null, null));
+		ArrayList<Row> ret = CursorToArrayList(db.query(name, fields(), filter, null, null, null, null));
 		close();
 		return ret;
 	}
 	
 	public Row find(long id) {
 		openRead();
-		Cursor c = db.query(name, fields, "_id=?", new String[] { String.valueOf(id) }, null, null, null);
+		Cursor c = db.query(name, fields(), "_id=?", new String[] { String.valueOf(id) }, null, null, null);
 
 		if (c.moveToFirst()) {
 			rowInstance.readCursor(c);
@@ -111,6 +77,15 @@ public class Database{
 		c.close();			
 
 		return ret;
+	}
+	
+	public String[] fields() {
+		ArrayList<String> ret = new ArrayList<String>();
+		Field[] fields = rowInstance.getClass().getFields();
+		for(int i=0;i<fields.length;i++) {
+			ret.add(fields[i].getName());
+		}
+		return ret.toArray(new String[0]);
 	}
 }
 
