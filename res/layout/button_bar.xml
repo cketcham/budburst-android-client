@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+   		android:id="@+id/buttons"
+   	    android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+   		android:layout_below="@+id/header"
+   		android:layout_centerInParent="true"
+   		android:weightSum="1">
+    <edu.ucla.cens.budburst.helper.IndicatorButton
+        android:id="@+id/button1"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" 
+        android:text="@string/button_bar1"
+        android:layout_weight="0.33"
+        android:maxWidth="0px" />
+
+	<edu.ucla.cens.budburst.helper.IndicatorButton
+		android:id="@+id/button2"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" 
+        android:text="@string/button_bar2"
+        android:layout_weight="0.34"
+        android:maxWidth="0px" />
+
+	<edu.ucla.cens.budburst.helper.IndicatorButton
+		android:id="@+id/button3"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" 
+        android:text="@string/button_bar3"
+        android:layout_weight="0.19" 
+        android:maxWidth="0px" />
+
+    <edu.ucla.cens.budburst.helper.IndicatorButton
+		android:id="@+id/button4"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" 
+        android:text="@string/button_bar4"
+        android:layout_weight="0.20"
+        android:maxWidth="0px" />
+
+</LinearLayout>

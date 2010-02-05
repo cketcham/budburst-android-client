@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+	<include layout="@layout/header" 
+		android:id="@+id/header" />
+		
+	<include 
+		android:id="@+id/button_bar"
+		layout="@layout/button_bar"
+		android:layout_below="@+id/header" />  
+
+   	<LinearLayout
+   		android:id="@+id/list"
+   	    android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/button_bar">
+        
+        <include android:id="@+id/downloading" layout="@layout/wait" />
+		
+		<ListView 
+	        android:id="@android:id/list"
+	        android:drawSelectorOnTop="false"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" />
+	        
+	   <TextView
+			android:id="@android:id/empty"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:layout_gravity="center"
+			android:text="No Items" />
+	</LinearLayout>
+</RelativeLayout>
+
+

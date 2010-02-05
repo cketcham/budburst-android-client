@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+	android:id="@+id/wait"
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:orientation="vertical" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"  
+    >
+	<RelativeLayout 
+	    android:orientation="vertical" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content" 
+	    android:layout_centerInParent="true"
+	    > 
+	    <ProgressBar 
+	    android:layout_width="20px" 
+	    android:layout_height="20px" 
+	    android:id="@+id/ProgressBar01" 
+	    android:layout_toRightOf="@+id/waitingText" 
+	    android:indeterminate="true"
+		android:layout_marginLeft="3px"
+		android:layout_centerVertical="true"
+	    />
+	    
+	    <TextView 
+	    android:id="@+id/waitingText"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:text="Loading..."
+	    android:maxWidth="260px"
+	    android:layout_centerVertical="true"
+	    />
+	</RelativeLayout>
+</RelativeLayout>

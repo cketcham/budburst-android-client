@@ -1,0 +1,47 @@
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="fill_parent" 
+    android:layout_height="63px"
+    android:background = "@drawable/app_darkblue"
+   	android:id = "@+id/header">
+    <ImageView 
+    android:id="@+id/logo"
+     android:layout_width="wrap_content"
+	 android:layout_height="wrap_content"
+     android:src="@drawable/logo_medium" 
+     android:paddingTop="4dp"
+     android:paddingBottom="4dp"     
+     android:paddingLeft="5dp"
+	android:layout_alignParentLeft="true"
+     />        
+    <TextView
+	android:id="@+id/top_text"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:textColor="@drawable/white"
+	android:text=""
+	android:textSize="12sp"
+	android:layout_alignParentRight="true"
+	android:paddingTop="22dp"  
+	>
+	</TextView>
+
+	<AbsoluteLayout
+		android:id="@+id/search_layout"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:paddingRight="16px"
+		android:layout_alignBottom="@+id/logo"
+		android:visibility="gone">
+		<Button
+			android:id="@+id/search_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/btn_square" 
+			android:width="38px" />
+		<ImageView 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/ic_search_square_button" />
+	</AbsoluteLayout>
+   </RelativeLayout>
