@@ -1,4 +1,7 @@
-package edu.ucla.cens.budburst.data;
+package models;
+
+import edu.ucla.cens.budburst.data.Row;
+import android.content.Context;
 
 public class PhenophaseRow extends Row {
 

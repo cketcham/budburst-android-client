@@ -3,15 +3,19 @@ package edu.ucla.cens.budburst;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import models.PhenophaseRow;
+import models.SpeciesPhenophaseRow;
+import models.SpeciesRow;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import edu.ucla.cens.budburst.data.PhenophaseDatabase;
+import edu.ucla.cens.budburst.data.DatabaseManager;
 import edu.ucla.cens.budburst.data.Row;
-import edu.ucla.cens.budburst.data.SpeciesDatabase;
 
 public class Budburst extends Activity {
     private static final String TAG = "Budburst";
+    private static BudburstDatabaseManager dbManager;
 
 	/** Called when the activity is first created. */
     @Override
@@ -19,16 +23,19 @@ public class Budburst extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        SpeciesDatabase sdb = new SpeciesDatabase(this);
-        ArrayList<Row> rows = sdb.find("_id=3 or _id=5");
-        for(Iterator<Row> i = rows.iterator(); i.hasNext();)
-        	Log.d(TAG, i.next().toString());
+        dbManager = new BudburstDatabaseManager(this);
         
-        PhenophaseDatabase pdb = new PhenophaseDatabase(this);
-        pdb.openRead();
-        ArrayList<Row> prows = pdb.find("_id=3 or _id=5");
-        for(Iterator<Row> i = prows.iterator(); i.hasNext();)
-        	Log.d(TAG, i.next().toString());
+        SpeciesRow row = (SpeciesRow) dbManager.getDatabase("species").find(4);
+
+        Log.d(TAG, row.toString());
+        
+        for(Iterator<Row> i = row.phenophases.iterator(); i.hasNext();)
+        	Log.d(TAG, i.next()._id.toString());
+        
+    }
+    
+    public static BudburstDatabaseManager getDatabaseManager() {
+    	return dbManager;
     }
     
 	

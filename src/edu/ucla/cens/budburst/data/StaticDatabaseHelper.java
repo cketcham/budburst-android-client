@@ -18,7 +18,7 @@ public class StaticDatabaseHelper extends SQLiteOpenHelper {
 	private Context ctx;
 	private String name;
 
-	StaticDatabaseHelper(Context ctx, String name, int resource) {
+	public StaticDatabaseHelper(Context ctx, String name, int resource) {
 		super(ctx, name, null, 1);
 		this.ctx = ctx;
 		try {

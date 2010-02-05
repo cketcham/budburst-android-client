@@ -1,8 +1,13 @@
 package edu.ucla.cens.budburst.data;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import edu.ucla.cens.budburst.Budburst;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
@@ -13,7 +18,7 @@ public abstract class Row {
 	public ContentValues vals() {
 		ContentValues vals = new ContentValues();
 
-		Field[] fields = getClass().getFields();
+		Field[] fields = getFields();
 		for(int i=0; i<fields.length;i++) {
 			try {
 				vals.put(fields[i].getName(), fields[i].get(this).toString());
@@ -31,7 +36,7 @@ public abstract class Row {
 	public abstract Row newRow();
 
 	public void readCursor(Cursor c) {
-		Field[] fields = getClass().getFields();
+		Field[] fields = getFields();
 		for(int i=0; i<fields.length;i++) {
 			try {
 				if(fields[i].getType().equals(Long.class))
@@ -46,6 +51,8 @@ public abstract class Row {
 				e.printStackTrace();
 			}
 		}
+		
+		setupRelations();
 	}
 	
 	public String toString() {
@@ -66,5 +73,32 @@ public abstract class Row {
 		}
 		return ret;
 	}
+	
+	public Field[] getFields() {
+		ArrayList<Field> ret = new ArrayList<Field>();
+		Field [] fields = this.getClass().getFields();
+		for(int i=0;i<fields.length;i++)
+			if(fields[i].getType() != ArrayList.class)
+				ret.add(fields[i]);
+		return ret.toArray(new Field[0]);
+	}
+	
+
+	protected ArrayList<Row> hasMany(String name) {
+		Log.d(TAG, "in db : " + getName()+"_"+name);
+		Log.d(TAG, "find : " + getName()+"_id="+_id);
+		ArrayList<Row> this_that = Budburst.getDatabaseManager().getDatabase(getName()+"_"+name).find(getName()+"_id="+_id);
+		for(Iterator<Row> i = this_that.iterator();i.hasNext();) {
+			Log.d(TAG, i.next().toString());
+		}
+		return Budburst.getDatabaseManager().getDatabase(name).find(this_that, name+"_id");
+	}
+
+	//returns the name of the database for this row (just the name before Row)
+	public String getName() {
+		return this.getClass().getSimpleName().toLowerCase().split("row")[0];
+	}
+	
+	public void setupRelations() {}
 
 }

@@ -2,6 +2,7 @@ package edu.ucla.cens.budburst.data;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class Database{
 	public static final String KEY_ID = "_id";
@@ -81,11 +83,42 @@ public class Database{
 	
 	public String[] fields() {
 		ArrayList<String> ret = new ArrayList<String>();
-		Field[] fields = rowInstance.getClass().getFields();
+		Field[] fields = rowInstance.getFields();
 		for(int i=0;i<fields.length;i++) {
 			ret.add(fields[i].getName());
 		}
 		return ret.toArray(new String[0]);
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	//finds all rows which have values for the name
+	public ArrayList<Row> find(ArrayList<Row> array, String name) {
+		Log.d(TAG,"finding for " + name);
+		String filter = "";
+		for(Iterator<Row> i = array.iterator();i.hasNext();)
+			try {
+				Row current = i.next();
+				filter += "_id=" + current.getClass().getField(name).get(current);
+				if(i.hasNext())
+					filter += " OR ";
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return find(filter);
+	}
+
 }
 
