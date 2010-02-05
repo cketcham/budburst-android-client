@@ -18,8 +18,4 @@ public class SpeciesRow extends Row {
 		phenophases = hasMany("phenophase");
 	}
 
-	@Override
-	public Row newRow() {
-		return new SpeciesRow();
-	}
 }

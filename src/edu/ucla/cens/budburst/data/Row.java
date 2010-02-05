@@ -33,7 +33,18 @@ public abstract class Row {
 		return vals;
 	}
 	
-	public abstract Row newRow();
+	public Row newRow() {
+		try {
+			return this.getClass().newInstance();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public void readCursor(Cursor c) {
 		Field[] fields = getFields();
