@@ -15,7 +15,7 @@ import android.util.Log;
 public class SyncableDatabase extends WritableDatabase{
 	private static final String TAG = "StaticDatabase";
 
-	public SyncableDatabase(Context context, String json_data, Row row) {
+	public SyncableDatabase(Context context, String json_data, SyncableRow row) {
 		super(new DatabaseHelper(context, row), row.getName(), row);
 		try {
 			JSONObject ret = new JSONObject(new JSONTokener(json_data));
@@ -24,9 +24,7 @@ public class SyncableDatabase extends WritableDatabase{
 
 				JSONArray json = new JSONArray(ret.getString("results"));
 
-				openWrite();
 				insertRows(json);
-				close();
 
 			}
 		} catch (JSONException e) {
@@ -53,6 +51,9 @@ public class SyncableDatabase extends WritableDatabase{
 
 					vals.put(key,value);
 				}
+
+				//should be set that they are synced
+				vals.put("synced", true);
 
 				rowid = insertRow(vals);
 

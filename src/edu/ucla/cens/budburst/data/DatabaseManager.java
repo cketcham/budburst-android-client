@@ -21,7 +21,7 @@ public class DatabaseManager{
 		rows.put(name, row);
 	}
 
-	public void createSyncableDatabase(String name, String jsonData, Row row) {
+	public void createSyncableDatabase(String name, String jsonData, SyncableRow row) {
 		urls.put(name, jsonData);
 		rows.put(name, row);
 	}
@@ -30,7 +30,7 @@ public class DatabaseManager{
 		if(resources.containsKey(name))
 			return new StaticDatabase(context, resources.get(name),rows.get(name));
 		else if(urls.containsKey(name))
-			return new SyncableDatabase(context, urls.get(name), rows.get(name));
+			return new SyncableDatabase(context, urls.get(name), (SyncableRow) rows.get(name));
 		
 		return null;
 	}

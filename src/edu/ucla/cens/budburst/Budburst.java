@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import models.PhenophaseRow;
+import models.PlantRow;
 import models.SpeciesPhenophaseRow;
 import models.SpeciesRow;
 
@@ -32,7 +33,8 @@ public class Budburst extends Activity {
 //        for(Iterator<Row> i = row.phenophases.iterator(); i.hasNext();)
 //        	Log.d(TAG, i.next()._id.toString());
 //        
-        dbManager.getDatabase("plant");
+        PlantRow row = (PlantRow) dbManager.getDatabase("plant").find(1);
+        Log.d(TAG, row.toString());
     }
     
     public static BudburstDatabaseManager getDatabaseManager() {

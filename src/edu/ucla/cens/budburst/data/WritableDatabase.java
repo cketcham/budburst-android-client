@@ -53,8 +53,22 @@ public class WritableDatabase extends Database{
 	}
 	
 	public long insertRow(ContentValues vals) {
-		long rowid = db.insert(rowInstance.getName(), null, vals);
-		return rowid;
+		String constraint = "";
+		for(Iterator<String> i = rowInstance.primaryKeys().iterator();i.hasNext();) {
+			String current = i.next();
+			constraint += current + "=" + vals.getAsString(current);
+			if(i.hasNext())
+				constraint += " AND ";
+		}
+			Log.d(TAG, constraint);
+			Log.d(TAG, rowInstance.getName());
+		if(find(constraint).isEmpty()) {
+			openWrite();
+			long rowid = db.insert(rowInstance.getName(), null, vals);
+			close();
+			return rowid;
+		}
+		return -1;
 	}
 
 }

@@ -54,6 +54,8 @@ public abstract class Row {
 					fields[i].set(this, c.getLong(i));
 				else if(fields[i].getType().equals(String.class))
 					fields[i].set(this, c.getString(i));
+				else if(fields[i].getType().equals(Boolean.class))
+					fields[i].set(this, (c.getLong(i) == 1));
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -111,5 +113,11 @@ public abstract class Row {
 	}
 	
 	public void setupRelations() {}
+
+	public ArrayList<String> primaryKeys() {
+		 ArrayList<String> ret = new ArrayList<String>();
+		 ret.add("_id");
+		 return ret;
+	}
 
 }

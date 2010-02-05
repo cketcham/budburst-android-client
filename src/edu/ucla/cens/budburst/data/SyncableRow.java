@@ -12,7 +12,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 public abstract class SyncableRow extends Row {
-	public Boolean uploaded = false;
+	public Boolean synced = false;
 
 	
 }
