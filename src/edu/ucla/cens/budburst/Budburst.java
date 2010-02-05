@@ -25,13 +25,14 @@ public class Budburst extends Activity {
         
         dbManager = new BudburstDatabaseManager(this);
         
-        SpeciesRow row = (SpeciesRow) dbManager.getDatabase("species").find(4);
-
-        Log.d(TAG, row.toString());
-        
-        for(Iterator<Row> i = row.phenophases.iterator(); i.hasNext();)
-        	Log.d(TAG, i.next()._id.toString());
-        
+//        SpeciesRow row = (SpeciesRow) dbManager.getDatabase("species").find(4);
+//
+//        Log.d(TAG, row.toString());
+//        
+//        for(Iterator<Row> i = row.phenophases.iterator(); i.hasNext();)
+//        	Log.d(TAG, i.next()._id.toString());
+//        
+        dbManager.getDatabase("plant");
     }
     
     public static BudburstDatabaseManager getDatabaseManager() {

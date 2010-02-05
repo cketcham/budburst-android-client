@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,14 +12,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class Database{
-	public static final String KEY_ID = "_id";
-
 	private SQLiteOpenHelper dbHelper;
 
 	private String name;
 
 	private Row rowInstance;
-	private static SQLiteDatabase db;
+	protected static SQLiteDatabase db;
 
 	private static final String TAG = "Database";
 
@@ -35,7 +32,6 @@ public class Database{
 
 		return this;
 	}
-
 
 	public void close() {
 			db.close();
