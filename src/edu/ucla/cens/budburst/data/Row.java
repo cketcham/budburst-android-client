@@ -4,6 +4,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import models.SiteRow;
+import models.SpeciesRow;
+
 import edu.ucla.cens.budburst.Budburst;
 
 import android.content.ContentValues;
@@ -91,20 +94,10 @@ public abstract class Row {
 		ArrayList<Field> ret = new ArrayList<Field>();
 		Field [] fields = this.getClass().getFields();
 		for(int i=0;i<fields.length;i++)
-			if(fields[i].getType() != ArrayList.class)
-				ret.add(fields[i]);
+				if(fields[i].getType() == Long.class || fields[i].getType() == String.class || 
+						fields[i].getType() == Boolean.class )
+					ret.add(fields[i]);
 		return ret.toArray(new Field[0]);
-	}
-	
-
-	protected ArrayList<Row> hasMany(String name) {
-		Log.d(TAG, "in db : " + getName()+"_"+name);
-		Log.d(TAG, "find : " + getName()+"_id="+_id);
-		ArrayList<Row> this_that = Budburst.getDatabaseManager().getDatabase(getName()+"_"+name).find(getName()+"_id="+_id);
-		for(Iterator<Row> i = this_that.iterator();i.hasNext();) {
-			Log.d(TAG, i.next().toString());
-		}
-		return Budburst.getDatabaseManager().getDatabase(name).find(this_that, name+"_id");
 	}
 
 	//returns the name of the database for this row (just the name before Row)
@@ -118,6 +111,20 @@ public abstract class Row {
 		 ArrayList<String> ret = new ArrayList<String>();
 		 ret.add("_id");
 		 return ret;
+	}
+	
+	protected Row hasOne(String name, Long id) {
+		return Budburst.getDatabaseManager().getDatabase(name).find(id);
+	}
+	
+	protected ArrayList<Row> hasMany(String name) {
+		Log.d(TAG, "in db : " + getName()+"_"+name);
+		Log.d(TAG, "find : " + getName()+"_id="+_id);
+		ArrayList<Row> this_that = Budburst.getDatabaseManager().getDatabase(getName()+"_"+name).find(getName()+"_id="+_id);
+		for(Iterator<Row> i = this_that.iterator();i.hasNext();) {
+			Log.d(TAG, i.next().toString());
+		}
+		return Budburst.getDatabaseManager().getDatabase(name).find(this_that, name+"_id");
 	}
 
 }

@@ -1,7 +1,9 @@
 package edu.ucla.cens.budburst;
 
+import models.ObservationRow;
 import models.PhenophaseRow;
 import models.PlantRow;
+import models.SiteRow;
 import models.SpeciesPhenophaseRow;
 import models.SpeciesRow;
 import android.content.Context;
@@ -15,8 +17,14 @@ public class BudburstDatabaseManager extends DatabaseManager {
         createDatabase("phenophase", R.raw.phenophase_db, new PhenophaseRow());
         createDatabase("species", R.raw.species_db, new SpeciesRow());
         
-        String json_data = "{\"success\":true,\"results\":[{\"species_id\":\"70\",\"site_id\":\"432\",\"latitude\":\"41.0628\",\"longitude\":\"-111.929\"}]}";
-		createSyncableDatabase("plant", json_data, new PlantRow());
+        String siteURL = context.getString(R.string.phone_service_url)+"?get_my_sites";
+		createSyncableDatabase("site", siteURL, new SiteRow());
+        
+        String plantURL = context.getString(R.string.phone_service_url)+"?get_my_plants";
+		createSyncableDatabase("plant", plantURL, new PlantRow());
+		
+		String obsURL = context.getString(R.string.phone_service_url)+"?get_my_obs";
+		createSyncableDatabase("observation", obsURL, new ObservationRow());
 	}
 
 }

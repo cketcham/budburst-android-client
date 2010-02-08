@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<drawable name="white">#FFFFFF</drawable>
+	<drawable name="lightgray">#BFBFBF</drawable>
+	<drawable name="darkgray">#AAAAAA</drawable>
+	<drawable name="black">#000000</drawable>
+	<drawable name="darkbrown">#493930</drawable>
+	<drawable name="tan">#F2F1DF</drawable>
+	<drawable name="darkblue">#F2F1DF</drawable>
+	<drawable name="gogreen">#2D9900</drawable>
+	<drawable name="stopred">#990000</drawable>
+	<drawable name="gray">#808080</drawable>
+	<drawable name="app_gray">#625454</drawable>
+	<drawable name="app_orange">#FF9933</drawable>
+	<drawable name="app_yellow">#FFCC33</drawable>
+	<drawable name="app_darkblue">#2D4557</drawable>
+	<drawable name="app_blue">#2B8AC8</drawable>
+	<drawable name="app_grayblue">#637E93</drawable>
+	<drawable name="app_skyblue">#2B8AC8</drawable>
+	<drawable name="app_green">#A3CE44</drawable>
+</resources>

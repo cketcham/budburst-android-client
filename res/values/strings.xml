@@ -2,4 +2,9 @@
 <resources>
     <string name="hello">Hello World, Budburst!</string>
     <string name="app_name">Project Budburst</string>
+    <string name="prefs">PreferenceFile</string>
+    <string name="button_bar1">Leaves</string>
+    <string name="button_bar2">Flowers</string>
+    <string name="button_bar3">Fruits</string>
+    <string name="phone_service_url">http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/phone/phone_service.php</string>
 </resources>

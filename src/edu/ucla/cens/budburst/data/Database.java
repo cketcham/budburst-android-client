@@ -116,5 +116,9 @@ public class Database{
 		return find(filter);
 	}
 
+	public ArrayList<Row> all() {
+		return find(null);
+	}
+
 }
 

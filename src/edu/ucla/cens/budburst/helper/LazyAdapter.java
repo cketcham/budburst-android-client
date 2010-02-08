@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.ucla.cens.budburst.R;
-import edu.ucla.cens.budburst.downloadManager;
+import edu.ucla.cens.budburst.DownloadManager;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -18,7 +18,7 @@ import android.widget.SimpleAdapter;
 
 public class LazyAdapter extends SimpleAdapter implements Downloadable{
 	
-	public LazyAdapter(Context context, downloadManager dm, List<? extends Map<String, ?>> data,
+	public LazyAdapter(Context context, DownloadManager dm, List<? extends Map<String, ?>> data,
 			int resource, String[] from, int[] to) {
 		super(context, data, resource, from, to);
 		// TODO Auto-generated constructor stub
@@ -31,7 +31,7 @@ public class LazyAdapter extends SimpleAdapter implements Downloadable{
 	private static final String TAG = "LazyAdapter";
 
 
-	private downloadManager dm;
+	private DownloadManager dm;
 
 	public void onDownloaded(Message msg, Download d) {
 		Log.d(TAG, "onDownloaded");

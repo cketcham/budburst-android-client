@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import edu.ucla.cens.budburst.R;
-import edu.ucla.cens.budburst.downloadManager;
+import edu.ucla.cens.budburst.DownloadManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,13 +31,13 @@ public class RemoteAdapter extends LazyAdapter implements Downloadable{
 	String[] from;
 	Boolean isDownloading;
 	Activity context;
-	private downloadManager dm;
+	private DownloadManager dm;
 	
 	//used to set more complex views from the data that is downloaded
 	private JSONDownloadListener listener;
 	private Download current_download;
 
-	public RemoteAdapter(Activity context, downloadManager dm, ArrayList<HashMap<String,String>> list, Download d,
+	public RemoteAdapter(Activity context, DownloadManager dm, ArrayList<HashMap<String,String>> list, Download d,
 			int resource, String[] from, int[] to) {
 		super(context, dm, list, resource, from, to);
 

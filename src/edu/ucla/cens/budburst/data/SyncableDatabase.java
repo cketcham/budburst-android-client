@@ -14,9 +14,15 @@ import android.util.Log;
 
 public class SyncableDatabase extends WritableDatabase{
 	private static final String TAG = "StaticDatabase";
+	private String url;
 
-	public SyncableDatabase(Context context, String json_data, SyncableRow row) {
+	
+	public SyncableDatabase(Context context, String url, SyncableRow row) {
 		super(new DatabaseHelper(context, row), row.getName(), row);
+		this.url = url;
+	}
+	
+	public Boolean sync(String json_data) {
 		try {
 			JSONObject ret = new JSONObject(new JSONTokener(json_data));
 			//check success status
@@ -31,6 +37,7 @@ public class SyncableDatabase extends WritableDatabase{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return true;
 	}
 
 
@@ -69,6 +76,10 @@ public class SyncableDatabase extends WritableDatabase{
 
 
 		return rowid;
+	}
+
+	public String getURL() {
+		return url;
 	}
 }
 

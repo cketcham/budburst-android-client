@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" 
         android:text="@string/button_bar1"
-        android:layout_weight="0.33"
+        android:layout_weight="0.33333"
         android:maxWidth="0px" />
 
 	<edu.ucla.cens.budburst.helper.IndicatorButton
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" 
         android:text="@string/button_bar2"
-        android:layout_weight="0.34"
+        android:layout_weight="0.33333"
         android:maxWidth="0px" />
 
 	<edu.ucla.cens.budburst.helper.IndicatorButton
@@ -29,16 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" 
         android:text="@string/button_bar3"
-        android:layout_weight="0.19" 
+        android:layout_weight="0.33333" 
         android:maxWidth="0px" />
 
-    <edu.ucla.cens.budburst.helper.IndicatorButton
-		android:id="@+id/button4"
-		android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" 
-        android:text="@string/button_bar4"
-        android:layout_weight="0.20"
-        android:maxWidth="0px" />
 
 </LinearLayout>

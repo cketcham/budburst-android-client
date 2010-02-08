@@ -33,7 +33,7 @@ import android.os.AsyncTask;
 import android.os.Message;
 import android.util.Log;
 
-public class downloadManager {
+public class DownloadManager {
 
 	private static final String TAG = "DownloadManager";
 	public static final int CONSUME_INPUTSTREAM = 0;
@@ -41,7 +41,7 @@ public class downloadManager {
 	
 	private Cache cache = new Cache();
 
-	public downloadManager() {
+	public DownloadManager() {
 		Log.d(TAG,"make download manager");
 	}
 	
