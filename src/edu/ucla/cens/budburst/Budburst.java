@@ -19,6 +19,7 @@ import android.util.Log;
 public class Budburst extends Activity {
     private static final String TAG = "Budburst";
 	private static final int DOWNLOADED_DATABASES = 0;
+	private static final int FINISHED = 1;
     private static BudburstDatabaseManager dbManager;
     private static DownloadManager downloadManager;
 
@@ -32,9 +33,6 @@ public class Budburst extends Activity {
         downloadManager = new DownloadManager();
         
         PreferencesManager.letUserIn("android", "android", this);
-        
-
-//        
 
         startActivityForResult(new Intent(this, SyncDatabases.class), DOWNLOADED_DATABASES);
     }
@@ -51,14 +49,13 @@ public class Budburst extends Activity {
     public void onActivityResult(int requestCode,int resultCode,Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == DOWNLOADED_DATABASES) {
-            	ArrayList<Row> rows = (ArrayList<Row>) dbManager.getDatabase("plant").all();
-
-            	PlantRow row = (PlantRow) rows.get(0);
-            	Log.d(TAG,"the plant" + row.observations.toString());
-//            	        
-//            	        for(Iterator<Row> i = row.phenophases.iterator(); i.hasNext();)
-//            	        	Log.d(TAG, i.next()._id.toString());
+            switch(requestCode) {
+            case DOWNLOADED_DATABASES:
+            	startActivityForResult(new Intent(this, PlantList.class), FINISHED);
+            	break;
+            case FINISHED:
+            	finish();
+            	break;
             }
 
 	}
