@@ -40,19 +40,22 @@ public class SyncDatabases extends Activity implements Downloadable {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		//TODO DEBUGING
+		finish();
 
-		dbManager = Budburst.getDatabaseManager();
-		downloadManager = Budburst.getDownloadManager();
-		
-		String url = ((SyncableDatabase)dbManager.getDatabase("site")).getURL() + PreferencesManager.currentGETAuthParams(this);
-		Download d = new Download(url);
-		downloads.add(d);
-		downloadManager.download(this, DOWNLOADED_JSON, d);
-		
-		url = ((SyncableDatabase)dbManager.getDatabase("observation")).getURL() + PreferencesManager.currentGETAuthParams(this);
-		d = new Download(url);
-		downloads.add(d);
-		downloadManager.download(this, DOWNLOADED_JSON, d);
+//		dbManager = Budburst.getDatabaseManager();
+//		downloadManager = Budburst.getDownloadManager();
+//		
+//		String url = ((SyncableDatabase)dbManager.getDatabase("site")).getURL() + PreferencesManager.currentGETAuthParams(this);
+//		Download d = new Download(url);
+//		downloads.add(d);
+//		downloadManager.download(this, DOWNLOADED_JSON, d);
+//		
+//		url = ((SyncableDatabase)dbManager.getDatabase("observation")).getURL() + PreferencesManager.currentGETAuthParams(this);
+//		d = new Download(url);
+//		downloads.add(d);
+//		downloadManager.download(this, DOWNLOADED_JSON, d);
 		
 	}
 

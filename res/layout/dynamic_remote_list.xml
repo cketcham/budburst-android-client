@@ -17,6 +17,8 @@
    	    android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/button_bar">
+        
+    <include android:id="@+id/downloading" layout="@layout/wait" />
         		
 		<ListView 
 	        android:id="@android:id/list"

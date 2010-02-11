@@ -112,12 +112,12 @@ public class PreferencesManager {
 				
 		String vs = "version ";
         try {
-			vs += ctx.getPackageManager().getPackageInfo("com.takefivelabs.kullect", 0).versionName;
+			vs += ctx.getPackageManager().getPackageInfo("edu.ucla.cens.budburst", 0).versionName;
 		} catch (NameNotFoundException e) {
 			vs += "unknown";
 		}
 		
-		if(getDefaultUser(ctx) != no_user) setTopText("Hi, " + currentUser(ctx) + "! You are running " + vs + " - the best Kullet yet!", ctx);
+		if(getDefaultUser(ctx) != no_user) setTopText("Hi, " + currentUser(ctx) + "! You are running " + vs + " - the best Kullect yet!", ctx);
 		else setTopText("", ctx);
 		
 		settingsEditor.commit();

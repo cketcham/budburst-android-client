@@ -18,4 +18,8 @@
 	<drawable name="app_grayblue">#637E93</drawable>
 	<drawable name="app_skyblue">#2B8AC8</drawable>
 	<drawable name="app_green">#A3CE44</drawable>
+	<drawable name="screen_background_black">#ff000000</drawable>
+	<drawable name="translucent_background">#A0000000</drawable>
+	<drawable name="transparent_background">#00000000</drawable>
+	<drawable name="transparent_white">#AFFFFFFF</drawable>
 </resources>

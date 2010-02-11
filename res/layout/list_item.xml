@@ -8,17 +8,15 @@
     android:paddingLeft="6dip"
     android:paddingTop="5dip"
     android:paddingBottom="5dip"
-    android:gravity="center_vertical"
-    >
+    android:gravity="center_vertical" >
 
-    <com.takefivelabs.kullect.helper.LazyListImageView android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <edu.ucla.cens.budburst.helper.LazyListImageView android:id="@+id/icon"
+        android:layout_width="40px"
+        android:layout_height="40px"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="11dip"
         android:layout_gravity="center_vertical"
         android:scaleType="fitCenter"/>
-        
 
     <LinearLayout
         android:orientation="vertical"
@@ -31,8 +29,7 @@
             android:textStyle="bold"
             android:singleLine="true"
             android:ellipsize="marquee"
-            android:layout_marginBottom="2dip" 
-            />
+            android:layout_marginBottom="2dip" />
         <TextView android:id="@+id/description"
             android:layout_marginTop="-4dip"
             android:layout_gravity="center_vertical"
