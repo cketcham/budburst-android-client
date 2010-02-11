@@ -19,7 +19,6 @@ import android.view.SurfaceView;
 
 public class CapturePhoto extends Activity implements SurfaceHolder.Callback {
 	private static final String TAG = "CapturePhoto";
-	private static final String PIC_DATA_PATH = "/sdcard/budburst";
 
 	Camera mCamera;
 	boolean mPreviewRunning = false;
@@ -51,11 +50,11 @@ public class CapturePhoto extends Activity implements SurfaceHolder.Callback {
 
 			Date now = new Date();
 			long nowLong = now.getTime();
-			String fname = PIC_DATA_PATH + "/" + nowLong + ".jpg";
+			String fname = Budburst.IMAGE_PATH + "/" + nowLong + ".jpg";
 
 			try {
 
-				File ld = new File(PIC_DATA_PATH);
+				File ld = new File(Budburst.IMAGE_PATH);
 				if (ld.exists()) {
 					if (!ld.isDirectory()) {
 

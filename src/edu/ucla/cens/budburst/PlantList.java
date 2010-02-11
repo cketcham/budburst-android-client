@@ -56,14 +56,15 @@ public class PlantList extends ListActivity {
 		for (Iterator<Row> i = plants.iterator(); i.hasNext();) {
 			HashMap<String, String> map = new HashMap<String, String>();
 			PlantRow current = (PlantRow) i.next();
-			map.put("name", current.species.common_name);
-			map.put("description", current.species.species_name);
+			map.put("name", current.species().common_name);
+			map.put("description", current.species().species_name);
 			map.put("icon", getString(R.string.speciesImageURL) + current.species_id + ".jpg");
+			map.put("_id", current._id.toString());
 			data.add(map);
 		}
 
-		adapter = new LazyAdapter(this, Budburst.getDownloadManager(), data, R.layout.list_item, new String[] { ITEM_COMMON_NAME,
-				ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name, R.id.description, R.id.icon });
+		adapter = new LazyAdapter(this, Budburst.getDownloadManager(), data, R.layout.list_item,
+				new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name, R.id.description, R.id.icon });
 		setListAdapter(this.adapter);
 
 		// set for long clicks
@@ -125,7 +126,7 @@ public class PlantList extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 
 		Intent launchPlantIntent = new Intent(this, PlantInfo.class);
-		launchPlantIntent.putExtra("PlantID", id);
+		launchPlantIntent.putExtra("PlantID", Long.parseLong(data.get(position).get("_id")));
 		launchPlantIntent.putExtra("phase", "leaves");
 		startActivity(launchPlantIntent);
 

@@ -8,4 +8,5 @@
     <string name="button_bar3">Fruits</string>
     <string name="phone_service_url">http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/phone/phone_service.php</string>
     <string name="speciesImageURL">http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/images/</string>
+	<string name="observationImageURL">http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/upload_images/view.php</string>
 </resources>

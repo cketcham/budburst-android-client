@@ -13,17 +13,28 @@ public class PlantRow extends SyncableRow {
 	public Double latitude;
 	public Double longitude;
 
-	public SpeciesRow species;
-	public SiteRow site;
-	public ArrayList<Row> observations;
+	private SpeciesRow species;
+	private SiteRow site;
 
-	@Override
-	public void setupRelations() {
-		// Log.d("SpeciesRow", "setupRelations");
-		species = (SpeciesRow) hasOne("species", species_id);
-		site = (SiteRow) hasOne("site", site_id);
-		observations = Budburst.getDatabaseManager().getDatabase("observation")
-				.find("species_id=" + species_id + " AND site_id=" + site_id);
+	public ObservationRow observations(PhenophaseRow phenophase) {
+		ArrayList<Row> observations = Budburst.getDatabaseManager().getDatabase("observation").find(
+				"species_id=" + species_id + " AND site_id=" + site_id + " AND phenophase_id=" + phenophase._id);
+		if (!observations.isEmpty())
+			return (ObservationRow) observations.get(0);
+
+		return null;
+	}
+
+	public SpeciesRow species() {
+		if (species == null)
+			species = (SpeciesRow) hasOne("species", species_id);
+		return species;
+	}
+
+	public SiteRow site() {
+		if (site == null)
+			site = (SiteRow) hasOne("site", site_id);
+		return site;
 	}
 
 	@Override

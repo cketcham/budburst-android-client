@@ -1,6 +1,7 @@
 package edu.ucla.cens.budburst.data;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -56,6 +57,8 @@ public abstract class Row {
 					fields[i].set(this, c.getString(i));
 				else if (fields[i].getType().equals(Boolean.class))
 					fields[i].set(this, (c.getLong(i) == 1));
+				else if (fields[i].getType().equals(Double.class))
+					fields[i].set(this, c.getDouble(i));
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -64,8 +67,6 @@ public abstract class Row {
 				e.printStackTrace();
 			}
 		}
-
-		setupRelations();
 	}
 
 	@Override
@@ -91,18 +92,16 @@ public abstract class Row {
 	public Field[] getFields() {
 		ArrayList<Field> ret = new ArrayList<Field>();
 		Field[] fields = this.getClass().getFields();
-		for (int i = 0; i < fields.length; i++)
-			if (fields[i].getType() == Long.class || fields[i].getType() == String.class || fields[i].getType() == Boolean.class)
+		for (int i = 0; i < fields.length; i++) {
+			if (Modifier.isPublic(fields[i].getModifiers()))
 				ret.add(fields[i]);
+		}
 		return ret.toArray(new Field[0]);
 	}
 
 	// returns the name of the database for this row (just the name before Row)
 	public String getName() {
 		return this.getClass().getSimpleName().toLowerCase().split("row")[0];
-	}
-
-	public void setupRelations() {
 	}
 
 	public ArrayList<String> primaryKeys() {
@@ -115,14 +114,18 @@ public abstract class Row {
 		return Budburst.getDatabaseManager().getDatabase(name).find(id);
 	}
 
-	protected ArrayList<Row> hasMany(String name) {
-		Log.d(TAG, "in db : " + getName() + "_" + name);
-		Log.d(TAG, "find : " + getName() + "_id=" + _id);
+	protected ArrayList<Row> hasMany(String name, String filter) {
 		ArrayList<Row> this_that = Budburst.getDatabaseManager().getDatabase(getName() + "_" + name).find(getName() + "_id=" + _id);
 		for (Iterator<Row> i = this_that.iterator(); i.hasNext();) {
 			Log.d(TAG, i.next().toString());
 		}
-		return Budburst.getDatabaseManager().getDatabase(name).find(this_that, name + "_id");
+		if (filter != null && !filter.trim().equals(""))
+			filter += " AND ";
+		return Budburst.getDatabaseManager().getDatabase(name).find(this_that, name + "_id", filter);
+	}
+
+	protected ArrayList<Row> hasMany(String name) {
+		return hasMany(name, "");
 	}
 
 	public void put() {

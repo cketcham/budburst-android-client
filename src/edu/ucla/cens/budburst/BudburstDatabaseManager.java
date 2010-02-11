@@ -11,6 +11,10 @@ import edu.ucla.cens.budburst.data.DatabaseManager;
 
 public class BudburstDatabaseManager extends DatabaseManager {
 
+	public static final int LEAVES = 0;
+	public static final int FLOWERS = 1;
+	public static final int FRUITS = 2;
+
 	public BudburstDatabaseManager(Context context) {
 		super(context);
 		createDatabase("species_phenophase", R.raw.species_phenophase_db, new SpeciesPhenophaseRow());

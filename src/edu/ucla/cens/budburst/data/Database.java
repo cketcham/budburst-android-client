@@ -36,18 +36,17 @@ public class Database {
 		db.close();
 	}
 
+	// TODO change filter so it is an array of namevaluepairs
 	public ArrayList<Row> find(String filter) {
 		openRead();
-		ArrayList<Row> ret = CursorToArrayList(db.query(name, fields(), filter,
-				null, null, null, null));
+		ArrayList<Row> ret = CursorToArrayList(db.query(name, fields(), filter, null, null, null, null));
 		close();
 		return ret;
 	}
 
 	public Row find(long id) {
 		openRead();
-		Cursor c = db.query(name, fields(), "_id=?", new String[] { String
-				.valueOf(id) }, null, null, null);
+		Cursor c = db.query(name, fields(), "_id=?", new String[] { String.valueOf(id) }, null, null, null);
 
 		if (c.moveToFirst()) {
 			rowInstance.readCursor(c);
@@ -91,14 +90,13 @@ public class Database {
 	}
 
 	// finds all rows which have values for the name
-	public ArrayList<Row> find(ArrayList<Row> array, String name) {
+	public ArrayList<Row> find(ArrayList<Row> array, String name, String infilter) {
 		Log.d(TAG, "finding for " + name);
 		String filter = "";
 		for (Iterator<Row> i = array.iterator(); i.hasNext();)
 			try {
 				Row current = i.next();
-				filter += "_id="
-						+ current.getClass().getField(name).get(current);
+				filter += "_id=" + current.getClass().getField(name).get(current);
 				if (i.hasNext())
 					filter += " OR ";
 			} catch (SecurityException e) {
@@ -114,7 +112,7 @@ public class Database {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		return find(filter);
+		return find(infilter + filter);
 	}
 
 	public ArrayList<Row> all() {

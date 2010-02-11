@@ -1,10 +1,13 @@
 package edu.ucla.cens.budburst;
 
+import java.util.ArrayList;
+
 import models.ObservationRow;
 import models.PhenophaseRow;
 import models.PlantRow;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,10 +25,10 @@ public class PlantInfo extends Activity {
 	private PhenophaseRow phenophase;
 	private ObservationRow observation;
 	private int chrono;
+	private int stageID;
+	private String stageName;
 
-	Button button1;
-	Button button2;
-	Button button3;
+	ArrayList<Button> buttonBar = new ArrayList<Button>();
 	private BudburstDatabaseManager databaseManager;
 
 	/** Called when the activity is first created. */
@@ -36,11 +39,26 @@ public class PlantInfo extends Activity {
 		databaseManager = Budburst.getDatabaseManager();
 		Bundle extras = getIntent().getExtras();
 		chrono = extras.getInt("chrono", 0);
-		// get plant, and phenophases
+		stageID = extras.getInt("StageID", BudburstDatabaseManager.LEAVES);
 
+		// map stageID to stage Name
+		switch (stageID) {
+		case BudburstDatabaseManager.LEAVES:
+			stageName = "leaves";
+			break;
+		case BudburstDatabaseManager.FLOWERS:
+			stageName = "flowers";
+			break;
+		case BudburstDatabaseManager.FRUITS:
+			stageName = "fruits";
+			break;
+		}
+
+		// get plant, and phenophases
 		plant = (PlantRow) databaseManager.getDatabase("plant").find(extras.getLong("PlantID"));
-		observation = (ObservationRow) plant.observations.get(chrono);
-		phenophase = (PhenophaseRow) plant.species.phenophases.get(chrono);
+		phenophase = (PhenophaseRow) plant.species().phenophases(stageName).get(chrono);
+		observation = plant.observations(phenophase);
+
 	}
 
 	@Override
@@ -57,39 +75,44 @@ public class PlantInfo extends Activity {
 		TextView state = (TextView) this.findViewById(R.id.state);
 		ImageView img = (ImageView) this.findViewById(R.id.image);
 
-		button1 = (Button) this.findViewById(R.id.button1);
-		button1.setOnClickListener(new View.OnClickListener() {
+		buttonBar.add((Button) this.findViewById(R.id.button1));
+		buttonBar.get(0).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = getIntent();
-				// intent.putExtra("StageID",plant.leaves);
+				intent.putExtra("StageID", BudburstDatabaseManager.LEAVES);
+				intent.putExtra("chrono", 0);
 
 				startActivity(intent);
 				finish();
 			}
 		});
 
-		button2 = (Button) this.findViewById(R.id.button2);
-		button2.setOnClickListener(new View.OnClickListener() {
+		buttonBar.add((Button) this.findViewById(R.id.button2));
+		buttonBar.get(1).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = getIntent();
-				// Log.d(TAG,"plant flowers = " + plant.flowers);
-				// intent.putExtra("StageID",plant.flowers);
+				intent.putExtra("StageID", BudburstDatabaseManager.FLOWERS);
+				intent.putExtra("chrono", 0);
 
 				startActivity(intent);
 				finish();
 			}
 		});
 
-		button3 = (Button) this.findViewById(R.id.button3);
-		button3.setOnClickListener(new View.OnClickListener() {
+		buttonBar.add((Button) this.findViewById(R.id.button3));
+		buttonBar.get(2).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = getIntent();
-				// intent.putExtra("StageID",plant.fruits);
+				intent.putExtra("StageID", BudburstDatabaseManager.FRUITS);
+				intent.putExtra("chrono", 0);
 
 				startActivity(intent);
 				finish();
 			}
 		});
+
+		// set selected button
+		buttonBar.get(stageID).setSelected(true);
 
 		Button last_stage = (Button) this.findViewById(R.id.backward_button);
 		if (chrono > 0) {
@@ -108,7 +131,7 @@ public class PlantInfo extends Activity {
 		}
 
 		Button next_stage = (Button) this.findViewById(R.id.forward_button);
-		if (plant.species.phenophases.size() > chrono) {
+		if (plant.species().phenophases(stageName).size() > chrono) {
 			next_stage.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					Intent intent = getIntent();
@@ -122,11 +145,11 @@ public class PlantInfo extends Activity {
 			next_stage.setVisibility(View.GONE);
 		}
 
-		name.setText(plant.species.common_name);
+		name.setText(plant.species().common_name);
 		// display image if there is one
 
-		// if (observation != null)
-		// img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
+		if (observation != null)
+			img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
 		state.setText(phenophase.name);
 
 		Button replace_img = (Button) this.findViewById(R.id.replace_image);
