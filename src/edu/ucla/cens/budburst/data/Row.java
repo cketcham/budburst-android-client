@@ -19,7 +19,9 @@ public abstract class Row {
 		Field[] fields = getFields();
 		for (int i = 0; i < fields.length; i++) {
 			try {
-				vals.put(fields[i].getName(), fields[i].get(this).toString());
+				Object o = fields[i].get(this);
+				if (o != null)
+					vals.put(fields[i].getName(), o.toString());
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -124,7 +126,7 @@ public abstract class Row {
 	}
 
 	public void put() {
-		((WritableDatabase) Budburst.getDatabaseManager().getDatabase(this)).insertRow(this);
+		((WritableDatabase) Budburst.getDatabaseManager().getDatabase(getName())).insertRow(this);
 	}
 
 }
