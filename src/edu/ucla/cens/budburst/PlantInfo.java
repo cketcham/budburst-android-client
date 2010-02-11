@@ -131,7 +131,7 @@ public class PlantInfo extends Activity {
 		}
 
 		Button next_stage = (Button) this.findViewById(R.id.forward_button);
-		if (plant.species().phenophases(stageName).size() > chrono) {
+		if (plant.species().phenophases(stageName).size() > chrono + 1) {
 			next_stage.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					Intent intent = getIntent();

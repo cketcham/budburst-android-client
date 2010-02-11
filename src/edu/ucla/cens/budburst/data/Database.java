@@ -36,7 +36,6 @@ public class Database {
 		db.close();
 	}
 
-	// TODO change filter so it is an array of namevaluepairs
 	public ArrayList<Row> find(String filter) {
 		openRead();
 		ArrayList<Row> ret = CursorToArrayList(db.query(name, fields(), filter, null, null, null, null));
@@ -92,7 +91,7 @@ public class Database {
 	// finds all rows which have values for the name
 	public ArrayList<Row> find(ArrayList<Row> array, String name, String infilter) {
 		Log.d(TAG, "finding for " + name);
-		String filter = "";
+		String filter = " (";
 		for (Iterator<Row> i = array.iterator(); i.hasNext();)
 			try {
 				Row current = i.next();
@@ -112,7 +111,7 @@ public class Database {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		return find(infilter + filter);
+		return find(infilter + filter + ") ");
 	}
 
 	public ArrayList<Row> all() {

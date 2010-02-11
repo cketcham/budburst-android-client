@@ -13,7 +13,7 @@ public class SpeciesRow extends Row {
 
 	public ArrayList<Row> phenophases(String type) {
 		if (!phenophases.containsKey(type)) {
-			phenophases.put(type, hasMany("phenophase", "type=\"" + type + "\""));
+			phenophases.put(type, hasMany("phenophase", "type='" + type + "'"));
 		}
 
 		return phenophases.get(type);
