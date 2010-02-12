@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class Database {
 	private final SQLiteOpenHelper dbHelper;
@@ -89,9 +88,8 @@ public class Database {
 	}
 
 	// finds all rows which have values for the name
-	public ArrayList<Row> find(ArrayList<Row> array, String fieldName, String infilter) {
-		Log.d(TAG, "finding for " + name);
-		return find(infilter + constraintFromArrayList(array, fieldName));
+	public ArrayList<Row> find(ArrayList<Row> array, String name, String infilter) {
+		return find(infilter + constraintFromArrayList(array, name));
 	}
 
 	protected String constraintFromArrayList(ArrayList<Row> rows, String fieldName) {
@@ -105,13 +103,13 @@ public class Database {
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

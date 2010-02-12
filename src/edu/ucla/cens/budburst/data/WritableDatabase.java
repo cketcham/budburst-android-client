@@ -14,9 +14,9 @@ public class WritableDatabase extends Database {
 	private static Object dbLock = new Object();
 	private static boolean databaseOpen = false;
 
-	private SQLiteOpenHelper dbHelper;
+	private final SQLiteOpenHelper dbHelper;
 
-	private Row rowInstance;
+	private final Row rowInstance;
 
 	public WritableDatabase(SQLiteOpenHelper helper, String name, Row row) {
 		super(helper, name, row);
@@ -39,6 +39,20 @@ public class WritableDatabase extends Database {
 			db = dbHelper.getWritableDatabase();
 
 			return this;
+		}
+	}
+
+	@Override
+	public void close() {
+		if (db.isReadOnly()) {
+			db.close();
+		} else {
+			synchronized (dbLock) {
+				dbHelper.close();
+				databaseOpen = false;
+
+				dbLock.notify();
+			}
 		}
 	}
 
@@ -69,6 +83,7 @@ public class WritableDatabase extends Database {
 			close();
 			return rowid;
 		}
+
 	}
 
 }
