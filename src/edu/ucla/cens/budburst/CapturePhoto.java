@@ -50,11 +50,11 @@ public class CapturePhoto extends Activity implements SurfaceHolder.Callback {
 
 			Date now = new Date();
 			long nowLong = now.getTime();
-			String fname = Budburst.IMAGE_PATH + "/" + nowLong + ".jpg";
+			String fname = Budburst.OBSERVATION_PATH + "/" + nowLong + ".jpg";
 
 			try {
 
-				File ld = new File(Budburst.IMAGE_PATH);
+				File ld = new File(Budburst.OBSERVATION_PATH);
 				if (ld.exists()) {
 					if (!ld.isDirectory()) {
 

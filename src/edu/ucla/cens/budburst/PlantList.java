@@ -16,12 +16,12 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import edu.ucla.cens.budburst.data.Row;
-import edu.ucla.cens.budburst.helper.LazyAdapter;
 
 public class PlantList extends ListActivity {
 
-	private LazyAdapter adapter;
+	private SimpleAdapter adapter;
 	private static final String TAG = "campaignList";
 
 	private static final String ITEM_COMMON_NAME = "name";
@@ -58,13 +58,13 @@ public class PlantList extends ListActivity {
 			PlantRow current = (PlantRow) i.next();
 			map.put("name", current.species().common_name);
 			map.put("description", current.species().species_name);
-			map.put("icon", getString(R.string.speciesImageURL) + current.species_id + ".jpg");
+			map.put("icon", current.species().getImagePath());
 			map.put("_id", current._id.toString());
 			data.add(map);
 		}
 
-		adapter = new LazyAdapter(this, Budburst.getDownloadManager(), data, R.layout.list_item,
-				new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name, R.id.description, R.id.icon });
+		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
+				R.id.description, R.id.icon });
 		setListAdapter(this.adapter);
 
 		// set for long clicks

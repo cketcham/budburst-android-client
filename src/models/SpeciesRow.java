@@ -3,6 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import edu.ucla.cens.budburst.Budburst;
 import edu.ucla.cens.budburst.data.Row;
 
 public class SpeciesRow extends Row {
@@ -17,6 +18,10 @@ public class SpeciesRow extends Row {
 		}
 
 		return phenophases.get(type);
+	}
+
+	public String getImagePath() {
+		return Budburst.SPECIES_PATH + _id + ".jpg";
 	}
 
 }

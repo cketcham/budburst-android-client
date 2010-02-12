@@ -22,7 +22,7 @@ public class ObservationRow extends SyncableRow {
 	}
 
 	public String getImagePath() {
-		return Budburst.IMAGE_PATH + image_id + ".jpg";
+		return Budburst.OBSERVATION_PATH + image_id + ".jpg";
 	}
 
 }

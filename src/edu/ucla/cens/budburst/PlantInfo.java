@@ -47,10 +47,10 @@ public class PlantInfo extends Activity {
 			stageName = "leaves";
 			break;
 		case BudburstDatabaseManager.FLOWERS:
-			stageName = "flowers";
+			stageName = "flower";
 			break;
 		case BudburstDatabaseManager.FRUITS:
-			stageName = "fruits";
+			stageName = "fruit";
 			break;
 		}
 

@@ -1,6 +1,10 @@
 package edu.ucla.cens.budburst;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +16,9 @@ public class Budburst extends Activity {
 	private static final int FINISHED = 1;
 	private static BudburstDatabaseManager dbManager;
 	private static DownloadManager downloadManager;
-	public static String IMAGE_PATH = "/sdcard/budburst/";
+	public static String BASE_PATH = "/sdcard/budburst/";
+	public static String OBSERVATION_PATH = BASE_PATH + "observation/";
+	public static String SPECIES_PATH = BASE_PATH + "species/";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -25,9 +31,38 @@ public class Budburst extends Activity {
 
 		PreferencesManager.letUserIn("android", "android", this);
 
+		// First Time stuff
 		// make sure budburst directory is set
-		if (!new File(IMAGE_PATH).exists())
-			new File(IMAGE_PATH).mkdirs();
+		if (!new File(BASE_PATH).exists())
+			new File(BASE_PATH).mkdirs();
+		if (!new File(OBSERVATION_PATH).exists())
+			new File(OBSERVATION_PATH).mkdirs();
+		if (!new File(SPECIES_PATH).exists())
+			new File(SPECIES_PATH).mkdirs();
+
+		// move species_images
+		try {
+			String[] images = getAssets().list("species_images");
+			for (int i = 0; i < images.length; i++) {
+
+				OutputStream outputStream = new FileOutputStream(SPECIES_PATH + images[i]);
+				InputStream inputStream;
+
+				byte[] buffer = new byte[1024];
+				inputStream = getAssets().open("species_images/" + images[i]);
+				while ((inputStream.read(buffer)) > 0) {
+					outputStream.write(buffer);
+				}
+				inputStream.close();
+
+				outputStream.flush();
+				outputStream.close();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// End first time stuff
 
 		startActivityForResult(new Intent(this, SyncDatabases.class), DOWNLOADED_DATABASES);
 	}

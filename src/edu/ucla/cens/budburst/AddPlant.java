@@ -12,12 +12,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import edu.ucla.cens.budburst.data.Row;
-import edu.ucla.cens.budburst.helper.LazyAdapter;
 
 public class AddPlant extends ListActivity {
 
-	private LazyAdapter adapter;
+	private SimpleAdapter adapter;
 	private static final String TAG = "AddPlant";
 
 	private static final String ITEM_COMMON_NAME = "name";
@@ -49,12 +49,16 @@ public class AddPlant extends ListActivity {
 			SpeciesRow current = (SpeciesRow) i.next();
 			map.put("name", current.common_name);
 			map.put("description", current.species_name);
-			map.put("icon", getString(R.string.speciesImageURL) + current._id + ".jpg");
+			map.put("icon", current.getImagePath());
 			data.add(map);
 		}
 
-		adapter = new LazyAdapter(this, Budburst.getDownloadManager(), data, R.layout.list_item, new String[] { ITEM_COMMON_NAME,
-				ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name, R.id.description, R.id.icon });
+		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
+				R.id.description, R.id.icon });
+
+		// adapter = new LazyAdapter(this, Budburst.getDownloadManager(), data, R.layout.list_item, new String[] { ITEM_COMMON_NAME,
+		// ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name, R.id.description, R.id.icon });
+
 		setListAdapter(this.adapter);
 	}
 
