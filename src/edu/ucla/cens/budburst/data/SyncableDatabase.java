@@ -1,18 +1,17 @@
 package edu.ucla.cens.budburst.data;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,9 +26,9 @@ import edu.ucla.cens.budburst.helper.netUtils;
 
 public class SyncableDatabase extends WritableDatabase {
 	private static final String TAG = "WritableDatabase";
-	private String downUrl;
-	private String upUrl;
-	private Context context;
+	private final String downUrl;
+	private final String upUrl;
+	private final Context context;
 
 	public SyncableDatabase(Context context, String downUrl, String upUrl, SyncableRow row) {
 		super(new DatabaseHelper(context, row), row.getName(), row);
@@ -92,12 +91,16 @@ public class SyncableDatabase extends WritableDatabase {
 		return rowid;
 	}
 
+	public ArrayList<Row> toSync() {
+		return find("synced='false'");
+	}
+
 	public void uploadData() {
 		// TODO more robust checking of if the data can be uploaded
 		if (upUrl.equals(""))
 			return;
 
-		ArrayList<Row> rows = find("synced=" + false);
+		ArrayList<Row> rows = toSync();
 		for (Iterator<Row> i = rows.iterator(); i.hasNext();) {
 			Log.d(TAG, "for each row");
 			try {
@@ -106,22 +109,25 @@ public class SyncableDatabase extends WritableDatabase {
 				// Create new client.
 				HttpClient httpClient = new DefaultHttpClient();
 
-				// Compile post data.
-				ArrayList<NameValuePair> data = new ArrayList<NameValuePair>();
-				data.addAll(PreferencesManager.currentAuthParams(context));
+				MultipartEntity entity = row.uploadEntity();
 
-				data.addAll(row.parameters());
+				try {
+					entity.addPart("username", new StringBody(PreferencesManager.currentUser(context)));
+					entity.addPart("password", new StringBody(PreferencesManager.currentPassword(context)));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				// Form request with post data.
 				HttpPost httpRequest = new HttpPost(upUrl);
-				httpRequest.setEntity(new UrlEncodedFormEntity(data, HTTP.UTF_8));
+				httpRequest.setEntity(entity);
 
 				// Send request.
 				HttpResponse response = httpClient.execute(httpRequest);
 
 				// Get message.
-				HttpEntity entity = response.getEntity();
-				String responseVal = netUtils.generateString(entity.getContent());
+				String responseVal = netUtils.generateString(response.getEntity().getContent());
 
 				// Get status.
 				int status = response.getStatusLine().getStatusCode();

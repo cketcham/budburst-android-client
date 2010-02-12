@@ -1,7 +1,5 @@
 package models;
 
-import java.util.ArrayList;
-
 import edu.ucla.cens.budburst.data.SyncableRow;
 
 public class SiteRow extends SyncableRow {
@@ -14,4 +12,5 @@ public class SiteRow extends SyncableRow {
 	public Long postal;
 	public String country;
 	public String comments;
+
 }

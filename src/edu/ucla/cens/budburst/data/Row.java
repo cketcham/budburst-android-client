@@ -59,7 +59,7 @@ public abstract class Row {
 				else if (fields[i].getType().equals(String.class))
 					fields[i].set(this, c.getString(i));
 				else if (fields[i].getType().equals(Boolean.class))
-					fields[i].set(this, (c.getLong(i) == 1));
+					fields[i].set(this, c.getString(i).equals("true"));
 				else if (fields[i].getType().equals(Double.class))
 					fields[i].set(this, c.getDouble(i));
 			} catch (IllegalArgumentException e) {

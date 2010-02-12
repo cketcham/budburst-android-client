@@ -30,6 +30,7 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 	private static final int DOWNLOADED_OBSERVATION_IMAGE = 3;
 
 	private static final int UPLOAD_OBSERVATIONS = 4;
+	private static final int UPLOAD_PLANTS = 5;
 
 	private BudburstDatabaseManager dbManager;
 	private DownloadManager downloadManager;
@@ -40,11 +41,17 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.download_data);
 
 		dbManager = Budburst.getDatabaseManager();
 		downloadManager = Budburst.getDownloadManager();
 
+		// start uploads first, downloads will start when uploads are done
+		uploads();
+
+	}
+
+	public void downloads() {
 		String url = ((SyncableDatabase) dbManager.getDatabase("site")).getDownURL() + PreferencesManager.currentGETAuthParams(this);
 		Download d = new Download(url);
 		downloads.add(d);
@@ -54,14 +61,13 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 		d = new Download(url);
 		downloads.add(d);
 		downloadManager.download(this, DOWNLOADED_OBSERVATIONS, d);
+	}
 
-		// And start uploads
-		// url = ((SyncableDatabase)
-		// dbManager.getDatabase("observation")).getUpURL();
-		// d = new Download(url);
-		// downloads.add(d);
-		// downloadManager.upload(this, UPLOAD_OBSERVATIONS, d);
-
+	public void uploads() {
+		String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getUpURL();
+		Download d = new Download(url);
+		downloads.add(d);
+		downloadManager.upload(this, UPLOAD_PLANTS, d);
 	}
 
 	public Object consumeInputStream(Message msg) {
@@ -132,8 +138,23 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 
 	}
 
-	public void upload(int what) {
-		// TODO Auto-generated method stub
+	public void upload(int what, Download d) {
+		switch (what) {
+		case UPLOAD_OBSERVATIONS:
+			((SyncableDatabase) dbManager.getDatabase("observation")).uploadData();
+			break;
+		case UPLOAD_PLANTS:
+			((SyncableDatabase) dbManager.getDatabase("plant")).uploadData();
 
+			String url = ((SyncableDatabase) dbManager.getDatabase("observation")).getUpURL();
+			Download d2 = new Download(url);
+			downloads.add(d2);
+			downloadManager.upload(this, UPLOAD_OBSERVATIONS, d2);
+
+		}
+
+		downloads.remove(d);
+		if (downloads.isEmpty())
+			downloads();
 	}
 }

@@ -26,7 +26,7 @@ public class BudburstDatabaseManager extends DatabaseManager {
 		createSyncableDatabase("site", downSiteURL, upSiteURL, new SiteRow());
 
 		String downPlantURL = context.getString(R.string.phone_service_url) + "?get_my_plants";
-		String upPlantURL = "";
+		String upPlantURL = context.getString(R.string.phone_service_url) + "?add_plant";
 		createSyncableDatabase("plant", downPlantURL, upPlantURL, new PlantRow());
 
 		String downObsURL = context.getString(R.string.phone_service_url) + "?get_my_obs";

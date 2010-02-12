@@ -19,6 +19,7 @@ import android.util.Log;
 import edu.ucla.cens.budburst.helper.Cache;
 import edu.ucla.cens.budburst.helper.Download;
 import edu.ucla.cens.budburst.helper.Downloadable;
+import edu.ucla.cens.budburst.helper.Uploadable;
 
 public class DownloadManager {
 
@@ -45,11 +46,11 @@ public class DownloadManager {
 		}
 	}
 
-	// public void upload(Uploadable context, int what, Download d) {
-	//
-	// new UploadTask().execute(new DownloadObject(context, what, d));
-	//
-	// }
+	public void upload(Uploadable context, int what, Download d) {
+
+		new UploadTask().execute(new UploadObject(context, what, d));
+
+	}
 
 	public Boolean has(Download d) {
 		return cache.containsKey(d);
@@ -72,6 +73,21 @@ public class DownloadManager {
 		public Object result;
 
 		public DownloadObject(Downloadable context, int what, Download d) {
+			this.context = context;
+			this.what = what;
+			this.download = d;
+		}
+	}
+
+	public class UploadObject {
+		public Uploadable context;
+		public int what;
+		public Download download;
+
+		public InputStream streamResult;
+		public Object result;
+
+		public UploadObject(Uploadable context, int what, Download d) {
 			this.context = context;
 			this.what = what;
 			this.download = d;
@@ -132,15 +148,15 @@ public class DownloadManager {
 
 	}
 
-	// private class UploadTask extends AsyncTask<DownloadObject, Void,
-	// DownloadObject> {
-	//
-	// @Override
-	// protected DownloadObject doInBackground(DownloadObject... params) {
-	// params[0].context.uploadData();
-	// }
-	//
-	// }
+	private class UploadTask extends AsyncTask<UploadObject, Void, UploadObject> {
+
+		@Override
+		protected UploadObject doInBackground(UploadObject... params) {
+			params[0].context.upload(params[0].what, params[0].download);
+			return params[0];
+		}
+
+	}
 
 	protected void returnResult(DownloadObject downloaded) {
 		Message msg = new Message();

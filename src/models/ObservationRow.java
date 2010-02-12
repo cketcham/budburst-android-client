@@ -1,6 +1,10 @@
 package models;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
 
 import edu.ucla.cens.budburst.Budburst;
 import edu.ucla.cens.budburst.data.SyncableRow;
@@ -23,6 +27,17 @@ public class ObservationRow extends SyncableRow {
 
 	public String getImagePath() {
 		return Budburst.OBSERVATION_PATH + image_id + ".jpg";
+	}
+
+	@Override
+	public MultipartEntity uploadEntity() {
+		MultipartEntity entity = super.uploadEntity();
+
+		File file = new File(getImagePath());
+		FileBody fileb = new FileBody(file);
+		entity.addPart("image", fileb);
+
+		return entity;
 	}
 
 }

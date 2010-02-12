@@ -50,14 +50,12 @@ public class AddPlant extends ListActivity {
 			map.put("name", current.common_name);
 			map.put("description", current.species_name);
 			map.put("icon", current.getImagePath());
+			map.put("_id", current._id.toString());
 			data.add(map);
 		}
 
-		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
-				R.id.description, R.id.icon });
-
-		// adapter = new LazyAdapter(this, Budburst.getDownloadManager(), data, R.layout.list_item, new String[] { ITEM_COMMON_NAME,
-		// ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name, R.id.description, R.id.icon });
+		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
+				new int[] { R.id.name, R.id.description, R.id.icon });
 
 		setListAdapter(this.adapter);
 	}
@@ -67,7 +65,7 @@ public class AddPlant extends ListActivity {
 		PlantRow plant = new PlantRow();
 		plant.latitude = lManager.getLastKnownLocation("gps").getLatitude();
 		plant.longitude = lManager.getLastKnownLocation("gps").getLongitude();
-		plant.species_id = id;
+		plant.species_id = Long.parseLong(data.get(position).get("_id"));
 
 		// TODO:put in an actual site
 		plant.site_id = databaseManager.getDatabase("site").all().get(0)._id;
