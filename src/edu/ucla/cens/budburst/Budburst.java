@@ -20,6 +20,25 @@ public class Budburst extends Activity {
 	public static String OBSERVATION_PATH = BASE_PATH + "observation/";
 	public static String SPECIES_PATH = BASE_PATH + "species/";
 
+	/**
+	 * TODO:
+	 * 
+	 * <pre>
+	 * Add budburst logo and images
+	 * change headers for main page
+	 * remove headers from add plant page
+	 * add a way to sync rather than restarting the app
+	 * fix image upload bug
+	 * add login screen
+	 * make plant info screen look nicer, with the correct text color
+	 * 
+	 * make the sync screen a floating window
+	 * add ability to make one time observation
+	 * add ability to delete plants / observations
+	 * add ability to add notes to a certain plant
+	 * </pre>
+	 */
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
