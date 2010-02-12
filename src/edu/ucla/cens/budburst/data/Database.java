@@ -89,13 +89,17 @@ public class Database {
 	}
 
 	// finds all rows which have values for the name
-	public ArrayList<Row> find(ArrayList<Row> array, String name, String infilter) {
+	public ArrayList<Row> find(ArrayList<Row> array, String fieldName, String infilter) {
 		Log.d(TAG, "finding for " + name);
+		return find(infilter + constraintFromArrayList(array, fieldName));
+	}
+
+	protected String constraintFromArrayList(ArrayList<Row> rows, String fieldName) {
 		String filter = " (";
-		for (Iterator<Row> i = array.iterator(); i.hasNext();)
+		for (Iterator<Row> i = rows.iterator(); i.hasNext();)
 			try {
 				Row current = i.next();
-				filter += "_id=" + current.getClass().getField(name).get(current);
+				filter += "_id=" + current.getClass().getField(fieldName).get(current);
 				if (i.hasNext())
 					filter += " OR ";
 			} catch (SecurityException e) {
@@ -111,7 +115,7 @@ public class Database {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		return find(infilter + filter + ") ");
+		return filter + ") ";
 	}
 
 	public ArrayList<Row> all() {

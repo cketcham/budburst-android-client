@@ -1,29 +1,23 @@
 package edu.ucla.cens.budburst.data;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class WritableDatabase extends Database{
+public class WritableDatabase extends Database {
 	private static final String TAG = "WritableDatabase";
 
 	private static Object dbLock = new Object();
 	private static boolean databaseOpen = false;
-	
+
 	private SQLiteOpenHelper dbHelper;
 
 	private Row rowInstance;
-	
+
 	public WritableDatabase(SQLiteOpenHelper helper, String name, Row row) {
 		super(helper, name, row);
 		dbHelper = helper;
@@ -47,31 +41,34 @@ public class WritableDatabase extends Database{
 			return this;
 		}
 	}
-	
+
 	public long insertRow(Row row) {
 		return insertRow(row.vals());
 	}
-	
+
 	public long insertRow(ContentValues vals) {
 		String constraint = "";
-		for(Iterator<String> i = rowInstance.primaryKeys().iterator();i.hasNext();) {
+		for (Iterator<String> i = rowInstance.primaryKeys().iterator(); i.hasNext();) {
 			String current = i.next();
 			constraint += current + "=" + vals.getAsString(current);
-			if(i.hasNext())
+			if (i.hasNext())
 				constraint += " AND ";
 		}
-			Log.d(TAG, constraint);
-			Log.d(TAG, rowInstance.getName());
-		if(find(constraint).isEmpty()) {
+		Log.d(TAG, constraint);
+		Log.d(TAG, rowInstance.getName());
+		ArrayList<Row> previousItems = find(constraint);
+		if (previousItems.isEmpty()) {
 			openWrite();
 			long rowid = db.insert(rowInstance.getName(), null, vals);
 			close();
 			return rowid;
+		} else {
+			String whereClause = constraintFromArrayList(previousItems, "_id");
+			openWrite();
+			long rowid = db.update(rowInstance.getName(), vals, whereClause, null);
+			close();
+			return rowid;
 		}
-		return -1;
 	}
 
 }
-
-
-

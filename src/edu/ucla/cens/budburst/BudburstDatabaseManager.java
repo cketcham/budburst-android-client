@@ -21,14 +21,17 @@ public class BudburstDatabaseManager extends DatabaseManager {
 		createDatabase("phenophase", R.raw.phenophase_db, new PhenophaseRow());
 		createDatabase("species", R.raw.species_db, new SpeciesRow());
 
-		String siteURL = context.getString(R.string.phone_service_url) + "?get_my_sites";
-		createSyncableDatabase("site", siteURL, new SiteRow());
+		String downSiteURL = context.getString(R.string.phone_service_url) + "?get_my_sites";
+		String upSiteURL = "";
+		createSyncableDatabase("site", downSiteURL, upSiteURL, new SiteRow());
 
-		String plantURL = context.getString(R.string.phone_service_url) + "?get_my_plants";
-		createSyncableDatabase("plant", plantURL, new PlantRow());
+		String downPlantURL = context.getString(R.string.phone_service_url) + "?get_my_plants";
+		String upPlantURL = "";
+		createSyncableDatabase("plant", downPlantURL, upPlantURL, new PlantRow());
 
-		String obsURL = context.getString(R.string.phone_service_url) + "?get_my_obs";
-		createSyncableDatabase("observation", obsURL, new ObservationRow());
+		String downObsURL = context.getString(R.string.phone_service_url) + "?get_my_obs";
+		String upObsURL = context.getString(R.string.uploadObservationsUrl);
+		createSyncableDatabase("observation", downObsURL, upObsURL, new ObservationRow());
 	}
 
 }

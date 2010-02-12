@@ -19,6 +19,7 @@ import android.util.Log;
 import edu.ucla.cens.budburst.helper.Cache;
 import edu.ucla.cens.budburst.helper.Download;
 import edu.ucla.cens.budburst.helper.Downloadable;
+import edu.ucla.cens.budburst.helper.Uploadable;
 
 public class DownloadManager {
 
@@ -43,6 +44,12 @@ public class DownloadManager {
 			msg.obj = cache.get(d);
 			context.onDownloaded(msg, d);
 		}
+	}
+
+	public void upload(Uploadable context, int what, Download d) {
+
+		new UploadTask().execute(new DownloadObject(context, what, d));
+
 	}
 
 	public Boolean has(Download d) {
@@ -120,6 +127,15 @@ public class DownloadManager {
 
 		protected void onPostExecute(DownloadObject downloaded) {
 			returnResult(downloaded);
+		}
+
+	}
+
+	private class UploadTask extends AsyncTask<DownloadObject, Void, DownloadObject> {
+
+		@Override
+		protected DownloadObject doInBackground(DownloadObject... params) {
+			params[0].context.uploadData();
 		}
 
 	}

@@ -18,15 +18,18 @@ import edu.ucla.cens.budburst.data.Row;
 import edu.ucla.cens.budburst.data.SyncableDatabase;
 import edu.ucla.cens.budburst.helper.Download;
 import edu.ucla.cens.budburst.helper.Downloadable;
+import edu.ucla.cens.budburst.helper.Uploadable;
 import edu.ucla.cens.budburst.helper.netUtils;
 
-public class SyncDatabases extends Activity implements Downloadable {
+public class SyncDatabases extends Activity implements Downloadable, Uploadable {
 	private static final String TAG = "Budburst";
 
 	private static final int DOWNLOADED_SITES = 0;
 	private static final int DOWNLOADED_OBSERVATIONS = 1;
 	private static final int DOWNLOADED_PLANTS = 2;
 	private static final int DOWNLOADED_OBSERVATION_IMAGE = 3;
+
+	private static final int UPLOAD_OBSERVATIONS = 4;
 
 	private BudburstDatabaseManager dbManager;
 	private DownloadManager downloadManager;
@@ -42,15 +45,21 @@ public class SyncDatabases extends Activity implements Downloadable {
 		dbManager = Budburst.getDatabaseManager();
 		downloadManager = Budburst.getDownloadManager();
 
-		String url = ((SyncableDatabase) dbManager.getDatabase("site")).getURL() + PreferencesManager.currentGETAuthParams(this);
+		String url = ((SyncableDatabase) dbManager.getDatabase("site")).getDownURL() + PreferencesManager.currentGETAuthParams(this);
 		Download d = new Download(url);
 		downloads.add(d);
 		downloadManager.download(this, DOWNLOADED_SITES, d);
 
-		url = ((SyncableDatabase) dbManager.getDatabase("observation")).getURL() + PreferencesManager.currentGETAuthParams(this);
+		url = ((SyncableDatabase) dbManager.getDatabase("observation")).getDownURL() + PreferencesManager.currentGETAuthParams(this);
 		d = new Download(url);
 		downloads.add(d);
 		downloadManager.download(this, DOWNLOADED_OBSERVATIONS, d);
+
+		// And start uploads
+		url = ((SyncableDatabase) dbManager.getDatabase("observation")).getUpURL();
+		d = new Download(url);
+		downloads.add(d);
+		downloadManager.upload(this, UPLOAD_OBSERVATIONS, d);
 
 	}
 
@@ -76,7 +85,7 @@ public class SyncDatabases extends Activity implements Downloadable {
 			// we can start downloading plants now that we know what the sites are
 			ArrayList<Row> sites = dbManager.getDatabase("site").all();
 			for (Iterator<Row> i = sites.iterator(); i.hasNext();) {
-				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getURL() + PreferencesManager.currentGETAuthParams(this);
+				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getDownURL() + PreferencesManager.currentGETAuthParams(this);
 				url += "&site_id=" + i.next()._id;
 				Download plantd = new Download(url);
 				downloads.add(plantd);
@@ -116,6 +125,11 @@ public class SyncDatabases extends Activity implements Downloadable {
 		downloads.remove(d);
 		if (downloads.isEmpty())
 			finish();
+
+	}
+
+	public void upload(int what) {
+		// TODO Auto-generated method stub
 
 	}
 }

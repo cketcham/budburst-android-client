@@ -5,6 +5,9 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
@@ -130,6 +133,25 @@ public abstract class Row {
 
 	public void put() {
 		((WritableDatabase) Budburst.getDatabaseManager().getDatabase(getName())).insertRow(this);
+	}
+
+	public ArrayList<NameValuePair> parameters() {
+		ArrayList<NameValuePair> ret = new ArrayList<NameValuePair>();
+		Field[] fields = getFields();
+
+		for (int i = 0; i < fields.length; i++) {
+			try {
+				ret.add(new BasicNameValuePair(fields[i].getName(), fields[i].get(this).toString()));
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		// TODO Auto-generated method stub
+		return ret;
 	}
 
 }
