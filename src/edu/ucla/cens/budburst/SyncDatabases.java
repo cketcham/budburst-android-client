@@ -34,7 +34,7 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 	private BudburstDatabaseManager dbManager;
 	private DownloadManager downloadManager;
 
-	private ArrayList<Download> downloads = new ArrayList<Download>();
+	private final ArrayList<Download> downloads = new ArrayList<Download>();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -56,10 +56,11 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 		downloadManager.download(this, DOWNLOADED_OBSERVATIONS, d);
 
 		// And start uploads
-		url = ((SyncableDatabase) dbManager.getDatabase("observation")).getUpURL();
-		d = new Download(url);
-		downloads.add(d);
-		downloadManager.upload(this, UPLOAD_OBSERVATIONS, d);
+		// url = ((SyncableDatabase)
+		// dbManager.getDatabase("observation")).getUpURL();
+		// d = new Download(url);
+		// downloads.add(d);
+		// downloadManager.upload(this, UPLOAD_OBSERVATIONS, d);
 
 	}
 
@@ -82,10 +83,12 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 		case DOWNLOADED_SITES:
 			((SyncableDatabase) dbManager.getDatabase("site")).sync((String) msg.obj);
 
-			// we can start downloading plants now that we know what the sites are
+			// we can start downloading plants now that we know what the sites
+			// are
 			ArrayList<Row> sites = dbManager.getDatabase("site").all();
 			for (Iterator<Row> i = sites.iterator(); i.hasNext();) {
-				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getDownURL() + PreferencesManager.currentGETAuthParams(this);
+				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getDownURL()
+						+ PreferencesManager.currentGETAuthParams(this);
 				url += "&site_id=" + i.next()._id;
 				Download plantd = new Download(url);
 				downloads.add(plantd);
@@ -94,7 +97,8 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 			break;
 		case DOWNLOADED_OBSERVATIONS:
 			((SyncableDatabase) dbManager.getDatabase("observation")).sync((String) msg.obj);
-			// we can start downloading observation images now that we know what observations we have
+			// we can start downloading observation images now that we know what
+			// observations we have
 			ArrayList<Row> observations = dbManager.getDatabase("observation").all();
 			for (Iterator<Row> i = observations.iterator(); i.hasNext();) {
 				ObservationRow current = (ObservationRow) i.next();

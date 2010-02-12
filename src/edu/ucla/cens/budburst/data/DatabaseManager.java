@@ -20,7 +20,7 @@ public class DatabaseManager {
 		rows.put(name, row);
 	}
 
-	public void createSyncableDatabase(String name, String upUrl, String downUrl, SyncableRow row) {
+	public void createSyncableDatabase(String name, String downUrl, String upUrl, SyncableRow row) {
 		upUrls.put(name, upUrl);
 		downUrls.put(name, downUrl);
 		rows.put(name, row);

@@ -19,7 +19,6 @@ import android.util.Log;
 import edu.ucla.cens.budburst.helper.Cache;
 import edu.ucla.cens.budburst.helper.Download;
 import edu.ucla.cens.budburst.helper.Downloadable;
-import edu.ucla.cens.budburst.helper.Uploadable;
 
 public class DownloadManager {
 
@@ -27,7 +26,7 @@ public class DownloadManager {
 	public static final int CONSUME_INPUTSTREAM = 0;
 	public static final int DOWNLOADED = 1;
 
-	private Cache cache = new Cache();
+	private final Cache cache = new Cache();
 
 	public DownloadManager() {
 		Log.d(TAG, "make download manager");
@@ -46,11 +45,11 @@ public class DownloadManager {
 		}
 	}
 
-	public void upload(Uploadable context, int what, Download d) {
-
-		new UploadTask().execute(new DownloadObject(context, what, d));
-
-	}
+	// public void upload(Uploadable context, int what, Download d) {
+	//
+	// new UploadTask().execute(new DownloadObject(context, what, d));
+	//
+	// }
 
 	public Boolean has(Download d) {
 		return cache.containsKey(d);
@@ -81,6 +80,7 @@ public class DownloadManager {
 
 	public class DownloadTask extends AsyncTask<DownloadObject, Void, DownloadObject> {
 
+		@Override
 		protected DownloadObject doInBackground(DownloadObject... downloadObjects) {
 			Log.d(TAG, "start downloading");
 			DownloadObject d = downloadObjects[0];
@@ -125,20 +125,22 @@ public class DownloadManager {
 			return d;
 		}
 
+		@Override
 		protected void onPostExecute(DownloadObject downloaded) {
 			returnResult(downloaded);
 		}
 
 	}
 
-	private class UploadTask extends AsyncTask<DownloadObject, Void, DownloadObject> {
-
-		@Override
-		protected DownloadObject doInBackground(DownloadObject... params) {
-			params[0].context.uploadData();
-		}
-
-	}
+	// private class UploadTask extends AsyncTask<DownloadObject, Void,
+	// DownloadObject> {
+	//
+	// @Override
+	// protected DownloadObject doInBackground(DownloadObject... params) {
+	// params[0].context.uploadData();
+	// }
+	//
+	// }
 
 	protected void returnResult(DownloadObject downloaded) {
 		Message msg = new Message();
@@ -149,8 +151,11 @@ public class DownloadManager {
 			msg.obj = downloaded.streamResult;
 
 			// TODO HACK
-			// if (downloaded.download.url.contains("http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/images/")) {
-			// String s = downloaded.download.url.split("http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/images/")[1];
+			// if
+			// (downloaded.download.url.contains("http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/images/"))
+			// {
+			// String s =
+			// downloaded.download.url.split("http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/images/")[1];
 			// msg.arg2 = Integer.valueOf(s.split(".jpg")[0]);
 			// }
 
