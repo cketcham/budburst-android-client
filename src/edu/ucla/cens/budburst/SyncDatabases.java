@@ -93,8 +93,7 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 			// are
 			ArrayList<Row> sites = dbManager.getDatabase("site").all();
 			for (Iterator<Row> i = sites.iterator(); i.hasNext();) {
-				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getDownURL()
-						+ PreferencesManager.currentGETAuthParams(this);
+				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getDownURL() + PreferencesManager.currentGETAuthParams(this);
 				url += "&site_id=" + i.next()._id;
 				Download plantd = new Download(url);
 				downloads.add(plantd);

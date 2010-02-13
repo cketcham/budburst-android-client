@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import models.PlantRow;
+import models.SiteRow;
 import models.SpeciesRow;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
@@ -54,25 +57,53 @@ public class AddPlant extends ListActivity {
 			data.add(map);
 		}
 
-		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
-				new int[] { R.id.name, R.id.description, R.id.icon });
+		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
+				R.id.description, R.id.icon });
 
 		setListAdapter(this.adapter);
 	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		PlantRow plant = new PlantRow();
-		plant.latitude = lManager.getLastKnownLocation("gps").getLatitude();
-		plant.longitude = lManager.getLastKnownLocation("gps").getLongitude();
-		plant.species_id = Long.parseLong(data.get(position).get("_id"));
 
-		// TODO:put in an actual site
-		plant.site_id = databaseManager.getDatabase("site").all().get(0)._id;
+		// First get the site:
+		final ArrayList<Row> sites = databaseManager.getDatabase("site").all();
+		ArrayList<String> site_names = new ArrayList<String>();
+		for (Iterator<Row> i = sites.iterator(); i.hasNext();)
+			site_names.add(((SiteRow) i.next()).name);
+		final String[] siteNames = site_names.toArray(new String[0]);
+		final int[] selectedNames = new int[siteNames.length];
+		final Long species_id = Long.parseLong(data.get(position).get("_id"));
 
-		plant.put();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Choose Site");
+		builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				PlantRow plant = new PlantRow();
+				plant.latitude = lManager.getLastKnownLocation("gps").getLatitude();
+				plant.longitude = lManager.getLastKnownLocation("gps").getLongitude();
+				plant.species_id = species_id;
 
-		finish();
+				for (int i = 0; i < selectedNames.length; i++)
+					if (selectedNames[i] == 1)
+						plant.site_id = sites.get(i)._id;
+
+				plant.put();
+			}
+		});
+
+		builder.setSingleChoiceItems(siteNames, -1, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				for (int i = 0; i < selectedNames.length; i++)
+					if (i == item)
+						selectedNames[i] = 1;
+					else
+						selectedNames[i] = 0;
+			}
+		});
+
+		AlertDialog alert = builder.create();
+		alert.show();
 
 	}
 
