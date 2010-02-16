@@ -83,7 +83,9 @@ public class Budburst extends Activity {
 		}
 		// End first time stuff
 
-		startActivityForResult(new Intent(this, SyncDatabases.class), DOWNLOADED_DATABASES);
+		// DEBUGGING
+		// startActivityForResult(new Intent(this, SyncDatabases.class), DOWNLOADED_DATABASES);
+		startActivityForResult(new Intent(this, PlantList.class), FINISHED);
 	}
 
 	public static BudburstDatabaseManager getDatabaseManager() {

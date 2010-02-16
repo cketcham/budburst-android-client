@@ -6,17 +6,12 @@
 
 	<include layout="@layout/header" 
 		android:id="@+id/header" />
-		
-	<include 
-		android:id="@+id/button_bar"
-		layout="@layout/button_bar"
-		android:layout_below="@+id/header" />  
 
    	<LinearLayout
    		android:id="@+id/list"
    	    android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/button_bar">
+        android:layout_below="@+id/header">
         		
 		<ListView 
 	        android:id="@android:id/list"

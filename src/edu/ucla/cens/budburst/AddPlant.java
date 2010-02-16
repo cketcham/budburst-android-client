@@ -34,7 +34,7 @@ public class AddPlant extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dynamic_list);
+		setContentView(R.layout.add_plant);
 
 		databaseManager = Budburst.getDatabaseManager();
 		lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -57,8 +57,8 @@ public class AddPlant extends ListActivity {
 			data.add(map);
 		}
 
-		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
-				R.id.description, R.id.icon });
+		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
+				new int[] { R.id.name, R.id.description, R.id.icon });
 
 		setListAdapter(this.adapter);
 	}
@@ -89,6 +89,7 @@ public class AddPlant extends ListActivity {
 						plant.site_id = sites.get(i)._id;
 
 				plant.put();
+				finish();
 			}
 		});
 

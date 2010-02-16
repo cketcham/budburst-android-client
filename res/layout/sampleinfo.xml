@@ -7,7 +7,7 @@
 
 	<include 
 		android:id="@+id/button_bar"
-		layout="@layout/button_bar" />  
+		layout="@layout/button_bar3" />  
 		
 		
 	<ImageView 
@@ -38,7 +38,9 @@
 	android:text="name"
 	android:gravity="center" 
 	android:textAppearance="?android:attr/textAppearanceMedium"
-	android:layout_below="@+id/button_bar"/>
+	android:layout_below="@+id/button_bar"
+		android:textColor="@drawable/white"
+	/>
 	
 
 <RelativeLayout
@@ -60,6 +62,7 @@
 	android:layout_height="wrap_content" 
 	android:padding="5dip" 
 	android:textAppearance="?android:attr/textAppearanceMedium"
+	android:textColor="@drawable/white"
 	android:text="state" 
 	android:gravity="center"/>    
 		

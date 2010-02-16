@@ -60,7 +60,15 @@
 			</intent-filter>
         </activity>
 
-        <activity android:name=".CapturePhoto" android:label="@string/app_name"
+        <activity android:name=".LoginScreen" android:label="@string/app_name"
+		android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.EMBED" />
+			</intent-filter>
+        </activity>
+        
+        <activity android:name=".SplashScreen" android:label="@string/app_name"
 		android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

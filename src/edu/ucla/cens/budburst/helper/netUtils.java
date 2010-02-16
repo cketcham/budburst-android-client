@@ -1,11 +1,9 @@
 package edu.ucla.cens.budburst.helper;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.List;
 
@@ -19,21 +17,18 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
 public class netUtils {
 	public static final String TAG = "NetUtils";
-	
+
 	/**
-	 * @param stream InputStream of data from  httpResponse.getContent()
-	 * @return a String  with the contents from the response. 
+	 * @param stream InputStream of data from httpResponse.getContent()
+	 * @return a String with the contents from the response.
 	 */
 	public static String generateString(InputStream stream) {
 		InputStreamReader reader = new InputStreamReader(stream);
@@ -44,8 +39,10 @@ public class netUtils {
 			String cur;
 			boolean begun = false;
 			while ((cur = buffer.readLine()) != null) {
-				if(begun) sb.append("\n");
-				else begun = true;
+				if (begun)
+					sb.append("\n");
+				else
+					begun = true;
 				sb.append(cur);
 			}
 		} catch (IOException e) {
@@ -62,95 +59,94 @@ public class netUtils {
 		String returnVal = sb.toString();
 		return returnVal;
 	}
-	
+
 	/**
 	 * 
 	 * @param ctx - pass this from your Activity or Service
-	 * @return true if the phone has a connection to the Internet. 
+	 * @return true if the phone has a connection to the Internet.
 	 */
 	public static boolean isConnected(Context ctx) {
 		ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo[] ni = cm.getAllNetworkInfo();
-		boolean connected=false;
-		for (int n=0; n<ni.length; n++) {
-            //Log.d(TAG,"Network "+ni[n].getTypeName() + " is "+ ni[n].getDetailedState().name() + "\n");
-            if (ni[n].getDetailedState().name()=="CONNECTED")
-            	connected=true;
-          }	
+		boolean connected = false;
+		for (int n = 0; n < ni.length; n++) {
+			// Log.d(TAG,"Network "+ni[n].getTypeName() + " is "+ ni[n].getDetailedState().name() + "\n");
+			if (ni[n].getDetailedState().name() == "CONNECTED")
+				connected = true;
+		}
 		return connected;
 	}
-	
+
 	/**
 	 * 
 	 */
-	
+
 	public static String[] postData(String url, List<NameValuePair> arguments) {
-	    // Create a new HttpClient and Post Header
-	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost(url.toString());
-	    
-	    int status = 0;
-	    String responseVal = "";
+		// Create a new HttpClient and Post Header
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost(url.toString());
 
-	    try {
-	        // Add your data
-	    	
-	       // List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-	        //nameValuePairs.add(new BasicNameValuePair("id", "12345"));
-	        //nameValuePairs.add(new BasicNameValuePair("stringdata", "AndDev is Cool!"));
-	        
-	    	httppost.setEntity(new UrlEncodedFormEntity(arguments));
+		int status = 0;
+		String responseVal = "";
 
-	        // Execute HTTP Post Request
-	        HttpResponse response = httpclient.execute(httppost);
-	        
+		try {
+			// Add your data
+
+			// List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			// nameValuePairs.add(new BasicNameValuePair("id", "12345"));
+			// nameValuePairs.add(new BasicNameValuePair("stringdata", "AndDev is Cool!"));
+
+			httppost.setEntity(new UrlEncodedFormEntity(arguments));
+
+			// Execute HTTP Post Request
+			HttpResponse response = httpclient.execute(httppost);
+
 			HttpEntity entity = response.getEntity();
-			
-			responseVal = netUtils.generateString(entity
-					.getContent());
+
+			responseVal = netUtils.generateString(entity.getContent());
 
 			// Get status.
 			status = response.getStatusLine().getStatusCode();
-	        
-	    } catch (ClientProtocolException e) {
-	        // TODO Auto-generated catch block
-	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	    }
-	    
-	    String[] response = new String[2];
-	    response[0]= Integer.toString(status);
-	    response[1] = responseVal;
-	    
-	    return response;
-	} 
-	
-	public static class DownloadImage extends AsyncTask<Object,Void,Drawable> {
-        ImageView mImage = null; 
-        URL mUrl = null; 
-        
-        @Override 
-        protected Drawable doInBackground(Object... params) { 
-                mImage = (ImageView)params[0]; 
-                mUrl = (URL) params[1]; 
-                
-				Drawable d = null;
-				try {
-					d = Drawable.createFromStream((InputStream) mUrl.getContent(), "src");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return d; 
-        } 
-        @Override 
-        protected void onPostExecute(Drawable result) { 
-                super.onPostExecute(result); 
-                if(result != null)
-                {
-                	mImage.setImageDrawable(result); 
-                }
-        } 
-		
+
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		}
+
+		String[] response = new String[2];
+		response[0] = Integer.toString(status);
+		response[1] = responseVal;
+
+		return response;
+	}
+
+	public static class DownloadImage extends AsyncTask<Object, Void, Drawable> {
+		ImageView mImage = null;
+		URL mUrl = null;
+
+		@Override
+		protected Drawable doInBackground(Object... params) {
+			mImage = (ImageView) params[0];
+			mUrl = (URL) params[1];
+
+			Drawable d = null;
+			try {
+				d = Drawable.createFromStream((InputStream) mUrl.getContent(), "src");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return d;
+		}
+
+		@Override
+		protected void onPostExecute(Drawable result) {
+			super.onPostExecute(result);
+			if (result != null) {
+				mImage.setImageDrawable(result);
+			}
+		}
+
 	}
 }

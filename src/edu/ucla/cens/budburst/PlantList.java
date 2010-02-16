@@ -22,7 +22,7 @@ import edu.ucla.cens.budburst.data.Row;
 public class PlantList extends ListActivity {
 
 	private SimpleAdapter adapter;
-	private static final String TAG = "campaignList";
+	private static final String TAG = "PlantList";
 
 	private static final String ITEM_COMMON_NAME = "name";
 	private static final String ITEM_SPECIES_NAME = "description";
@@ -44,7 +44,7 @@ public class PlantList extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dynamic_list);
+		setContentView(R.layout.plant_list);
 
 		databaseManager = Budburst.getDatabaseManager();
 	}
@@ -85,14 +85,6 @@ public class PlantList extends ListActivity {
 			public void onClick(View v) {
 				// currentTask = new
 				// GrabCampaigns().execute("http://t5l-kullect.appspot.com/list?query=new");
-			}
-		});
-
-		button3 = (Button) this.findViewById(R.id.button3);
-		button3.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				// currentTask = new
-				// GrabCampaigns().execute("http://t5l-kullect.appspot.com/list?query=all");
 			}
 		});
 

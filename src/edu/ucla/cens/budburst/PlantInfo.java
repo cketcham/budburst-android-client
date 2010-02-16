@@ -1,7 +1,8 @@
 package edu.ucla.cens.budburst;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 import models.ObservationRow;
 import models.PhenophaseRow;
@@ -9,7 +10,9 @@ import models.PlantRow;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,11 +34,21 @@ public class PlantInfo extends Activity {
 
 	ArrayList<Button> buttonBar = new ArrayList<Button>();
 	private BudburstDatabaseManager databaseManager;
+	protected Long image_id;
+
+	private TextView name;
+	private TextView state;
+	private ImageView img;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.sampleinfo);
+
+		name = (TextView) this.findViewById(R.id.name);
+		state = (TextView) this.findViewById(R.id.state);
+		img = (ImageView) this.findViewById(R.id.image);
 
 		databaseManager = Budburst.getDatabaseManager();
 		Bundle extras = getIntent().getExtras();
@@ -70,11 +83,6 @@ public class PlantInfo extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		setContentView(R.layout.sampleinfo);
-
-		TextView name = (TextView) this.findViewById(R.id.name);
-		TextView state = (TextView) this.findViewById(R.id.state);
-		ImageView img = (ImageView) this.findViewById(R.id.image);
 
 		buttonBar.add((Button) this.findViewById(R.id.button1));
 		buttonBar.get(0).setOnClickListener(new View.OnClickListener() {
@@ -150,24 +158,55 @@ public class PlantInfo extends Activity {
 		// display image if there is one
 
 		if (observation != null)
-			if (observation.getImagePath().contains("/"))
-				img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
-			else
-				try {
-					img.setImageBitmap(BitmapFactory.decodeStream(this.openFileInput(observation.image_id + ".jpg")));
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			// if (observation.getImagePath().contains("/"))
+			img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
+		// else
+		// try {
+		// img.setImageBitmap(BitmapFactory.decodeStream(this.openFileInput(observation.image_id + ".jpg")));
+		// } catch (FileNotFoundException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 		state.setText(phenophase.name);
 
 		Button replace_img = (Button) this.findViewById(R.id.replace_image);
 		replace_img.setOnClickListener(new View.OnClickListener() {
+
 			public void onClick(View v) {
-				Intent intent = new Intent(PlantInfo.this, CapturePhoto.class);
-				startActivityForResult(intent, PHOTO_CAPTURE_CODE);
+				File ld = new File(Budburst.OBSERVATION_PATH);
+				if (ld.exists()) {
+					if (!ld.isDirectory()) {
+						// Should probably inform user ... hmm!
+						PlantInfo.this.finish();
+					}
+				} else {
+					if (!ld.mkdir()) {
+						PlantInfo.this.finish();
+
+					}
+				}
+
+				image_id = new Date().getTime();
+
+				Intent mediaCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				mediaCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Budburst.OBSERVATION_PATH, image_id + ".jpg")));
+				startActivityForResult(mediaCaptureIntent, PHOTO_CAPTURE_CODE);
 			}
 		});
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		if (image_id != null)
+			savedInstanceState.putLong("image_id", image_id);
+		super.onSaveInstanceState(savedInstanceState);
+	}
+
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		Log.d(TAG, "restore instance state");
+		image_id = savedInstanceState.getLong("image_id");
 	}
 
 	@Override
@@ -185,14 +224,16 @@ public class PlantInfo extends Activity {
 				Log.d(TAG, "Photo returned canceled code.");
 				Toast.makeText(this, "Picture cancelled.", Toast.LENGTH_SHORT).show();
 			} else {
-				Long image_id = data.getLongExtra("image_id", -1);
-				if (image_id != -1) {
+
+				if (image_id != null) {
 					ObservationRow obs = new ObservationRow();
 					obs.species_id = plant.species_id;
 					obs.phenophase_id = phenophase._id;
 					obs.image_id = image_id;
 					obs.site_id = plant.site_id;
 					obs.put();
+
+					img.setImageBitmap(BitmapFactory.decodeFile(obs.getImagePath()));
 				}
 			}
 		}
