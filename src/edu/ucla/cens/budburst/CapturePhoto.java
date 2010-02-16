@@ -1,14 +1,15 @@
 package edu.ucla.cens.budburst;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -50,27 +51,34 @@ public class CapturePhoto extends Activity implements SurfaceHolder.Callback {
 
 			Date now = new Date();
 			long nowLong = now.getTime();
-			String fname = Budburst.OBSERVATION_PATH + "/" + nowLong + ".jpg";
-
+			// String fname = Budburst.OBSERVATION_PATH + "/" + nowLong + ".jpg";
+			//
 			try {
 
-				File ld = new File(Budburst.OBSERVATION_PATH);
-				if (ld.exists()) {
-					if (!ld.isDirectory()) {
+				// File ld = new File(Budburst.OBSERVATION_PATH);
+				// if (ld.exists()) {
+				// if (!ld.isDirectory()) {
+				//
+				// // Should probably inform user ... hmm!
+				// Log.d(TAG, "Failed to create pic directory");
+				// CapturePhoto.this.finish();
+				// }
+				// } else {
+				// ld.mkdir();
+				// }
+				//
+				// Log.d(TAG, fname);
 
-						// Should probably inform user ... hmm!
-						Log.d(TAG, "Failed to create pic directory");
-						CapturePhoto.this.finish();
-					}
-				} else {
-					ld.mkdir();
-				}
+				// OutputStream os = new FileOutputStream(fname);
+				// os.write(data, 0, data.length);
+				// os.close();
 
-				Log.d(TAG, fname);
+				FileOutputStream stream = CapturePhoto.this.openFileOutput(nowLong + ".jpg", Context.MODE_PRIVATE);
+				Bitmap myPic = BitmapFactory.decodeByteArray(data, 0, data.length);
+				myPic.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+				stream.flush();
+				stream.close();
 
-				OutputStream os = new FileOutputStream(fname);
-				os.write(data, 0, data.length);
-				os.close();
 			} catch (FileNotFoundException e) {
 				Log.d(TAG, "Could not write picture");
 			} catch (IOException e) {
@@ -110,7 +118,6 @@ public class CapturePhoto extends Activity implements SurfaceHolder.Callback {
 
 		public void onAutoFocus(boolean success, Camera camera) {
 			mCamera.takePicture(null, null, mPictureCallback);
-
 		}
 
 	};

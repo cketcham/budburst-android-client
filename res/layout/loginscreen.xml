@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="vertical" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent" 
+    android:gravity = "center"
+    android:background = "@drawable/app_skyblue"
+    > 
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">     
+	<LinearLayout android:id="@+id/loginscreen"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:padding="10dp"
+		xmlns:android="http://schemas.android.com/apk/res/android">
+		<ImageView android:id="@+id/logo" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:src="@drawable/logo_url"
+			android:layout_gravity="center_horizontal" android:layout_marginTop="20dp"
+			android:layout_marginBottom="40dp">
+		</ImageView>
+
+		<LinearLayout android:id="@+id/login_interact_area"
+			android:orientation="vertical" android:background="@drawable/white_bg_rounded_corners"
+			android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingTop = "10dp" 
+			android:paddingRight = "10dp" android:paddingBottom = "10dp" android:paddingLeft = "10dp"
+			xmlns:android="http://schemas.android.com/apk/res/android">
+			<EditText android:id="@+id/username_text"
+				android:hint="Username"
+				android:background="@drawable/text_edit_field"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginBottom="5dp">
+			</EditText>
+			<EditText android:id="@+id/password_text"
+				android:hint="Password"
+				android:password="true"
+				android:background="@drawable/text_edit_field"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginBottom="5dp">
+			</EditText>
+			<Button android:id="@+id/login_button" android:layout_width="fill_parent"
+				android:background="@drawable/button_field"
+				android:textColor="@drawable/app_gray"
+				android:layout_height="wrap_content" android:text="Log In"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginBottom="10dp">
+			</Button>
+			<Button android:id="@+id/register_button"
+				android:background="@drawable/button_field"
+				android:textColor="@drawable/app_gray"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:text="Sign Up" android:layout_gravity="center_horizontal">
+			</Button>
+		</LinearLayout>
+	</LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -34,7 +34,7 @@ public class ObservationRow extends SyncableRow {
 		MultipartEntity entity = super.uploadEntity();
 
 		File file = new File(getImagePath());
-		FileBody fileb = new FileBody(file);
+		FileBody fileb = new FileBody(file, "image/jpeg");
 		entity.addPart("image", fileb);
 
 		return entity;

@@ -1,5 +1,6 @@
 package edu.ucla.cens.budburst;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import models.ObservationRow;
@@ -149,7 +150,15 @@ public class PlantInfo extends Activity {
 		// display image if there is one
 
 		if (observation != null)
-			img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
+			if (observation.getImagePath().contains("/"))
+				img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
+			else
+				try {
+					img.setImageBitmap(BitmapFactory.decodeStream(this.openFileInput(observation.image_id + ".jpg")));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		state.setText(phenophase.name);
 
 		Button replace_img = (Button) this.findViewById(R.id.replace_image);

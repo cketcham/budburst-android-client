@@ -48,7 +48,7 @@ public class Budburst extends Activity {
 		dbManager = new BudburstDatabaseManager(this);
 		downloadManager = new DownloadManager();
 
-		PreferencesManager.letUserIn("android2", "android2", this);
+		PreferencesManager.letUserIn("android4", "android4", this);
 
 		// First Time stuff
 		// make sure budburst directory is set

@@ -31,6 +31,8 @@ public class PlantList extends ListActivity {
 	private static final int MENU_ADD = 0;
 	private static final int MENU_ONE = 1;
 	private static final int MENU_SETTINGS = 2;
+	private static final int MENU_SYNC = 3;
+
 	protected static final int CONTEXT_REMOVE = 0;
 
 	Button button1;
@@ -63,8 +65,8 @@ public class PlantList extends ListActivity {
 			data.add(map);
 		}
 
-		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
-				R.id.description, R.id.icon });
+		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
+				new int[] { R.id.name, R.id.description, R.id.icon });
 		setListAdapter(this.adapter);
 
 		// set for long clicks
@@ -137,6 +139,7 @@ public class PlantList extends ListActivity {
 		menu.add(0, MENU_ADD, 0, "Add Plant").setIcon(android.R.drawable.ic_menu_add);
 		menu.add(0, MENU_ONE, 1, "One-Time Sample").setIcon(android.R.drawable.ic_menu_set_as);
 		menu.add(0, MENU_SETTINGS, 2, "Settings").setIcon(android.R.drawable.ic_menu_preferences);
+		menu.add(0, MENU_SYNC, 3, "Sync").setIcon(android.R.drawable.ic_popup_sync);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -150,6 +153,10 @@ public class PlantList extends ListActivity {
 			intent = new Intent(this, AddPlant.class);
 			this.startActivity(intent);
 
+			break;
+		case MENU_SYNC:
+			intent = new Intent(this, SyncDatabases.class);
+			this.startActivity(intent);
 			break;
 		// case MENU_SETTINGS:
 		// intent = new Intent(this, settingsScreen.class);
