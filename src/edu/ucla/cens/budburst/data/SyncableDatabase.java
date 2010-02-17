@@ -20,6 +20,7 @@ import org.json.JSONTokener;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import edu.ucla.cens.budburst.PreferencesManager;
 import edu.ucla.cens.budburst.helper.netUtils;
@@ -32,6 +33,13 @@ public class SyncableDatabase extends WritableDatabase {
 
 	public SyncableDatabase(Context context, String downUrl, String upUrl, SyncableRow row) {
 		super(new DatabaseHelper(context, row), row.getName(), row);
+		this.downUrl = downUrl;
+		this.upUrl = upUrl;
+		this.context = context;
+	}
+
+	public SyncableDatabase(Context context, int resource, String downUrl, String upUrl, SyncableRow row) {
+		super(((SQLiteOpenHelper) new StaticDatabaseHelper(context, row.getName(), resource)), row.getName(), row);
 		this.downUrl = downUrl;
 		this.upUrl = upUrl;
 		this.context = context;

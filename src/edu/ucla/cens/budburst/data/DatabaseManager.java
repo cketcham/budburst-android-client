@@ -26,12 +26,18 @@ public class DatabaseManager {
 		rows.put(name, row);
 	}
 
+	public void createSyncableDatabase(String name, int resource, String downUrl, String upUrl, SyncableRow row) {
+		createSyncableDatabase(name, downUrl, upUrl, row);
+		createDatabase(name, resource, row);
+	}
+
 	public Database getDatabase(String name) {
-		if (resources.containsKey(name))
+		if (!downUrls.containsKey(name) || !upUrls.containsKey(name))
 			return new StaticDatabase(context, resources.get(name), rows.get(name));
+		else if (downUrls.containsKey(name) && upUrls.containsKey(name) && resources.containsKey(name))
+			return new SyncableDatabase(context, resources.get(name), downUrls.get(name), upUrls.get(name), (SyncableRow) rows.get(name));
 		else if (downUrls.containsKey(name) && upUrls.containsKey(name))
 			return new SyncableDatabase(context, downUrls.get(name), upUrls.get(name), (SyncableRow) rows.get(name));
-
 		return null;
 	}
 }

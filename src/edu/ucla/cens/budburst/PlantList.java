@@ -65,8 +65,8 @@ public class PlantList extends ListActivity {
 			data.add(map);
 		}
 
-		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
-				new int[] { R.id.name, R.id.description, R.id.icon });
+		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
+				R.id.description, R.id.icon });
 		setListAdapter(this.adapter);
 
 		// set for long clicks
@@ -94,7 +94,7 @@ public class PlantList extends ListActivity {
 
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 			menu.setHeaderTitle("Plant Actions");
-			menu.add(0, CONTEXT_REMOVE, 0, "Remove");
+			// menu.add(0, CONTEXT_REMOVE, 0, "Remove");
 			// menu.add(0, CONTEXT_SHOW_ON_MAP, 1, "Show on map");
 			// menu.add(0, CONTEXT_VIEW, 2, "View tag");
 		}

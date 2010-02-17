@@ -28,9 +28,10 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 	private static final int DOWNLOADED_OBSERVATIONS = 1;
 	private static final int DOWNLOADED_PLANTS = 2;
 	private static final int DOWNLOADED_OBSERVATION_IMAGE = 3;
+	private static final int DOWNLOADED_USER_SPECIES = 4;
 
-	private static final int UPLOAD_OBSERVATIONS = 4;
-	private static final int UPLOAD_PLANTS = 5;
+	private static final int UPLOAD_OBSERVATIONS = 5;
+	private static final int UPLOAD_PLANTS = 6;
 
 	private BudburstDatabaseManager dbManager;
 	private DownloadManager downloadManager;
@@ -93,8 +94,7 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 			// are
 			ArrayList<Row> sites = dbManager.getDatabase("site").all();
 			for (Iterator<Row> i = sites.iterator(); i.hasNext();) {
-				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getDownURL()
-						+ PreferencesManager.currentGETAuthParams(this);
+				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getDownURL() + PreferencesManager.currentGETAuthParams(this);
 				url += "&site_id=" + i.next()._id;
 				Download plantd = new Download(url);
 				downloads.add(plantd);
@@ -129,6 +129,9 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			break;
+		case DOWNLOADED_USER_SPECIES:
+			((SyncableDatabase) dbManager.getDatabase("species")).sync((String) msg.obj);
 			break;
 		}
 

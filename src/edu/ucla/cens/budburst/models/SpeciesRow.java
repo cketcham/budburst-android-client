@@ -5,8 +5,9 @@ import java.util.HashMap;
 
 import edu.ucla.cens.budburst.Budburst;
 import edu.ucla.cens.budburst.data.Row;
+import edu.ucla.cens.budburst.data.SyncableRow;
 
-public class SpeciesRow extends Row {
+public class SpeciesRow extends SyncableRow {
 
 	public String species_name;
 	public String common_name;
