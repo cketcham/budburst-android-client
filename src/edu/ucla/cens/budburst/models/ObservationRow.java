@@ -1,4 +1,4 @@
-package models;
+package edu.ucla.cens.budburst.models;
 
 import java.io.File;
 import java.util.ArrayList;

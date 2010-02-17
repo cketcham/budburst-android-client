@@ -1,13 +1,13 @@
 package edu.ucla.cens.budburst;
 
-import models.ObservationRow;
-import models.PhenophaseRow;
-import models.PlantRow;
-import models.SiteRow;
-import models.SpeciesPhenophaseRow;
-import models.SpeciesRow;
 import android.content.Context;
 import edu.ucla.cens.budburst.data.DatabaseManager;
+import edu.ucla.cens.budburst.models.ObservationRow;
+import edu.ucla.cens.budburst.models.PhenophaseRow;
+import edu.ucla.cens.budburst.models.PlantRow;
+import edu.ucla.cens.budburst.models.SiteRow;
+import edu.ucla.cens.budburst.models.SpeciesPhenophaseRow;
+import edu.ucla.cens.budburst.models.SpeciesRow;
 
 public class BudburstDatabaseManager extends DatabaseManager {
 

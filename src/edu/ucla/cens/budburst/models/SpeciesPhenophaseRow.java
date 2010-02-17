@@ -1,4 +1,4 @@
-package models;
+package edu.ucla.cens.budburst.models;
 
 import edu.ucla.cens.budburst.data.RelationRow;
 

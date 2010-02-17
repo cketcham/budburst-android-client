@@ -4,9 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
-import models.ObservationRow;
-import models.PhenophaseRow;
-import models.PlantRow;
+import edu.ucla.cens.budburst.models.ObservationRow;
+import edu.ucla.cens.budburst.models.PhenophaseRow;
+import edu.ucla.cens.budburst.models.PlantRow;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;

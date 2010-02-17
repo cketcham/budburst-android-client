@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import models.PlantRow;
-import models.SiteRow;
-import models.SpeciesRow;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -17,6 +14,9 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import edu.ucla.cens.budburst.data.Row;
+import edu.ucla.cens.budburst.models.PlantRow;
+import edu.ucla.cens.budburst.models.SiteRow;
+import edu.ucla.cens.budburst.models.SpeciesRow;
 
 public class AddPlant extends ListActivity {
 

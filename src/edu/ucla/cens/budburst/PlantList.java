@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import models.PlantRow;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import edu.ucla.cens.budburst.data.Row;
+import edu.ucla.cens.budburst.models.PlantRow;
 
 public class PlantList extends ListActivity {
 

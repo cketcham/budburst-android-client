@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import models.ObservationRow;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +19,7 @@ import edu.ucla.cens.budburst.helper.Download;
 import edu.ucla.cens.budburst.helper.Downloadable;
 import edu.ucla.cens.budburst.helper.Uploadable;
 import edu.ucla.cens.budburst.helper.netUtils;
+import edu.ucla.cens.budburst.models.ObservationRow;
 
 public class SyncDatabases extends Activity implements Downloadable, Uploadable {
 	private static final String TAG = "Budburst";
