@@ -14,11 +14,15 @@ public class Budburst extends Activity {
 	private static final String TAG = "Budburst";
 	private static final int DOWNLOADED_DATABASES = 0;
 	private static final int FINISHED = 1;
+	private static final int LOGIN_FINISHED = 2;
 	private static BudburstDatabaseManager dbManager;
 	private static DownloadManager downloadManager;
+
 	public static String BASE_PATH = "/sdcard/budburst/";
 	public static String OBSERVATION_PATH = BASE_PATH + "observation/";
 	public static String SPECIES_PATH = BASE_PATH + "species/";
+
+	public static int MAX_PREDEFINED_SPECIES = 96;
 
 	/**
 	 * TODO:
@@ -48,7 +52,7 @@ public class Budburst extends Activity {
 		dbManager = new BudburstDatabaseManager(this);
 		downloadManager = new DownloadManager();
 
-		PreferencesManager.letUserIn("android4", "android4", this);
+		// PreferencesManager.letUserIn("android4", "android4", this);
 
 		// First Time stuff
 		// make sure budburst directory is set
@@ -85,7 +89,7 @@ public class Budburst extends Activity {
 
 		// DEBUGGING
 		// startActivityForResult(new Intent(this, SyncDatabases.class), DOWNLOADED_DATABASES);
-		startActivityForResult(new Intent(this, PlantList.class), FINISHED);
+		startActivityForResult(new Intent(this, LoginScreen.class), LOGIN_FINISHED);
 	}
 
 	public static BudburstDatabaseManager getDatabaseManager() {
@@ -101,6 +105,9 @@ public class Budburst extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		switch (requestCode) {
+		case LOGIN_FINISHED:
+			startActivityForResult(new Intent(this, PlantList.class), FINISHED);
+			break;
 		case DOWNLOADED_DATABASES:
 			startActivityForResult(new Intent(this, PlantList.class), FINISHED);
 			break;

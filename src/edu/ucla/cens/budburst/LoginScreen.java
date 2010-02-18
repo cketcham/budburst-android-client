@@ -232,10 +232,10 @@ public class LoginScreen extends Activity {
 
 	private void gotoMainScreen() {
 
-		Intent campaignIntent = new Intent(LoginScreen.this,
-		// campaignScreen.class);
-				PlantList.class);
-		LoginScreen.this.startActivity(campaignIntent);
+		// Intent campaignIntent = new Intent(LoginScreen.this,
+		// // campaignScreen.class);
+		// PlantList.class);
+		// LoginScreen.this.startActivity(campaignIntent);
 
 		this.finish();
 	}

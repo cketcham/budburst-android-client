@@ -77,6 +77,7 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 		case DOWNLOADED_SITES:
 		case DOWNLOADED_OBSERVATIONS:
 		case DOWNLOADED_PLANTS:
+		case DOWNLOADED_USER_SPECIES:
 			return netUtils.generateString((InputStream) msg.obj);
 		case DOWNLOADED_OBSERVATION_IMAGE:
 			return BitmapFactory.decodeStream((InputStream) msg.obj);
@@ -90,15 +91,26 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 		case DOWNLOADED_SITES:
 			((SyncableDatabase) dbManager.getDatabase("site")).sync((String) msg.obj);
 
-			// we can start downloading plants now that we know what the sites
+			// we can start downloading plants and user defined species now that we know what the sites
 			// are
 			ArrayList<Row> sites = dbManager.getDatabase("site").all();
 			for (Iterator<Row> i = sites.iterator(); i.hasNext();) {
-				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getDownURL() + PreferencesManager.currentGETAuthParams(this);
-				url += "&site_id=" + i.next()._id;
-				Download plantd = new Download(url);
+				// Plants
+				String url = ((SyncableDatabase) dbManager.getDatabase("plant")).getDownURL()
+						+ PreferencesManager.currentGETAuthParams(this);
+
+				Long site_id = i.next()._id;
+				Download plantd = new Download(url + "&site_id=" + site_id);
 				downloads.add(plantd);
 				downloadManager.download(this, DOWNLOADED_PLANTS, plantd);
+
+				// Species
+				url = ((SyncableDatabase) dbManager.getDatabase("species")).getDownURL() + PreferencesManager.currentGETAuthParams(this);
+
+				plantd = new Download(url + "&site_id=" + site_id);
+				downloads.add(plantd);
+				downloadManager.download(this, DOWNLOADED_USER_SPECIES, plantd);
+
 			}
 			break;
 		case DOWNLOADED_OBSERVATIONS:
