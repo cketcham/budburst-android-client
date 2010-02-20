@@ -78,6 +78,6 @@
 
 
     </application>
-    <uses-sdk android:minSdkVersion="4" />
+    <uses-sdk android:minSdkVersion="3" />
 
 </manifest> 
