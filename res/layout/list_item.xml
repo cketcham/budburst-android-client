@@ -11,8 +11,8 @@
     android:gravity="center_vertical" >
 
     <edu.ucla.cens.budburst.helper.LazyListImageView android:id="@+id/icon"
-        android:layout_width="50px"
-        android:layout_height="50px"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="11dip"
         android:layout_gravity="center_vertical"
