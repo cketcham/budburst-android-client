@@ -11,18 +11,17 @@
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" 
-        android:text="My Plants"
         android:layout_weight="0.5"
-        android:maxWidth="0px" />
+        android:text="@string/my_plants"/>
 
 	<edu.ucla.cens.budburst.helper.IndicatorButton
 		android:id="@+id/button2"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" 
-        android:text="My Sites"
         android:layout_weight="0.5"
-        android:maxWidth="0px" />
+        android:text="@string/my_sites"/>
+
 
 
 </LinearLayout>

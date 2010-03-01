@@ -1,29 +1,13 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="fill_parent" 
     android:layout_height="63px"
-    android:background = "@drawable/app_darkblue"
-   	android:id = "@+id/header">
+    android:id = "@+id/header" android:background="@drawable/PBB_teel">
     <ImageView 
     android:id="@+id/logo"
      android:layout_width="wrap_content"
 	 android:layout_height="wrap_content"
-     android:src="@drawable/logo_medium" 
-     android:paddingTop="4dp"
-     android:paddingBottom="4dp"     
-     android:paddingLeft="5dp"
-	android:layout_alignParentLeft="true"
-     />        
-    <TextView
-	android:id="@+id/top_text"
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:textColor="@drawable/white"
-	android:text=""
-	android:textSize="12sp"
-	android:layout_alignParentRight="true"
-	android:paddingTop="22dp"  
-	>
-	</TextView>
+     android:src="@drawable/logo_medium2" android:layout_alignParentLeft="false" android:layout_centerInParent="true" android:paddingLeft="0px" android:layout_centerVertical="true" android:paddingBottom="0px" android:paddingTop="8px"/>        
+    
 
 	<AbsoluteLayout
 		android:id="@+id/search_layout"

@@ -3,18 +3,15 @@
     android:orientation="vertical" 
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent" 
-    android:gravity = "center"
-    android:background = "@drawable/app_skyblue"
-    > 
+    android:gravity = "center" android:background="@drawable/PBB_teel"> 
     <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">     
 	<LinearLayout android:id="@+id/loginscreen"
 		android:orientation="vertical" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:padding="10dp"
 		xmlns:android="http://schemas.android.com/apk/res/android">
 		<ImageView android:id="@+id/logo" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:src="@drawable/logo_url"
-			android:layout_gravity="center_horizontal" android:layout_marginTop="20dp"
-			android:layout_marginBottom="40dp">
+			android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginTop="20dp"
+			android:src="@drawable/logo_url2" android:layout_marginBottom="20dp">
 		</ImageView>
 
 		<LinearLayout android:id="@+id/login_interact_area"

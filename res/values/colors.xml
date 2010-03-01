@@ -22,4 +22,5 @@
 	<drawable name="translucent_background">#A0000000</drawable>
 	<drawable name="transparent_background">#00000000</drawable>
 	<drawable name="transparent_white">#AFFFFFFF</drawable>
+<drawable name="PBB_teel">#299a84</drawable>
 </resources>
