@@ -238,6 +238,9 @@ public class LoginScreen extends Activity {
 		// LoginScreen.this.startActivity(campaignIntent);
 
 		this.finish();
+//		Intent intent = null;
+//		intent = new Intent(this, SyncDatabases.class);
+//		this.startActivity(intent);
 	}
 
 	public void onPause(Bundle savedInstanceState) {

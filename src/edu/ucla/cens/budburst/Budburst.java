@@ -15,6 +15,7 @@ public class Budburst extends Activity {
 	private static final int DOWNLOADED_DATABASES = 0;
 	private static final int FINISHED = 1;
 	private static final int LOGIN_FINISHED = 2;
+	private static final int SPLASHSCREEN_FINISHED = 3;
 	private static BudburstDatabaseManager dbManager;
 	private static DownloadManager downloadManager;
 
@@ -89,7 +90,7 @@ public class Budburst extends Activity {
 
 		// DEBUGGING
 		// startActivityForResult(new Intent(this, SyncDatabases.class), DOWNLOADED_DATABASES);
-		startActivityForResult(new Intent(this, LoginScreen.class), LOGIN_FINISHED);
+		startActivityForResult(new Intent(this, SplashScreen.class), SPLASHSCREEN_FINISHED);
 	}
 
 	public static BudburstDatabaseManager getDatabaseManager() {
@@ -110,6 +111,9 @@ public class Budburst extends Activity {
 			break;
 		case DOWNLOADED_DATABASES:
 			startActivityForResult(new Intent(this, PlantList.class), FINISHED);
+			break;
+		case SPLASHSCREEN_FINISHED:
+			startActivityForResult(new Intent(this, LoginScreen.class), LOGIN_FINISHED);
 			break;
 		case FINISHED:
 			finish();

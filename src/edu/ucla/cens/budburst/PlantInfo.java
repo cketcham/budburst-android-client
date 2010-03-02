@@ -45,10 +45,10 @@ public class PlantInfo extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.sampleinfo);
+		setContentView(R.layout.leaves);
 
 		name = (TextView) this.findViewById(R.id.name);
-		state = (TextView) this.findViewById(R.id.state);
+		state = (TextView) this.findViewById(R.id.stage);
 		img = (ImageView) this.findViewById(R.id.image);
 
 		databaseManager = Budburst.getDatabaseManager();

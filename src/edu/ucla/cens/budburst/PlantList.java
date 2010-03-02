@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.apache.http.entity.mime.content.StringBody;
+
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -16,8 +20,10 @@ import android.view.View.OnCreateContextMenuListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import edu.ucla.cens.budburst.data.Row;
 import edu.ucla.cens.budburst.models.PlantRow;
+
 
 public class PlantList extends ListActivity {
 
@@ -87,7 +93,7 @@ public class PlantList extends ListActivity {
 				// GrabCampaigns().execute("http://t5l-kullect.appspot.com/list?query=new");
 			}
 		});
-
+		showUserName();
 	}
 
 	private final OnCreateContextMenuListener ContextMenuListener = new OnCreateContextMenuListener() {
@@ -164,4 +170,13 @@ public class PlantList extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	// added by EG to try to learn how to do this... add name after "Hello"
+	protected void showUserName(){
+		// Display user name at top of screen
+		TextView textView = (TextView) this.findViewById(R.id.TextView01); 
+		
+		String username_string = new String(PreferencesManager.currentUser(this));
+		textView.setText("Hello " + username_string + "!");
+
+	}
 }
