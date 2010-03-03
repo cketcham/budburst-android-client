@@ -27,8 +27,8 @@ public class PlantRow extends SyncableRow {
 
 	public SpeciesRow species() {
 		// TODO: figure out why species is getting reused for different models
-		if (species == null || species._id != species_id)
-			species = (SpeciesRow) hasOne("species", species_id);
+		// if (species == null || species._id != species_id)
+		species = (SpeciesRow) hasOne("species", species_id);
 		return species;
 	}
 

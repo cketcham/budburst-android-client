@@ -3,12 +3,54 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-	<include layout="@layout/header" />
+    
+	<LinearLayout 
+		android:id="@+id/replace_image"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent" 
+		android:gravity="center"
+		android:orientation="vertical">
+		
+		<ImageView
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:background="@android:drawable/ic_menu_camera" />
+			
+		<TextView
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:text="Click Here to take a picture"
+			android:textColor="@drawable/black" />
+			
+		<TextView
+			android:id="@+id/phenophase_info_text"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:textColor="@drawable/black" 
+			android:gravity="center" />
+		
+	</LinearLayout>
+    
+	<RelativeLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="63px"
+		android:background="@drawable/PBB_teel"
+		android:id="@+id/header" >
+		<TextView
+			android:id="@+id/name" 
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent" 
+			android:padding="5dip" 
+			android:gravity="center" 
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textColor="@drawable/black" />
+	</RelativeLayout>
 
 	<include 
 		android:id="@+id/button_bar"
 		layout="@layout/button_bar3" />  
 		
+
 		
 	<ImageView 
 		android:layout_width="fill_parent" 
@@ -16,65 +58,34 @@
 		android:scaleType="centerCrop"
 		android:layout_below="@+id/button_bar"
 		android:id="@+id/image" />
-	
-	<LinearLayout
+
+	<RelativeLayout
+		android:id="@+id/relativeLayout"
 	    android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:gravity="right"
-    	android:layout_below="@+id/button_bar" >
-		<Button
-			android:id="@+id/replace_image"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
-			android:text="Replace Image" />
-	</LinearLayout>
-		
-	
-<TextView
-	android:id="@+id/name" 
-	android:layout_width="fill_parent" 
-	android:layout_height="wrap_content" 
-	android:padding="5dip" 
-	android:text="name"
-	android:gravity="center" 
-	android:textAppearance="?android:attr/textAppearanceMedium"
-	android:layout_below="@+id/button_bar"
-		android:textColor="@drawable/white"
-	/>
-	
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+		android:background="@drawable/translucent_background" >
 
-<RelativeLayout
-	android:id="@+id/relativeLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dip"
-    android:layout_alignParentBottom="true"
-	android:background="@drawable/translucent_background" >
-	<Button
-		android:id="@+id/backward_button"
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" 
-		android:text="Left" />
-		
       		<TextView 
-	android:id="@+id/state" 
-	android:layout_width="fill_parent" 
-	android:layout_height="wrap_content" 
-	android:padding="5dip" 
-	android:textAppearance="?android:attr/textAppearanceMedium"
-	android:textColor="@drawable/white"
-	android:text="state" 
-	android:gravity="center"/>    
+				android:id="@+id/state" 
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:textColor="@drawable/white"
+				android:text="state" 
+				android:gravity="center"/>    
 		
-				<Button
-		android:id="@+id/forward_button"
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" 
-		android:text="Right" 
-		android:layout_alignParentRight="true"
-		/>
+			<LinearLayout
+				android:id="@+id/phenophase_bar"
+	    		android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal" 
+				android:layout_below="@+id/state"
+				android:gravity="center">
 
-</RelativeLayout>
+			</LinearLayout>
+	</RelativeLayout>
 
 
 

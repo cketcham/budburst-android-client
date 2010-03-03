@@ -3,14 +3,12 @@ package edu.ucla.cens.budburst;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-
-import edu.ucla.cens.budburst.models.ObservationRow;
-import edu.ucla.cens.budburst.models.PhenophaseRow;
-import edu.ucla.cens.budburst.models.PlantRow;
+import java.util.Iterator;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,8 +16,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import edu.ucla.cens.budburst.data.Row;
+import edu.ucla.cens.budburst.models.ObservationRow;
+import edu.ucla.cens.budburst.models.PhenophaseRow;
+import edu.ucla.cens.budburst.models.PlantRow;
 
 public class PlantInfo extends Activity {
 
@@ -39,16 +42,18 @@ public class PlantInfo extends Activity {
 
 	private TextView name;
 	private TextView state;
+	private TextView phenophase_comment;
 	private ImageView img;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.leaves);
+		setContentView(R.layout.sampleinfo);
 
 		name = (TextView) this.findViewById(R.id.name);
-		state = (TextView) this.findViewById(R.id.stage);
+		state = (TextView) this.findViewById(R.id.state);
+		phenophase_comment = (TextView) this.findViewById(R.id.phenophase_info_text);
 		img = (ImageView) this.findViewById(R.id.image);
 
 		databaseManager = Budburst.getDatabaseManager();
@@ -73,17 +78,6 @@ public class PlantInfo extends Activity {
 		plant = (PlantRow) databaseManager.getDatabase("plant").find(extras.getLong("PlantID"));
 		phenophase = (PhenophaseRow) plant.species().phenophases(stageName).get(chrono);
 		observation = plant.observations(phenophase);
-
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
 
 		buttonBar.add((Button) this.findViewById(R.id.button1));
 		buttonBar.get(0).setOnClickListener(new View.OnClickListener() {
@@ -124,53 +118,39 @@ public class PlantInfo extends Activity {
 		// set selected button
 		buttonBar.get(stageID).setSelected(true);
 
-		Button last_stage = (Button) this.findViewById(R.id.backward_button);
-		if (chrono > 0) {
-			last_stage.setOnClickListener(new View.OnClickListener() {
+		LinearLayout phenophaseBar = (LinearLayout) this.findViewById(R.id.phenophase_bar);
+
+		final ArrayList<Row> phenophases = plant.species().phenophases(stageName);
+
+		for (Iterator<Row> i = phenophases.iterator(); i.hasNext();) {
+			final PhenophaseRow current = (PhenophaseRow) i.next();
+			final int phenophaseChrono = phenophases.indexOf(current);
+			ImageView button = new ImageView(this);
+			// button.setImageBitmap(Drawable.createFromPath(pathName)
+			button.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					Intent intent = getIntent();
-					intent.putExtra("chrono", chrono - 1);
-
+					intent.putExtra("chrono", phenophaseChrono);
 					startActivity(intent);
 					finish();
 				}
 			});
-		} else {
-			// hide the back button
-			last_stage.setVisibility(View.GONE);
-		}
-
-		Button next_stage = (Button) this.findViewById(R.id.forward_button);
-		if (plant.species().phenophases(stageName).size() > chrono + 1) {
-			next_stage.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					Intent intent = getIntent();
-					intent.putExtra("chrono", chrono + 1);
-
-					startActivity(intent);
-					finish();
-				}
-			});
-		} else {
-			next_stage.setVisibility(View.GONE);
+			button.setPadding(1, 0, 1, 0);
+			button.setImageBitmap(BitmapFactory.decodeStream(current.getImageStream(this)));
+			phenophaseBar.addView(button);
 		}
 
 		name.setText(plant.species().common_name);
-		// display image if there is one
 
+		phenophase_comment.setText(((PhenophaseRow) phenophases.get(chrono)).comment);
+
+		// display image if there is one
 		if (observation != null)
-			// if (observation.getImagePath().contains("/"))
 			img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
-		// else
-		// try {
-		// img.setImageBitmap(BitmapFactory.decodeStream(this.openFileInput(observation.image_id + ".jpg")));
-		// } catch (FileNotFoundException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+
 		state.setText(phenophase.name);
 
-		Button replace_img = (Button) this.findViewById(R.id.replace_image);
+		View replace_img = this.findViewById(R.id.replace_image);
 		replace_img.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -194,6 +174,11 @@ public class PlantInfo extends Activity {
 				startActivityForResult(mediaCaptureIntent, PHOTO_CAPTURE_CODE);
 			}
 		});
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
 	}
 
 	@Override
@@ -234,7 +219,7 @@ public class PlantInfo extends Activity {
 					obs.site_id = plant.site_id;
 					obs.put();
 
-					img.setImageBitmap(BitmapFactory.decodeFile(obs.getImagePath()));
+					img.setImageDrawable(Drawable.createFromPath(obs.getImagePath()));
 				}
 			}
 		}
