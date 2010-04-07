@@ -12,9 +12,7 @@ import android.os.Bundle;
 
 public class Budburst extends Activity {
 	private static final String TAG = "Budburst";
-	private static final int DOWNLOADED_DATABASES = 0;
-	private static final int FINISHED = 1;
-	private static final int LOGIN_FINISHED = 2;
+
 	private static BudburstDatabaseManager dbManager;
 	private static DownloadManager downloadManager;
 
@@ -49,48 +47,50 @@ public class Budburst extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		startActivity(new Intent(this, SplashScreen.class));
+
 		dbManager = new BudburstDatabaseManager(this);
 		downloadManager = new DownloadManager();
 
 		// PreferencesManager.letUserIn("android4", "android4", this);
 
-		// First Time stuff
-		// make sure budburst directory is set
-		if (!new File(BASE_PATH).exists())
-			new File(BASE_PATH).mkdirs();
-		if (!new File(OBSERVATION_PATH).exists())
-			new File(OBSERVATION_PATH).mkdirs();
-		if (!new File(SPECIES_PATH).exists())
-			new File(SPECIES_PATH).mkdirs();
+		if (PreferencesManager.isFirstRun(this)) {
 
-		// move species_images
-		try {
-			String[] images = getAssets().list("species_images");
-			for (int i = 0; i < images.length; i++) {
+			// First Time stuff
+			// make sure budburst directory is set
+			if (!new File(BASE_PATH).exists())
+				new File(BASE_PATH).mkdirs();
+			if (!new File(OBSERVATION_PATH).exists())
+				new File(OBSERVATION_PATH).mkdirs();
+			if (!new File(SPECIES_PATH).exists())
+				new File(SPECIES_PATH).mkdirs();
 
-				OutputStream outputStream = new FileOutputStream(SPECIES_PATH + images[i]);
-				InputStream inputStream;
+			// move species_images
+			try {
+				String[] images = getAssets().list("species_images");
+				for (int i = 0; i < images.length; i++) {
 
-				byte[] buffer = new byte[1024];
-				inputStream = getAssets().open("species_images/" + images[i]);
-				while ((inputStream.read(buffer)) > 0) {
-					outputStream.write(buffer);
+					OutputStream outputStream = new FileOutputStream(SPECIES_PATH + images[i]);
+					InputStream inputStream;
+
+					byte[] buffer = new byte[1024];
+					inputStream = getAssets().open("species_images/" + images[i]);
+					while ((inputStream.read(buffer)) > 0) {
+						outputStream.write(buffer);
+					}
+					inputStream.close();
+
+					outputStream.flush();
+					outputStream.close();
 				}
-				inputStream.close();
-
-				outputStream.flush();
-				outputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		// End first time stuff
 
-		// DEBUGGING
-		// startActivityForResult(new Intent(this, SyncDatabases.class), DOWNLOADED_DATABASES);
-		startActivity(new Intent(this, SplashScreen.class));
-		startActivityForResult(new Intent(this, LoginScreen.class), LOGIN_FINISHED);
+		finish();
 	}
 
 	public static BudburstDatabaseManager getDatabaseManager() {
@@ -99,24 +99,6 @@ public class Budburst extends Activity {
 
 	public static DownloadManager getDownloadManager() {
 		return downloadManager;
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		switch (requestCode) {
-		case LOGIN_FINISHED:
-			startActivityForResult(new Intent(this, PlantList.class), FINISHED);
-			break;
-		case DOWNLOADED_DATABASES:
-			startActivityForResult(new Intent(this, PlantList.class), FINISHED);
-			break;
-		case FINISHED:
-			finish();
-			break;
-		}
-
 	}
 
 }

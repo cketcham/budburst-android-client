@@ -1,6 +1,6 @@
 package edu.ucla.cens.budburst;
 
-import org.apache.http.client.methods.HttpPost; 
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginScreen extends Activity {
+	private static final String TAG = "LoginScreen";
 	Button loginButton, registerButton;
 	EditText usernameInput, passwordInput;
 	Vibrator vibrator;
@@ -237,10 +239,11 @@ public class LoginScreen extends Activity {
 		// PlantList.class);
 		// LoginScreen.this.startActivity(campaignIntent);
 
+		Log.d(TAG, "finished");
 		this.finish();
-//		Intent intent = null;
-//		intent = new Intent(this, SyncDatabases.class);
-//		this.startActivity(intent);
+		// Intent intent = null;
+		// intent = new Intent(this, SyncDatabases.class);
+		// this.startActivity(intent);
 	}
 
 	public void onPause(Bundle savedInstanceState) {

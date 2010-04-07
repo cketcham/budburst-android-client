@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.apache.http.entity.mime.content.StringBody;
-
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -23,7 +19,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import edu.ucla.cens.budburst.data.Row;
 import edu.ucla.cens.budburst.models.PlantRow;
-
 
 public class PlantList extends ListActivity {
 
@@ -40,6 +35,7 @@ public class PlantList extends ListActivity {
 	private static final int MENU_SYNC = 3;
 
 	protected static final int CONTEXT_REMOVE = 0;
+	private static final int LOGIN_FINISHED = 0;
 
 	Button button1;
 	Button button2;
@@ -52,7 +48,27 @@ public class PlantList extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.plant_list);
 
+		if (!PreferencesManager.isUserIn(this))
+			startActivityForResult(new Intent(this, LoginScreen.class), LOGIN_FINISHED);
+
 		databaseManager = Budburst.getDatabaseManager();
+
+		button1 = (Button) this.findViewById(R.id.button1);
+		button1.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// currentTask = new
+				// GrabCampaigns().execute("http://t5l-kullect.appspot.com/list?query=featured");
+			}
+		});
+
+		button2 = (Button) this.findViewById(R.id.button2);
+		button2.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// currentTask = new
+				// GrabCampaigns().execute("http://t5l-kullect.appspot.com/list?query=new");
+			}
+		});
+
 	}
 
 	@Override
@@ -71,29 +87,27 @@ public class PlantList extends ListActivity {
 			data.add(map);
 		}
 
-		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
-				new int[] { R.id.name, R.id.description, R.id.icon });
+		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
+				R.id.description, R.id.icon });
 		setListAdapter(this.adapter);
 
 		// set for long clicks
 		getListView().setOnCreateContextMenuListener(ContextMenuListener);
 
-		button1 = (Button) this.findViewById(R.id.button1);
-		button1.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				// currentTask = new
-				// GrabCampaigns().execute("http://t5l-kullect.appspot.com/list?query=featured");
-			}
-		});
-
-		button2 = (Button) this.findViewById(R.id.button2);
-		button2.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				// currentTask = new
-				// GrabCampaigns().execute("http://t5l-kullect.appspot.com/list?query=new");
-			}
-		});
 		showUserName();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+		case LOGIN_FINISHED:
+			if (!PreferencesManager.isUserIn(this))
+				finish();
+			break;
+		}
+
 	}
 
 	private final OnCreateContextMenuListener ContextMenuListener = new OnCreateContextMenuListener() {
@@ -171,10 +185,10 @@ public class PlantList extends ListActivity {
 	}
 
 	// added by EG to try to learn how to do this... add name after "Hello"
-	protected void showUserName(){
+	protected void showUserName() {
 		// Display user name at top of screen
-		TextView textView = (TextView) this.findViewById(R.id.TextView01); 
-		
+		TextView textView = (TextView) this.findViewById(R.id.TextView01);
+
 		String username_string = new String(PreferencesManager.currentUser(this));
 		textView.setText("Hello " + username_string + "!");
 

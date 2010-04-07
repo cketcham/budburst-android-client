@@ -37,4 +37,14 @@ public class BudburstDatabaseManager extends DatabaseManager {
 		createSyncableDatabase("observation", downObsURL, upObsURL, new ObservationRow());
 	}
 
+	public void initDBs() {
+		getDatabase("species_phenophase");
+		getDatabase("phenophase");
+		getDatabase("species");
+		// TODO: check connection?
+		getDatabase("site");
+		getDatabase("plant");
+		getDatabase("observation");
+	}
+
 }
