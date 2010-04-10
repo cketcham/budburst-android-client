@@ -7,7 +7,10 @@ import java.util.Iterator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,15 +66,15 @@ public class PlantInfo extends Activity {
 
 		// map stageID to stage Name
 		switch (stageID) {
-		case BudburstDatabaseManager.LEAVES:
-			stageName = "leaves";
-			break;
-		case BudburstDatabaseManager.FLOWERS:
-			stageName = "flower";
-			break;
-		case BudburstDatabaseManager.FRUITS:
-			stageName = "fruit";
-			break;
+			case BudburstDatabaseManager.LEAVES :
+				stageName = "leaves";
+				break;
+			case BudburstDatabaseManager.FLOWERS :
+				stageName = "flower";
+				break;
+			case BudburstDatabaseManager.FRUITS :
+				stageName = "fruit";
+				break;
 		}
 
 		// get plant, and phenophases
@@ -136,7 +139,16 @@ public class PlantInfo extends Activity {
 				}
 			});
 			button.setPadding(1, 0, 1, 0);
-			button.setImageBitmap(BitmapFactory.decodeStream(current.getImageStream(this)));
+
+			Bitmap icon = overlay(BitmapFactory.decodeStream(current.getImageStream(this)));
+
+			if (this.chrono != phenophaseChrono)
+				icon = overlay(icon, BitmapFactory.decodeResource(getResources(), R.drawable.translucent_gray));
+
+			if (this.plant.observations(current) != null)
+				icon = overlay(icon, BitmapFactory.decodeResource(getResources(), R.drawable.check_mark));
+
+			button.setImageBitmap(icon);
 			phenophaseBar.addView(button);
 		}
 
@@ -174,6 +186,17 @@ public class PlantInfo extends Activity {
 				startActivityForResult(mediaCaptureIntent, PHOTO_CAPTURE_CODE);
 			}
 		});
+	}
+
+	private Bitmap overlay(Bitmap... bitmaps) {
+		if (bitmaps.length == 0)
+			return null;
+
+		Bitmap bmOverlay = Bitmap.createBitmap(bitmaps[0].getWidth(), bitmaps[0].getHeight(), bitmaps[0].getConfig());
+		Canvas canvas = new Canvas(bmOverlay);
+		for (int i = 0; i < bitmaps.length; i++)
+			canvas.drawBitmap(bitmaps[i], new Matrix(), null);
+		return bmOverlay;
 	}
 
 	@Override
