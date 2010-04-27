@@ -1,0 +1,19 @@
+Project Budburst
+
+UCLA CENS project to write an android app to interface with http://budburst.ucar.edu/ to allow people to easily take images and make observations.
+
+I tried to make a model abstraction for the sqlite3 database since the database was so unruly to begin with. Here is an overview of how it works. I am not sure I succeeded in making something extremely useful but I hope I did.
+
+First there are different databases which you can instantiate which act on different kinds of models.
+	1. StaticDatabase - this database just holds data which it imports from and sql file which can be placed in the res/raw folder.
+	2. WritableDatabase - this database is the same as a StaticDatabase however you have the ability to insert data using the function insertRow, you pass a model to this function.
+	3. SyncableDatabase - this database allows syncing down and up using json encodings.
+
+There are different kinds of models you can then use with these databases.
+	1. The base class is Row. It includes the default column _id.
+	2. RelationRow. this is a row which maps data from two tables (HasMany). If you name the database species_phenophase, it means species has many phenophases.
+	3. Syncable row. this is the row which should be used for the syncable database. it includes a field which tells if it is synced with the server or not.
+
+to make a new model you should extend the appropriate base model.  Any public fields will be saved to the database. you can also make functions which can be called on a model to get more information such as plant.species() will give me the SpeciesRow for the current plant.
+
+If you have any suggestions on how to make this better, please let me know. thanks.
