@@ -4,10 +4,32 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     
+	<RelativeLayout
+		android:layout_width="fill_parent" 
+		android:layout_height="63px"
+		android:background="@drawable/PBB_teel"
+		android:id="@+id/header" >
+		<TextView
+			android:id="@+id/name" 
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent" 
+			android:padding="5dip" 
+			android:gravity="center" 
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textColor="@drawable/black" />
+	</RelativeLayout>
+
+	<include 
+		android:id="@+id/button_bar"
+		layout="@layout/button_bar3" />  
+		
+		
 	<LinearLayout 
 		android:id="@+id/replace_image"
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent" 
+		android:layout_below="@+id/button_bar"
+		android:layout_above="@+id/relativeLayout"
 		android:gravity="center"
 		android:orientation="vertical">
 		
@@ -30,26 +52,6 @@
 			android:gravity="center" />
 		
 	</LinearLayout>
-    
-	<RelativeLayout
-		android:layout_width="fill_parent" 
-		android:layout_height="63px"
-		android:background="@drawable/PBB_teel"
-		android:id="@+id/header" >
-		<TextView
-			android:id="@+id/name" 
-			android:layout_width="fill_parent" 
-			android:layout_height="fill_parent" 
-			android:padding="5dip" 
-			android:gravity="center" 
-			android:textAppearance="?android:attr/textAppearanceLarge"
-			android:textColor="@drawable/black" />
-	</RelativeLayout>
-
-	<include 
-		android:id="@+id/button_bar"
-		layout="@layout/button_bar3" />  
-		
 
 		
 	<ImageView 
@@ -74,12 +76,15 @@
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				android:textColor="@drawable/white"
 				android:text="state" 
-				android:gravity="center"/>    
+				android:background="@drawable/gray"
+				android:gravity="center"/>   
 		
 			<LinearLayout
 				android:id="@+id/phenophase_bar"
 	    		android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
+				android:paddingTop="5dip"
+				android:paddingBottom="5dip"
 				android:orientation="horizontal" 
 				android:layout_below="@+id/state"
 				android:gravity="center">

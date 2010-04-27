@@ -99,3 +99,19 @@ INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `ty
 (1, 16, 8, 'Fruits', 'Report the date when you notice the most fruits have become fully ripe or the most seeds are dropping naturally from the plant. '); 
 INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `type`, `description`) VALUES
 (1, 17, 9, 'Fruits', 'Report the date when you notice the last of the fruits have dropped naturally from the plant. ');
+INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `type`, `description`) VALUES
+(9, 1, 18, 'Leaves', 'Report the date at which the first leaves are completely unfolded from the bud. ');
+INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `type`, `description`) VALUES
+(9, 2, 19, 'Leaves', 'Report the date when at least 95% of the leaves have unfolded. '); 
+INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `type`, `description`) VALUES
+(9, 11, 20, 'Leaves', 'Report the date when 50% of the leaves have started to change color. '); 
+INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `type`, `description`) VALUES
+(9, 13, 21, 'Leaves', 'Report the date when 50% of the leaves have fallen off the tree or shrub. '); 
+INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `type`, `description`) VALUES
+(9, 3, 4, 'Flowers', 'Report the date at which the first flowers are completely open. '); 
+INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `type`, `description`) VALUES
+(9, 4, 5, 'Flowers', 'Report the date when 50% of the flowers are fully opened. '); 
+INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `type`, `description`) VALUES
+(9, 5, 6, 'Flowers', 'Report the date when the last flower has withered, dried up, or died. '); 
+INSERT INTO `species_phenophase` (`protocol_id`, `phenophase_id`, `icon_id`, `type`, `description`) VALUES
+(9, 6, 7, 'Fruits', 'Report the date when you notice the first fruits becoming fully ripe or seeds dropping naturally from the plant. '); 
