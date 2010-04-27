@@ -66,15 +66,15 @@ public class PlantInfo extends Activity {
 
 		// map stageID to stage Name
 		switch (stageID) {
-			case BudburstDatabaseManager.LEAVES :
-				stageName = "leaves";
-				break;
-			case BudburstDatabaseManager.FLOWERS :
-				stageName = "flower";
-				break;
-			case BudburstDatabaseManager.FRUITS :
-				stageName = "fruit";
-				break;
+		case BudburstDatabaseManager.LEAVES:
+			stageName = "leaves";
+			break;
+		case BudburstDatabaseManager.FLOWERS:
+			stageName = "flower";
+			break;
+		case BudburstDatabaseManager.FRUITS:
+			stageName = "fruit";
+			break;
 		}
 
 		// get plant, and phenophases
@@ -140,7 +140,7 @@ public class PlantInfo extends Activity {
 			});
 			button.setPadding(1, 0, 1, 0);
 
-			Bitmap icon = overlay(BitmapFactory.decodeStream(current.getImageStream(this)));
+			Bitmap icon = overlay(BitmapFactory.decodeStream(current.getImageStream(this, plant.species().protocol_id)));
 
 			if (this.chrono != phenophaseChrono)
 				icon = overlay(icon, BitmapFactory.decodeResource(getResources(), R.drawable.translucent_gray));
@@ -154,7 +154,7 @@ public class PlantInfo extends Activity {
 
 		name.setText(plant.species().common_name);
 
-		phenophase_comment.setText(((PhenophaseRow) phenophases.get(chrono)).comment);
+		phenophase_comment.setText(((PhenophaseRow) phenophases.get(chrono)).getAboutText(plant.species().protocol_id));
 
 		// display image if there is one
 		if (observation != null)

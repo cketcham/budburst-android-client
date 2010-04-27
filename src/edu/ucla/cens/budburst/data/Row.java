@@ -3,14 +3,12 @@ package edu.ucla.cens.budburst.data;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 import edu.ucla.cens.budburst.Budburst;
 
 public abstract class Row {
@@ -117,14 +115,19 @@ public abstract class Row {
 		return Budburst.getDatabaseManager().getDatabase(name).find(id);
 	}
 
-	protected ArrayList<Row> hasMany(String name, String filter) {
-		ArrayList<Row> this_that = Budburst.getDatabaseManager().getDatabase(getName() + "_" + name).find(getName() + "_id=" + _id);
-		for (Iterator<Row> i = this_that.iterator(); i.hasNext();) {
-			Log.d(TAG, i.next().toString());
-		}
+	// returns has many for table name, on field match with value value, with optional filter
+	protected ArrayList<Row> hasMany(String name, String match, String value, String filter) {
+		ArrayList<Row> this_that = Budburst.getDatabaseManager().getDatabase(getName() + "_" + name).find(match + "=" + value);
+		// for (Iterator<Row> i = this_that.iterator(); i.hasNext();) {
+		// Log.d(TAG, i.next().toString());
+		// }
 		if (filter != null && !filter.trim().equals(""))
 			filter += " AND ";
 		return Budburst.getDatabaseManager().getDatabase(name).find(this_that, name + "_id", filter);
+	}
+
+	protected ArrayList<Row> hasMany(String name, String filter) {
+		return hasMany(name, getName() + "_id", _id.toString(), filter);
 	}
 
 	protected ArrayList<Row> hasMany(String name) {
