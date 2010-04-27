@@ -15,17 +15,10 @@ public class SpeciesRow extends SyncableRow {
 	public String species_name;
 	public String common_name;
 	public Long protocol_id;
-	private final HashMap<String, ArrayList<Row>> phenophases = new HashMap<String, ArrayList<Row>>();
+	private HashMap<String, ArrayList<Row>> phenophases = new HashMap<String, ArrayList<Row>>();
 
 	public ArrayList<Row> phenophases(String type) {
-		// TODO: Why does it not null this out when a new one is created?
-		// if (!phenophases.containsKey(type)) {
-		if (_id > Budburst.MAX_PREDEFINED_SPECIES)
-			phenophases.put(type, Budburst.getDatabaseManager().getDatabase("phenophase").find("type='" + type + "'"));
-		else {
-			phenophases.put(type, hasMany("phenophase", "protocol_id", protocol_id.toString(), "type='" + type + "'"));
-		}
-		// }
+		phenophases.put(type, hasMany("phenophase", "protocol_id", protocol_id.toString(), "type='" + type + "'"));
 
 		return phenophases.get(type);
 	}

@@ -149,7 +149,6 @@ public class PlantList extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, MENU_ADD, 0, "Add Plant").setIcon(android.R.drawable.ic_menu_add);
-		menu.add(0, MENU_ONE, 1, "One-Time Sample").setIcon(android.R.drawable.ic_menu_set_as);
 		menu.add(0, MENU_SETTINGS, 2, "Settings").setIcon(android.R.drawable.ic_menu_preferences);
 		menu.add(0, MENU_SYNC, 3, "Sync").setIcon(android.R.drawable.ic_menu_rotate);
 
