@@ -186,7 +186,7 @@ public class PlantList extends ListActivity {
 	// added by EG to try to learn how to do this... add name after "Hello"
 	protected void showUserName() {
 		// Display user name at top of screen
-		TextView textView = (TextView) this.findViewById(R.id.TextView01);
+		TextView textView = (TextView) this.findViewById(R.id.hello_text);
 
 		String username_string = new String(PreferencesManager.currentUser(this));
 		textView.setText("Hello " + username_string + "!");

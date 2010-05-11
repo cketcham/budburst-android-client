@@ -12,11 +12,45 @@
 		layout="@layout/button_bar2"
 		android:layout_below="@+id/header" />  
 
-	<RelativeLayout android:id="@+id/RelativeLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/button_bar">
-	   	<TextView android:layout_height="wrap_content" android:text="@string/hello" android:layout_gravity="center" android:layout_width="fill_parent" android:textSize="8pt" android:id="@+id/TextView01" android:layout_below="@+id/button_bar" android:gravity="center_horizontal" android:textStyle="bold" android:layout_marginTop="20px"></TextView>
-   		<TextView android:id="@android:id/empty" android:layout_height="wrap_content" android:layout_gravity="center" android:text="@string/no_items" android:paddingLeft="20px" android:paddingRight="20px" android:textSize="8pt" android:layout_width="fill_parent" android:gravity="left" android:layout_below="@+id/TextView01"/>
-   		<ListView android:id="@android:id/list" android:drawSelectorOnTop="false" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@+id/button_bar"></ListView>
-   	</RelativeLayout>
+	<RelativeLayout 
+		android:id="@+id/RelativeLayout01" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:layout_below="@+id/button_bar">
+
+	   	<TextView 
+	   		android:layout_height="wrap_content" 
+	   		android:text="@string/hello" 
+	   		android:layout_gravity="center" 
+	   		android:layout_width="fill_parent" 
+	   		android:textSize="8pt" 
+	   		android:id="@+id/hello_text" 
+	   		android:gravity="center_horizontal"
+	   		android:textStyle="bold" 
+	   		android:layout_marginTop="20px" 
+	   		android:layout_below="@+id/button_bar"/>
+
+		<ScrollView 
+			android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:id="@+id/ScrollView01" 
+			android:layout_below="@+id/hello_text" >
+
+	   		<TextView android:id="@android:id/empty"
+				android:layout_height="wrap_content" 
+				android:text="@string/no_items" 
+				android:paddingLeft="20px" 
+				android:paddingRight="20px" 
+				android:textSize="8pt" 
+				android:layout_width="fill_parent" 
+				android:gravity="left" />
+	   	
+   		</ScrollView>
+   		
+   		
+   		   	<ListView android:id="@android:id/list" android:drawSelectorOnTop="false" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@+id/button_bar"></ListView>
+   		 
+</RelativeLayout>
 </RelativeLayout>
 
 
