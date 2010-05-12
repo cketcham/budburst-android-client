@@ -1,3 +1,4 @@
+
 package edu.ucla.cens.budburst;
 
 import java.io.File;
@@ -6,6 +7,9 @@ import java.util.Date;
 import java.util.Iterator;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,8 +20,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +39,7 @@ public class PlantInfo extends Activity {
 
 	private static final String TAG = "plant_info";
 	protected static final int PHOTO_CAPTURE_CODE = 0;
+	private static final int MENU_ADD_NOTE = 0;
 
 	private PlantRow plant;
 	private PhenophaseRow phenophase;
@@ -47,6 +56,8 @@ public class PlantInfo extends Activity {
 	private TextView state;
 	private TextView phenophase_comment;
 	private ImageView img;
+
+	private EditText note;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -81,6 +92,13 @@ public class PlantInfo extends Activity {
 		plant = (PlantRow) databaseManager.getDatabase("plant").find(extras.getLong("PlantID"));
 		phenophase = (PhenophaseRow) plant.species().phenophases(stageName).get(chrono);
 		observation = plant.observations(phenophase);
+		
+		if(observation == null) {
+			observation = new ObservationRow();
+			observation.species_id = plant.species_id;
+			observation.phenophase_id = phenophase._id;
+			observation.site_id = plant.site_id;
+		}
 
 		buttonBar.add((Button) this.findViewById(R.id.button1));
 		buttonBar.get(0).setOnClickListener(new View.OnClickListener() {
@@ -145,7 +163,7 @@ public class PlantInfo extends Activity {
 			if (this.chrono != phenophaseChrono)
 				icon = overlay(icon, BitmapFactory.decodeResource(getResources(), R.drawable.translucent_gray));
 
-			if (this.plant.observations(current) != null)
+			if (observation!= null && observation.image_id != 0)
 				icon = overlay(icon, BitmapFactory.decodeResource(getResources(), R.drawable.check_mark));
 
 			button.setImageBitmap(icon);
@@ -186,6 +204,7 @@ public class PlantInfo extends Activity {
 				startActivityForResult(mediaCaptureIntent, PHOTO_CAPTURE_CODE);
 			}
 		});
+
 	}
 
 	private Bitmap overlay(Bitmap... bitmaps) {
@@ -208,6 +227,10 @@ public class PlantInfo extends Activity {
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		if (image_id != null)
 			savedInstanceState.putLong("image_id", image_id);
+
+		if (note != null)
+			savedInstanceState.putString("note", note.getText().toString());
+
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
@@ -216,6 +239,16 @@ public class PlantInfo extends Activity {
 		super.onRestoreInstanceState(savedInstanceState);
 		Log.d(TAG, "restore instance state");
 		image_id = savedInstanceState.getLong("image_id");
+
+		note = makeNoteEditText();
+		note.setText(savedInstanceState.getString("note"));
+	}
+
+	protected EditText makeNoteEditText() {
+		EditText ret = new EditText(this);
+		ret.setLines(4);
+		ret.setGravity(Gravity.TOP);
+		return ret;
 	}
 
 	@Override
@@ -235,16 +268,65 @@ public class PlantInfo extends Activity {
 			} else {
 
 				if (image_id != null) {
-					ObservationRow obs = new ObservationRow();
-					obs.species_id = plant.species_id;
-					obs.phenophase_id = phenophase._id;
-					obs.image_id = image_id;
-					obs.site_id = plant.site_id;
-					obs.put();
 
-					img.setImageDrawable(Drawable.createFromPath(obs.getImagePath()));
+					observation.image_id = image_id;
+					observation.put();
+
+					img.setImageDrawable(Drawable.createFromPath(observation.getImagePath()));
 				}
 			}
 		}
 	}
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(0, MENU_ADD_NOTE, 0, "Set Note").setIcon(android.R.drawable.ic_menu_edit);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+
+	@Override
+	public Dialog onCreateDialog(int id) {
+		AlertDialog alert = null;
+		switch(id) {
+		case MENU_ADD_NOTE:
+
+			if(note == null) {
+				note =  makeNoteEditText();
+				note.setText(observation.note);
+			}
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setView(note).setTitle("Set Note").setCancelable(true)
+			.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					observation.note = note.getText().toString();
+					observation.put();
+				}
+			})
+			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					note.setText(observation.note);
+				}
+			});
+
+			alert = builder.create();
+			break;
+		} 
+		return alert;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_ADD_NOTE:
+
+			this.showDialog(MENU_ADD_NOTE);
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
 }

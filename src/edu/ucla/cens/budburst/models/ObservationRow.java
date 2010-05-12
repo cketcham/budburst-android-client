@@ -15,6 +15,7 @@ public class ObservationRow extends SyncableRow {
 	public Long site_id;
 	public Long phenophase_id;
 	public Long image_id;
+	public String note;
 
 	@Override
 	public ArrayList<String> primaryKeys() {
