@@ -23,6 +23,11 @@
 		android:id="@+id/button_bar"
 		layout="@layout/button_bar3" />  
 		
+	<ScrollView
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent" 
+		android:layout_below="@+id/button_bar"
+		android:layout_above="@+id/relativeLayout">
 		
 	<LinearLayout 
 		android:id="@+id/replace_image"
@@ -31,35 +36,166 @@
 		android:layout_below="@+id/button_bar"
 		android:layout_above="@+id/relativeLayout"
 		android:gravity="center"
+		android:padding="10dip"
 		android:orientation="vertical">
 		
-		<ImageView
-			android:layout_width="wrap_content" 
+		<TextView
+			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content" 
-			android:background="@android:drawable/ic_menu_camera" />
+			android:textSize="20dip"
+			android:textColor="@drawable/black"
+			android:text="View your Observation" 
+			android:gravity="center" />
 			
 		<TextView
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" 
-			android:text="Click Here to take a picture"
-			android:textColor="@drawable/black" />
+			android:textColor="@drawable/black" 
+			android:layout_gravity="left"
+			android:textStyle="bold" 
+			android:text="Details:"
+			/>
 			
 		<TextView
 			android:id="@+id/phenophase_info_text"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" 
 			android:textColor="@drawable/black" 
-			android:gravity="center" />
+			android:layout_gravity="left" />
+			
+		<TextView
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:textColor="@drawable/black" 
+			android:layout_gravity="left"
+			android:textStyle="bold" 
+			android:text="Date:"
+			/>
+			
+		<TextView
+			android:id="@+id/timestamp_text"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:textColor="@drawable/black" 
+			android:text="Some Date!"
+			android:layout_gravity="left" />
+		
+		<TextView
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:textColor="@drawable/black" 
+			android:layout_gravity="left"
+			android:textStyle="bold" 
+			android:text="Image:"
+			/>
+		
+		<ImageView 
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent" 
+			android:scaleType="centerCrop"
+			android:id="@+id/image" />
+			
+		<LinearLayout 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content" 
+			android:gravity="center"
+			android:orientation="horizontal">
+			
+			<LinearLayout
+				android:id="@+id/take_photo" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"
+				android:background="@drawable/button_field"
+				android:clickable="true"
+				android:layout_margin="10dip" >
+				
+				<TextView
+					android:id="@+id/take_photo_text" 
+					android:textColor="@drawable/black"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:text="With Photo:" />
+					
+				<ImageView
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"
+					android:src="@android:drawable/ic_menu_camera" />
+				
+			</LinearLayout>
+			
+
+			
+			<LinearLayout
+				android:id="@+id/no_photo" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"
+				android:background="@drawable/button_field"
+				android:clickable="true"
+				android:layout_margin="10dip" >
+				
+				<TextView
+					android:id="@+id/no_photo_text" 
+					android:textColor="@drawable/black"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:text=" No Photo: " />
+					
+				<ImageView
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"
+					android:src="@android:drawable/ic_menu_camera" />
+				
+			</LinearLayout>
+
+					
+		</LinearLayout>
+		
+		<TextView
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:textColor="@drawable/black" 
+			android:layout_gravity="left"
+			android:textStyle="bold" 
+			android:text="Notes:"
+			/>
+			
+		
+		<EditText
+			android:id="@+id/notes"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content" 
+			android:gravity="top"
+			android:lines="4" />
+			
+		<LinearLayout
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content">
+				
+			<Button
+				android:id="@+id/save" 
+				android:textColor="@drawable/black"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:text="Save" 
+				android:width="100dip" />
+					
+			<Button
+				android:id="@+id/cancel" 
+				android:textColor="@drawable/black"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:text="Cancel" 
+				android:width="100dip"/>
+		
+		</LinearLayout>
+		
 		
 	</LinearLayout>
-
-		
-	<ImageView 
-		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent" 
-		android:scaleType="centerCrop"
-		android:layout_below="@+id/button_bar"
-		android:id="@+id/image" />
+</ScrollView>
 
 	<RelativeLayout
 		android:id="@+id/relativeLayout"

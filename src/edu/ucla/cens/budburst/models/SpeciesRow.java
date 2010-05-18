@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import edu.ucla.cens.budburst.Budburst;
+import edu.ucla.cens.budburst.BudburstDatabaseManager;
 import edu.ucla.cens.budburst.data.Row;
 import edu.ucla.cens.budburst.data.SyncableRow;
 
@@ -17,7 +18,22 @@ public class SpeciesRow extends SyncableRow {
 	public Long protocol_id;
 	private HashMap<String, ArrayList<Row>> phenophases = new HashMap<String, ArrayList<Row>>();
 
-	public ArrayList<Row> phenophases(String type) {
+	public ArrayList<Row> phenophases(int stageID) {
+		
+		String type = "";
+		// map stageID to stage Name
+		switch (stageID) {
+		case BudburstDatabaseManager.LEAVES:
+			type  = "leaves";
+			break;
+		case BudburstDatabaseManager.FLOWERS:
+			type = "flower";
+			break;
+		case BudburstDatabaseManager.FRUITS:
+			type = "fruit";
+			break;
+		}
+		
 		phenophases.put(type, hasMany("phenophase", "protocol_id", protocol_id.toString(), "type='" + type + "'"));
 
 		return phenophases.get(type);

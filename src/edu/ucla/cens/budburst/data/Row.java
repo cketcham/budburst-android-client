@@ -47,6 +47,10 @@ public abstract class Row {
 		}
 		return null;
 	}
+	
+	public Boolean isSaved() {
+		return _id != null;
+	}
 
 	public void readCursor(Cursor c) {
 		Field[] fields = getFields();
