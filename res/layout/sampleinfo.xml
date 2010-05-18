@@ -40,6 +40,7 @@
 		android:orientation="vertical">
 		
 		<TextView
+			android:id="@+id/make_obs_text"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content" 
 			android:textSize="20dip"
@@ -107,7 +108,7 @@
 				android:layout_height="wrap_content"
 				android:background="@drawable/button_field"
 				android:clickable="true"
-				android:layout_margin="10dip" >
+				android:layout_margin="5dip" >
 				
 				<TextView
 					android:id="@+id/take_photo_text" 
@@ -132,7 +133,7 @@
 				android:layout_height="wrap_content"
 				android:background="@drawable/button_field"
 				android:clickable="true"
-				android:layout_margin="10dip" >
+				android:layout_margin="5dip" >
 				
 				<TextView
 					android:id="@+id/no_photo_text" 

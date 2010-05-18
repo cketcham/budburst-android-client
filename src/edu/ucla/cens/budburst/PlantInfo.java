@@ -13,7 +13,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -78,6 +77,43 @@ public class PlantInfo extends Activity {
 		TextView state = (TextView) this.findViewById(R.id.state);
 		state.setText(phenophase.name);
 		
+		View take_photo = this.findViewById(R.id.take_photo);
+		take_photo.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				File ld = new File(Budburst.OBSERVATION_PATH);
+				if (ld.exists()) {
+					if (!ld.isDirectory()) {
+						// Should probably inform user ... hmm!
+						PlantInfo.this.finish();
+					}
+				} else {
+					if (!ld.mkdir()) {
+						PlantInfo.this.finish();
+
+					}
+				}
+
+				image_id = new Date().getTime();
+
+				Intent mediaCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				mediaCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Budburst.OBSERVATION_PATH, image_id + ".jpg")));
+				startActivityForResult(mediaCaptureIntent, PHOTO_CAPTURE_CODE);
+			}
+		});
+		
+		View remove_photo = this.findViewById(R.id.no_photo);
+		remove_photo.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				observation.image_id = new Long(0);
+				showReplaceRemovePhotoButtons();
+			}
+		});
+		
+		//show replace image/add image/remove image stuff
+		showReplaceRemovePhotoButtons();
+		
 		if(observation != null) {
 			
 			//DEBUGGING
@@ -89,20 +125,14 @@ public class PlantInfo extends Activity {
 			String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(observation.time));
 			timestamp.setText(date);
 			
-			//set image if there is one
-			img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
-			
-			//show replace image/add image/remove image stuff
-			TextView no_photo_text = (TextView) this.findViewById(R.id.no_photo_text);
-			no_photo_text.setText("Remove Photo");
-			TextView replace_photo_text = (TextView) this.findViewById(R.id.take_photo_text);
-			replace_photo_text.setText("Replace Photo");
-			
 			//put the note in the edittext
 			EditText note = (EditText) this.findViewById(R.id.notes);
 			note.setText(observation.note);
 			
 		} else {
+			TextView make_obs_text = (TextView) this.findViewById(R.id.make_obs_text);
+			make_obs_text.setText("Make an Observation for this Phenophase");
+			
 			observation = new ObservationRow();
 			observation.species_id = plant.species_id;
 			observation.phenophase_id = phenophase._id;
@@ -171,7 +201,8 @@ public class PlantInfo extends Activity {
 			if (chrono != phenophaseChrono)
 				icon = overlay(icon, BitmapFactory.decodeResource(getResources(), R.drawable.translucent_gray));
 
-			if (observation.isSaved())
+			ObservationRow current_obs = plant.observations(current);
+			if (current_obs != null && current_obs.isSaved())
 				icon = overlay(icon, BitmapFactory.decodeResource(getResources(), R.drawable.check_mark));
 
 			button.setImageBitmap(icon);
@@ -182,6 +213,9 @@ public class PlantInfo extends Activity {
 		Button save = (Button) this.findViewById(R.id.save);
 		save.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) { 
+				EditText note = (EditText) findViewById(R.id.notes);
+
+				observation.note = note.getText().toString();
 				observation.time = new Date().getTime();
 				observation.put();
 				finish();
@@ -194,40 +228,6 @@ public class PlantInfo extends Activity {
 				//should restart the activity?
 				startActivity(PlantInfo.this.getIntent());
 				finish();
-			}
-		});
-		
-
-		View take_photo = this.findViewById(R.id.take_photo);
-		take_photo.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				File ld = new File(Budburst.OBSERVATION_PATH);
-				if (ld.exists()) {
-					if (!ld.isDirectory()) {
-						// Should probably inform user ... hmm!
-						PlantInfo.this.finish();
-					}
-				} else {
-					if (!ld.mkdir()) {
-						PlantInfo.this.finish();
-
-					}
-				}
-
-				image_id = new Date().getTime();
-
-				Intent mediaCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				mediaCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Budburst.OBSERVATION_PATH, image_id + ".jpg")));
-				startActivityForResult(mediaCaptureIntent, PHOTO_CAPTURE_CODE);
-			}
-		});
-		
-		View remove_photo = this.findViewById(R.id.no_photo);
-		remove_photo.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				observation.image_id = new Long(0);
 			}
 		});
 
@@ -262,9 +262,6 @@ public class PlantInfo extends Activity {
 		super.onRestoreInstanceState(savedInstanceState);
 		Log.d(TAG, "restore instance state");
 		image_id = savedInstanceState.getLong("image_id");
-
-//		note = makeNoteEditText();
-//		note.setText(savedInstanceState.getString("note"));
 	}
 
 
@@ -292,9 +289,27 @@ public class PlantInfo extends Activity {
 						file.delete();
 					
 					observation.image_id = image_id;
-					img.setImageDrawable(Drawable.createFromPath(observation.getImagePath()));
+					showReplaceRemovePhotoButtons();
 				}
 			}
+		}
+	}
+
+	private void showReplaceRemovePhotoButtons() {
+		TextView no_photo_text = (TextView) this.findViewById(R.id.no_photo_text);
+		TextView replace_photo_text = (TextView) this.findViewById(R.id.take_photo_text);
+		View remove_photo = this.findViewById(R.id.no_photo);
+
+		
+		if(observation != null && observation.hasImage()) {
+			img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
+
+			no_photo_text.setText("Remove Photo");
+			remove_photo.setVisibility(View.VISIBLE);
+			replace_photo_text.setText("Replace Photo");
+		} else {
+			remove_photo.setVisibility(View.GONE);
+			replace_photo_text.setText("Add Photo");
 		}
 	}
 

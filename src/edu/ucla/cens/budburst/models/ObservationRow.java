@@ -42,4 +42,8 @@ public class ObservationRow extends SyncableRow {
 		return entity;
 	}
 
+	public boolean hasImage() {
+		return image_id != null && image_id != 0;
+	}
+
 }
