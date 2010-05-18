@@ -300,6 +300,7 @@ public class PlantInfo extends Activity {
 		TextView replace_photo_text = (TextView) this.findViewById(R.id.take_photo_text);
 		View remove_photo = this.findViewById(R.id.no_photo);
 
+		img.setImageBitmap(null);
 		
 		if(observation != null && observation.hasImage()) {
 			img.setImageBitmap(BitmapFactory.decodeFile(observation.getImagePath()));
