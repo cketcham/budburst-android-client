@@ -116,14 +116,10 @@ public class PlantInfo extends Activity {
 		
 		if(observation != null) {
 			
-			//DEBUGGING
-			if(observation.time == null)
-				observation.time = image_id;
 			
 			//set date
 			TextView timestamp = (TextView) this.findViewById(R.id.timestamp_text);
-			String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(observation.time));
-			timestamp.setText(date);
+			timestamp.setText(observation.time);
 			
 			//put the note in the edittext
 			EditText note = (EditText) this.findViewById(R.id.notes);
@@ -216,7 +212,7 @@ public class PlantInfo extends Activity {
 				EditText note = (EditText) findViewById(R.id.notes);
 
 				observation.note = note.getText().toString();
-				observation.time = new Date().getTime();
+				observation.time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 				observation.put();
 				finish();
 			}
