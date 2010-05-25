@@ -30,6 +30,7 @@ public class LoginScreen extends Activity {
 	private DefaultHttpClient httpClient;
 	private ProgressDialog mProgressDialog;
 	private AsyncTask<Void, Void, Boolean> mLoginTask;
+	private Button testLoginButton;
 
 	private ProgressDialog showProgressDialog() {
 		if (mProgressDialog == null) {
@@ -195,6 +196,15 @@ public class LoginScreen extends Activity {
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(usernameInput.getWindowToken(), 0);
 					attemptLogin();
+				}
+			});
+			
+			
+			testLoginButton = (Button) this.findViewById(R.id.test_login_button);
+			testLoginButton.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					PreferencesManager.letUserIn("test", "test", LoginScreen.this);
+					gotoMainScreen();
 				}
 			});
 		}
