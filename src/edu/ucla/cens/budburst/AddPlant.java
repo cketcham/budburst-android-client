@@ -3,6 +3,8 @@ package edu.ucla.cens.budburst;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -14,22 +16,33 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import edu.ucla.cens.budburst.data.Row;
+import edu.ucla.cens.budburst.helper.SeparatedListAdapter;
 import edu.ucla.cens.budburst.models.PlantRow;
 import edu.ucla.cens.budburst.models.SiteRow;
 import edu.ucla.cens.budburst.models.SpeciesRow;
 
 public class AddPlant extends ListActivity {
 
-	private SimpleAdapter adapter;
 	private static final String TAG = "AddPlant";
 
 	private static final String ITEM_COMMON_NAME = "name";
 	private static final String ITEM_SPECIES_NAME = "description";
 	private static final String ITEM_IMG = "icon";
+	private static final int[] top_plants = { 70, 69, 45, 73, 59, 60, 19, 32, 34, 24 };
+	private static final String toptenfilter = "_id=70 OR _id=69 OR _id=45 OR _id=73 OR _id=59 OR _id=60 OR _id=19 OR _id=32 OR _id=34 OR _id=24";
 
 	private LocationManager lManager;
 	private BudburstDatabaseManager databaseManager;
 	private ArrayList<HashMap<String, String>> data;
+
+	public Map<String,?> createItem(SpeciesRow species) {
+		Map<String,String> item = new HashMap<String,String>();
+		item.put(ITEM_COMMON_NAME, species.common_name);
+		item.put(ITEM_SPECIES_NAME, species.species_name);
+		item.put("icon", species.getImagePath());
+		item.put("_id", species._id.toString());
+		return item;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,29 +52,75 @@ public class AddPlant extends ListActivity {
 		databaseManager = Budburst.getDatabaseManager();
 		lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
+		LinkedList<Map<String,?>> top_ten = new LinkedList<Map<String,?>>();
+		LinkedList<Map<String,?>> all = new LinkedList<Map<String,?>>();
 
-		ArrayList<Row> plants = databaseManager.getDatabase("species").all();
-		data = new ArrayList<HashMap<String, String>>();
-		for (Iterator<Row> i = plants.iterator(); i.hasNext();) {
-			HashMap<String, String> map = new HashMap<String, String>();
-			SpeciesRow current = (SpeciesRow) i.next();
-			map.put("name", current.common_name);
-			map.put("description", current.species_name);
-			map.put("icon", current.getImagePath());
-			map.put("_id", current._id.toString());
-			data.add(map);
+		//Do top 10 plants
+		for (Iterator<Row> i = databaseManager.getDatabase("species").find(toptenfilter).iterator(); i.hasNext();) {
+			top_ten.add(createItem((SpeciesRow)i.next()));
 		}
+		
+		//And all plants
+		for (Iterator<Row> i = databaseManager.getDatabase("species").all().iterator(); i.hasNext();) {
+			all.add(createItem((SpeciesRow)i.next()));
+		}
+		
+		// create our list and custom adapter
+		SeparatedListAdapter adapter = new SeparatedListAdapter(this);
+		adapter.addSection("Top Ten", new SimpleAdapter(this, top_ten, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
+				new int[] { R.id.name, R.id.description, R.id.icon }));
+		adapter.addSection("All Plants", new SimpleAdapter(this, all, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
+				new int[] { R.id.name, R.id.description, R.id.icon }));
 
-		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
-				new int[] { R.id.name, R.id.description, R.id.icon });
+		setListAdapter(adapter);
 
-		setListAdapter(this.adapter);
 	}
+
+	//@Override
+	//public void onResume() {
+	//	super.onResume();
+	//
+	//	// do all plants
+	//	ArrayList<Row> plants = databaseManager.getDatabase("species").all();
+	//	data = new ArrayList<HashMap<String, String>>();
+	//	for (Iterator<Row> i = plants.iterator(); i.hasNext();) {
+	//		HashMap<String, String> map = new HashMap<String, String>();
+	//		SpeciesRow current = (SpeciesRow) i.next();
+	//		map.put("name", current.common_name);
+	//		map.put("description", current.species_name);
+	//		map.put("icon", current.getImagePath());
+	//		map.put("_id", current._id.toString());
+	//		data.add(map);
+	//	}
+	//
+	//
+	//
+	//
+	//
+	//	//Do top 10 plants
+	//	ArrayList<Row> toptenplants = databaseManager.getDatabase("species").find(toptenfilter);
+	//	ArrayList<HashMap<String, String>> topten = new ArrayList<HashMap<String, String>>();
+	//	for (Iterator<Row> i = toptenplants.iterator(); i.hasNext();) {
+	//		HashMap<String, String> map = new HashMap<String, String>();
+	//		SpeciesRow current = (SpeciesRow) i.next();
+	//		map.put("name", current.common_name);
+	//		map.put("description", current.species_name);
+	//		map.put("icon", current.getImagePath());
+	//		map.put("_id", current._id.toString());
+	//		topten.add(map);
+	//	}
+	//
+	//
+	//	SimpleAdapter adapter2 = new SimpleAdapter(this, topten, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
+	//			new int[] { R.id.name, R.id.description, R.id.icon });
+	//
+	//	ListView top_list = (ListView) this.findViewById(R.id.top_list);
+	//	TextView text = new TextView(this);
+	//	text.setText("Top Ten Plants");
+	//	top_list.addHeaderView(text);
+	//	top_list.setAdapter(adapter2);
+	//}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
