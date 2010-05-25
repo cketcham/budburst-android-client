@@ -10,7 +10,7 @@
     android:paddingBottom="5dip"
     android:gravity="center_vertical" >
 
-    <edu.ucla.cens.budburst.helper.LazyListImageView android:id="@+id/icon"
+    <ImageView android:id="@+id/icon"
         android:layout_width="60dip"
         android:layout_height="60dip"
         android:layout_marginLeft="5dip"

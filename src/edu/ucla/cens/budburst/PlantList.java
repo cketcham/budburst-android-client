@@ -15,14 +15,14 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import edu.ucla.cens.budburst.data.Row;
+import edu.ucla.cens.budburst.helper.ImageAdapter;
 import edu.ucla.cens.budburst.models.PlantRow;
 
 public class PlantList extends ListActivity {
 
-	private SimpleAdapter adapter;
+	private ImageAdapter adapter;
 	private static final String TAG = "PlantList";
 
 	private static final String ITEM_COMMON_NAME = "name";
@@ -87,7 +87,7 @@ public class PlantList extends ListActivity {
 			data.add(map);
 		}
 
-		adapter = new SimpleAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
+		adapter = new ImageAdapter(this, data, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG }, new int[] { R.id.name,
 				R.id.description, R.id.icon });
 		setListAdapter(this.adapter);
 
