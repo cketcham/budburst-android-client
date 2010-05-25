@@ -8,8 +8,11 @@ import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
@@ -43,6 +46,13 @@ public class AddPlant extends ListActivity {
 		item.put("_id", species._id.toString());
 		return item;
 	}
+	
+	private final BroadcastReceiver mLoggedInReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			finish();
+		}
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -74,8 +84,17 @@ public class AddPlant extends ListActivity {
 				new int[] { R.id.name, R.id.description, R.id.icon }));
 
 		setListAdapter(adapter);
-
+		
+		registerReceiver(mLoggedInReceiver, new IntentFilter(Constants.INTENT_ACTION_LOGGED_OUT));
 	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		unregisterReceiver(mLoggedInReceiver);
+	}
+
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {

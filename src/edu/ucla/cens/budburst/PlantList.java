@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -43,13 +46,18 @@ public class PlantList extends ListActivity {
 	private BudburstDatabaseManager databaseManager;
 	private ArrayList<HashMap<String, String>> data;
 
+	
+	private final BroadcastReceiver mLoggedInReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			finish();
+		}
+	};
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.plant_list);
-
-		if (!PreferencesManager.isUserIn(this))
-			startActivityForResult(new Intent(this, LoginScreen.class), LOGIN_FINISHED);
 
 		databaseManager = Budburst.getDatabaseManager();
 
@@ -68,7 +76,15 @@ public class PlantList extends ListActivity {
 				// GrabCampaigns().execute("http://t5l-kullect.appspot.com/list?query=new");
 			}
 		});
+		
+		registerReceiver(mLoggedInReceiver, new IntentFilter(Constants.INTENT_ACTION_LOGGED_OUT));
+	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		unregisterReceiver(mLoggedInReceiver);
 	}
 
 	@Override
@@ -97,18 +113,6 @@ public class PlantList extends ListActivity {
 		showUserName();
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		switch (requestCode) {
-		case LOGIN_FINISHED:
-			if (!PreferencesManager.isUserIn(this))
-				finish();
-			break;
-		}
-
-	}
 
 	private final OnCreateContextMenuListener ContextMenuListener = new OnCreateContextMenuListener() {
 
@@ -169,11 +173,11 @@ public class PlantList extends ListActivity {
 			intent = new Intent(this, SyncDatabases.class);
 			this.startActivity(intent);
 			break;
-		// case MENU_SETTINGS:
-		// intent = new Intent(this, settingsScreen.class);
-		// this.startActivity(intent);
-		//
-		// break;
+		 case MENU_SETTINGS:
+		 intent = new Intent(this, SettingsScreen.class);
+		 this.startActivity(intent);
+		
+		 break;
 		case MENU_ONE:
 			// intent = new Intent(this, Help.class);
 			// this.startActivity(intent);

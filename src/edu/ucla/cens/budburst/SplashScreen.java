@@ -20,7 +20,7 @@ public class SplashScreen extends Activity {
 
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
-				startActivity(new Intent(SplashScreen.this, PlantList.class));
+				startActivity(new Intent(SplashScreen.this, LoginScreen.class));
 
 				SplashScreen.this.finish();
 			}

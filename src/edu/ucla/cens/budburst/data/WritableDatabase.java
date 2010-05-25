@@ -56,6 +56,12 @@ public class WritableDatabase extends Database {
 		}
 	}
 
+	public void removeAll() {
+		openWrite();
+		db.delete(getName(), null, null);
+		close();
+	}
+	
 	public long insertRow(Row row) {
 		return insertRow(row.vals());
 	}

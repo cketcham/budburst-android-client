@@ -2,6 +2,7 @@ package edu.ucla.cens.budburst;
 
 import android.content.Context;
 import edu.ucla.cens.budburst.data.DatabaseManager;
+import edu.ucla.cens.budburst.data.SyncableDatabase;
 import edu.ucla.cens.budburst.models.ObservationRow;
 import edu.ucla.cens.budburst.models.PhenophaseRow;
 import edu.ucla.cens.budburst.models.PlantRow;
@@ -45,6 +46,12 @@ public class BudburstDatabaseManager extends DatabaseManager {
 		getDatabase("site");
 		getDatabase("plant");
 		getDatabase("observation");
+	}
+
+	public void destroyUserDatabases() {
+		((SyncableDatabase) getDatabase("site")).removeAll();
+		((SyncableDatabase) getDatabase("plant")).removeAll();
+		((SyncableDatabase) getDatabase("observation")).removeAll();
 	}
 
 }

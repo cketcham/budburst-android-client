@@ -8,7 +8,10 @@ import java.util.Date;
 import java.util.Iterator;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -43,6 +46,12 @@ public class PlantInfo extends Activity {
 
 	private ImageView img;
 
+	private final BroadcastReceiver mLoggedInReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			finish();
+		}
+	};
 
 	/** Called when the activity is first created. */
 	@Override
@@ -227,7 +236,16 @@ public class PlantInfo extends Activity {
 			}
 		});
 
+		registerReceiver(mLoggedInReceiver, new IntentFilter(Constants.INTENT_ACTION_LOGGED_OUT));
 	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		unregisterReceiver(mLoggedInReceiver);
+	}
+
 
 	private Bitmap overlay(Bitmap... bitmaps) {
 		if (bitmaps.length == 0)
@@ -238,11 +256,6 @@ public class PlantInfo extends Activity {
 		for (int i = 0; i < bitmaps.length; i++)
 			canvas.drawBitmap(bitmaps[i], new Matrix(), null);
 		return bmOverlay;
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
 	}
 
 	@Override

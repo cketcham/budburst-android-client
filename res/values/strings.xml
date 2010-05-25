@@ -16,6 +16,9 @@
 	
 	<string name="login_dialog_title">Logging in...</string>
     <string name="login_dialog_message">Please wait while logging into Budburst...</string>
+    
+    <string name="settingsParamLogOut">Log Out</string>
+    
 <string name="my_sites"> My Sites</string>
 <string name="my_plants"> My Plants</string>
 <string name="no_items">\nYou have no plants yet, or you need to syncronize your phone.\n\n (1) Start by either creating a new site (My Sites tab) or adding a plant to an existing site (MENU &gt; Add Plant). \n\n (2) Please synchronize your phone with the database (Menu &gt; Sync).  If this fails, you may have connectivity problems.</string>
