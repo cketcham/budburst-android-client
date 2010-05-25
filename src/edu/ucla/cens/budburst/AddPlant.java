@@ -36,7 +36,6 @@ public class AddPlant extends ListActivity {
 
 	private LocationManager lManager;
 	private BudburstDatabaseManager databaseManager;
-	private ArrayList<HashMap<String, String>> data;
 
 	public Map<String,?> createItem(SpeciesRow species) {
 		Map<String,String> item = new HashMap<String,String>();
@@ -46,13 +45,16 @@ public class AddPlant extends ListActivity {
 		item.put("_id", species._id.toString());
 		return item;
 	}
-	
+
 	private final BroadcastReceiver mLoggedInReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			finish();
 		}
 	};
+
+	private LinkedList<Map<String, ?>> top_ten;
+	private LinkedList<Map<String, ?>> all;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,19 +65,19 @@ public class AddPlant extends ListActivity {
 		lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
-		LinkedList<Map<String,?>> top_ten = new LinkedList<Map<String,?>>();
-		LinkedList<Map<String,?>> all = new LinkedList<Map<String,?>>();
+		top_ten = new LinkedList<Map<String,?>>();
+		all = new LinkedList<Map<String,?>>();
 
 		//Do top 10 plants
 		for (Iterator<Row> i = databaseManager.getDatabase("species").find(toptenfilter).iterator(); i.hasNext();) {
 			top_ten.add(createItem((SpeciesRow)i.next()));
 		}
-		
+
 		//And all plants
 		for (Iterator<Row> i = databaseManager.getDatabase("species").all().iterator(); i.hasNext();) {
 			all.add(createItem((SpeciesRow)i.next()));
 		}
-		
+
 		// create our list and custom adapter
 		SeparatedListAdapter adapter = new SeparatedListAdapter(this);
 		adapter.addSection("Top Ten", new ImageAdapter(this, top_ten, R.layout.list_item, new String[] { ITEM_COMMON_NAME, ITEM_SPECIES_NAME, ITEM_IMG },
@@ -84,7 +86,7 @@ public class AddPlant extends ListActivity {
 				new int[] { R.id.name, R.id.description, R.id.icon }));
 
 		setListAdapter(adapter);
-		
+
 		registerReceiver(mLoggedInReceiver, new IntentFilter(Constants.INTENT_ACTION_LOGGED_OUT));
 	}
 
@@ -99,6 +101,16 @@ public class AddPlant extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 
+		LinkedList<Map<String, ?>> data;
+		//need to set the offsets (including the separators)
+		if(position <= 10) {
+			position -= 1;
+			data = top_ten;
+		} else {
+			position -= 12;
+			data = all; 
+		}
+
 		// First get the site:
 		final ArrayList<Row> sites = databaseManager.getDatabase("site").all();
 		ArrayList<String> site_names = new ArrayList<String>();
@@ -106,7 +118,7 @@ public class AddPlant extends ListActivity {
 			site_names.add(((SiteRow) i.next()).name);
 		final String[] siteNames = site_names.toArray(new String[0]);
 		final int[] selectedNames = new int[siteNames.length];
-		final Long species_id = Long.parseLong(data.get(position).get("_id"));
+		final Long species_id = Long.parseLong((String) data.get(position).get("_id"));
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Choose Site");
