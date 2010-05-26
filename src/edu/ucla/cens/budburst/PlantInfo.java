@@ -125,7 +125,6 @@ public class PlantInfo extends Activity {
 		
 		if(observation != null) {
 			
-			
 			//set date
 			TextView timestamp = (TextView) this.findViewById(R.id.timestamp_text);
 			timestamp.setText(observation.time);
@@ -135,6 +134,9 @@ public class PlantInfo extends Activity {
 			note.setText(observation.note);
 			
 		} else {
+			this.findViewById(R.id.timestamp_text).setVisibility(View.GONE);
+			this.findViewById(R.id.timestamp_label).setVisibility(View.GONE);
+			
 			TextView make_obs_text = (TextView) this.findViewById(R.id.make_obs_text);
 			make_obs_text.setText("Make an Observation for this Phenophase");
 			
