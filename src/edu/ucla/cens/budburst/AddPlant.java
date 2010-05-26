@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -63,6 +64,32 @@ public class AddPlant extends ListActivity {
 
 		databaseManager = Budburst.getDatabaseManager();
 		lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+		//you must first make a site, so we should check that there is at least 1 site
+		//TODO: make a site on the phone
+		if(databaseManager.getDatabase("site").all().size() == 0) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(
+			getString(R.string.no_sites_message))
+			.setPositiveButton("Make Site", new DialogInterface.OnClickListener() {
+				public void onClick(
+						DialogInterface dialog, int id) {
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse(getString(R.string.budburst_url)));
+					startActivity(intent);
+					finish();
+				}
+			})
+			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(
+						DialogInterface dialog, int id) {
+					finish();
+				}
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
+
+		}
 
 
 		top_ten = new LinkedList<Map<String,?>>();

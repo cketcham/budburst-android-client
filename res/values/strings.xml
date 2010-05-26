@@ -7,6 +7,7 @@
     <string name="button_bar2"> Flowers</string>
     <string name="button_bar3"> Fruits</string>
     
+    <string name="budburst_url">http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/index.php</string>
     <string name="phone_service_url">http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/phone/phone_service.php</string>
     <string name="speciesImageURL">http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/images/</string>
 	<string name="observationImageURL">http://cens.solidnetdns.com/~kmayoral/PBB/PBsite_CENS/upload_images/view.php</string>
@@ -16,10 +17,11 @@
 	
 	<string name="login_dialog_title">Logging in...</string>
     <string name="login_dialog_message">Please wait while logging into Budburst...</string>
+    <string name="no_sites_message">There are no sites defined, You must first create a site online. Choose Make Site and log in using the browser, register the new site, then go to the main menu and choose sync to download it to your phone</string>
     
     <string name="settingsParamLogOut">Log Out</string>
     
 <string name="my_sites"> My Sites</string>
 <string name="my_plants"> My Plants</string>
-<string name="no_items">\nYou have no plants yet, or you need to syncronize your phone.\n\n (1) Start by either creating a new site (My Sites tab) or adding a plant to an existing site (MENU &gt; Add Plant). \n\n (2) Please synchronize your phone with the database (Menu &gt; Sync).  If this fails, you may have connectivity problems.</string>
+<string name="no_items">\nYou have no plants yet, or you need to syncronize your phone.\n\n (1) Start by adding a plant to an existing site (MENU &gt; Add Plant). \n\n (2) Please synchronize your phone with the database (Menu &gt; Sync).  If this fails, you may have connectivity problems.</string>
 </resources>
