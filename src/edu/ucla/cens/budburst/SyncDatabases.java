@@ -120,7 +120,7 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 			ArrayList<Row> observations = dbManager.getDatabase("observation").all();
 			for (Iterator<Row> i = observations.iterator(); i.hasNext();) {
 				ObservationRow current = (ObservationRow) i.next();
-				if (!new File(current.getImagePath()).exists()) {
+				if (current.hasImage() && !new File(current.getImagePath()).exists()) {
 					String url = getString(R.string.observationImageURL) + "?image_id=" + current.image_id;
 					Download plantd = new Download(url);
 					downloads.add(plantd);

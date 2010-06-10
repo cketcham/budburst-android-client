@@ -47,5 +47,12 @@ public class ObservationRow extends SyncableRow {
 	public boolean hasImage() {
 		return image_id != null && image_id != 0;
 	}
+	
+	public void onDelete() {
+		File file = new File(getImagePath());
+		if(file.exists()) {
+			file.delete();
+		}
+	}
 
 }

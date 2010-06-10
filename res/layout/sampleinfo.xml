@@ -37,7 +37,8 @@
 		android:layout_above="@+id/relativeLayout"
 		android:gravity="center"
 		android:padding="10dip"
-		android:orientation="vertical">
+		android:orientation="vertical"
+		android:descendantFocusability="blocksDescendants">
 		
 		<TextView
 			android:id="@+id/make_obs_text"

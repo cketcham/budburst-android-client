@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -35,7 +34,6 @@ public class AddPlant extends ListActivity {
 	private static final int[] top_plants = { 70, 69, 45, 73, 59, 60, 19, 32, 34, 24 };
 	private static final String toptenfilter = "_id=70 OR _id=69 OR _id=45 OR _id=73 OR _id=59 OR _id=60 OR _id=19 OR _id=32 OR _id=34 OR _id=24";
 
-	private LocationManager lManager;
 	private BudburstDatabaseManager databaseManager;
 
 	public Map<String,?> createItem(SpeciesRow species) {
@@ -63,7 +61,6 @@ public class AddPlant extends ListActivity {
 		setContentView(R.layout.add_plant);
 
 		databaseManager = Budburst.getDatabaseManager();
-		lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 		//you must first make a site, so we should check that there is at least 1 site
 		//TODO: make a site on the phone
@@ -152,8 +149,6 @@ public class AddPlant extends ListActivity {
 		builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				PlantRow plant = new PlantRow();
-				plant.latitude = lManager.getLastKnownLocation("gps").getLatitude();
-				plant.longitude = lManager.getLastKnownLocation("gps").getLongitude();
 				plant.species_id = species_id;
 
 				for (int i = 0; i < selectedNames.length; i++)

@@ -57,8 +57,18 @@ public class WritableDatabase extends Database {
 	}
 
 	public void removeAll() {
+		openRead();
+		//should delete any extra data associated with a row like an image
+		ArrayList<Row> rows = all();
+		for(Iterator<Row> i = rows.iterator();i.hasNext();) {
+			i.next().onDelete();
+		}
+		close();
+		
 		openWrite();
+		
 		db.delete(getName(), null, null);
+		
 		close();
 	}
 	

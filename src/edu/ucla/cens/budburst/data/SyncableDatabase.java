@@ -136,7 +136,7 @@ public class SyncableDatabase extends WritableDatabase {
 
 				// Get message.
 				String responseVal = netUtils.generateString(response.getEntity().getContent());
-
+				
 				// Get status.
 				int status = response.getStatusLine().getStatusCode();
 

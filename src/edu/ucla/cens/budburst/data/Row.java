@@ -160,5 +160,7 @@ public abstract class Row {
 		// TODO Auto-generated method stub
 		return ret;
 	}
+	
+	public void onDelete() {}
 
 }

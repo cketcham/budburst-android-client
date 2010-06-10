@@ -239,6 +239,7 @@ public class PlantInfo extends Activity {
 		});
 
 		registerReceiver(mLoggedInReceiver, new IntentFilter(Constants.INTENT_ACTION_LOGGED_OUT));
+
 	}
 
 	@Override
