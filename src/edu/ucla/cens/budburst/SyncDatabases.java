@@ -87,6 +87,11 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 
 	public void onDownloaded(Message msg, Download d) {
 		String db = "";
+		if(msg.obj == null) {
+			//TODO: make error checking more robust
+			return;
+		}
+		
 		switch (msg.what) {
 		case DOWNLOADED_SITES:
 			((SyncableDatabase) dbManager.getDatabase("site")).sync((String) msg.obj);

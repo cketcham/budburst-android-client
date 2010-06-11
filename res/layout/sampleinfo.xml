@@ -8,7 +8,7 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="63px"
 		android:background="@drawable/PBB_teel"
-		android:id="@+id/header" >
+		android:id="@+id/header">
 		<TextView
 			android:id="@+id/name" 
 			android:layout_width="fill_parent" 
@@ -37,8 +37,7 @@
 		android:layout_above="@+id/relativeLayout"
 		android:gravity="center"
 		android:padding="10dip"
-		android:orientation="vertical"
-		android:descendantFocusability="blocksDescendants">
+		android:orientation="vertical">
 		
 		<TextView
 			android:id="@+id/make_obs_text"
@@ -47,12 +46,15 @@
 			android:textSize="20dip"
 			android:textColor="@drawable/black"
 			android:text="View your Observation" 
-			android:gravity="center" />
+			android:gravity="center"
+			android:focusable="true" 
+			android:focusableInTouchMode="true"
+		/>
 			
 		<TextView
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" 
-			android:textColor="@drawable/black" 
+			android:textColor="@drawable/black"
 			android:layout_gravity="left"
 			android:textStyle="bold" 
 			android:text="Details:"
@@ -109,7 +111,8 @@
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"
 				android:background="@drawable/button_field"
-				android:clickable="true">
+				android:clickable="true"
+				android:focusable="true">
 				
 				<TextView
 					android:id="@+id/take_photo_text" 
@@ -133,7 +136,8 @@
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"
 				android:background="@drawable/button_field"
-				android:clickable="true">
+				android:clickable="true"
+				android:focusable="true">
 				
 				<TextView
 					android:id="@+id/no_photo_text" 

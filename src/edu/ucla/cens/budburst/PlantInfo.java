@@ -115,13 +115,12 @@ public class PlantInfo extends Activity {
 		remove_photo.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				observation.image_id = new Long(0);
+				// 0 means there should be no image associated with this observation
+				image_id = new Long(0);
+				observation.image_id = image_id;
 				showReplaceRemovePhotoButtons();
 			}
 		});
-		
-		//show replace image/add image/remove image stuff
-		showReplaceRemovePhotoButtons();
 		
 		if(observation != null) {
 			
@@ -233,7 +232,7 @@ public class PlantInfo extends Activity {
 		cancel.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) { 
 				//should restart the activity?
-				startActivity(PlantInfo.this.getIntent());
+				//startActivity(PlantInfo.this.getIntent());
 				finish();
 			}
 		});
@@ -241,7 +240,20 @@ public class PlantInfo extends Activity {
 		registerReceiver(mLoggedInReceiver, new IntentFilter(Constants.INTENT_ACTION_LOGGED_OUT));
 
 	}
-
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		//set the image because it was replaced
+        if(image_id != null) {
+        	observation.image_id = image_id;
+        }
+		
+		//show replace image/add image/remove image stuff
+		showReplaceRemovePhotoButtons();
+	}
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -273,7 +285,8 @@ public class PlantInfo extends Activity {
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		Log.d(TAG, "restore instance state");
-		image_id = savedInstanceState.getLong("image_id");
+		if(savedInstanceState.containsKey("image_id"))
+			image_id = savedInstanceState.getLong("image_id");
 	}
 
 
@@ -294,11 +307,6 @@ public class PlantInfo extends Activity {
 			} else {
 				
 				if (image_id != null) {
-					
-					//remove old image if there was one
-					File file = new File(observation.getImagePath());
-					if(file != null)
-						file.delete();
 					
 					observation.image_id = image_id;
 					showReplaceRemovePhotoButtons();
@@ -325,56 +333,4 @@ public class PlantInfo extends Activity {
 			replace_photo_text.setText("Add Photo");
 		}
 	}
-
-//
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		menu.add(0, MENU_ADD_NOTE, 0, "Set Note").setIcon(android.R.drawable.ic_menu_edit);
-//
-//		return super.onCreateOptionsMenu(menu);
-//	}
-
-
-//	@Override
-//	public Dialog onCreateDialog(int id) {
-//		AlertDialog alert = null;
-//		switch(id) {
-//		case MENU_ADD_NOTE:
-//
-//			if(note == null) {
-//				note =  makeNoteEditText();
-//				note.setText(observation.note);
-//			}
-//
-//			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//			builder.setView(note).setTitle("Set Note").setCancelable(true)
-//			.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-//				public void onClick(DialogInterface dialog, int id) {
-//					observation.note = note.getText().toString();
-//					observation.put();
-//				}
-//			})
-//			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//				public void onClick(DialogInterface dialog, int id) {
-//					note.setText(observation.note);
-//				}
-//			});
-//
-//			alert = builder.create();
-//			break;
-//		} 
-//		return alert;
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//		case MENU_ADD_NOTE:
-//
-//			this.showDialog(MENU_ADD_NOTE);
-//		}
-//
-//		return super.onOptionsItemSelected(item);
-//	}
-
 }

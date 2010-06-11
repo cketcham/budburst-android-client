@@ -139,6 +139,9 @@ public abstract class Row {
 	}
 
 	public void put() {
+		//run onDelete in case we are replacing a row
+		//Ex. we need to delete an old image
+		((WritableDatabase) Budburst.getDatabaseManager().getDatabase(getName())).find(_id).onDelete();
 		((WritableDatabase) Budburst.getDatabaseManager().getDatabase(getName())).insertRow(this);
 	}
 

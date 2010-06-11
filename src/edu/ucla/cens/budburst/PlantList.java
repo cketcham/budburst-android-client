@@ -59,8 +59,6 @@ public class PlantList extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.plant_list);
 
-		databaseManager = Budburst.getDatabaseManager();
-
 		button1 = (Button) this.findViewById(R.id.button1);
 		button1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -91,6 +89,8 @@ public class PlantList extends ListActivity {
 	public void onResume() {
 		super.onResume();
 
+		databaseManager = Budburst.getDatabaseManager();
+		
 		ArrayList<Row> plants = databaseManager.getDatabase("plant").all();
 		data = new ArrayList<HashMap<String, String>>();
 		for (Iterator<Row> i = plants.iterator(); i.hasNext();) {

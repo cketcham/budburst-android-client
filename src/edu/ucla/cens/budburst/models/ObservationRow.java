@@ -54,5 +54,4 @@ public class ObservationRow extends SyncableRow {
 			file.delete();
 		}
 	}
-
 }
