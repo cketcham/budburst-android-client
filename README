@@ -1,5 +1,7 @@
 Project Budburst
 
+Cameron Ketcham
+
 UCLA CENS project to write an android app to interface with http://budburst.ucar.edu/ to allow people to easily take images and make observations.
 
 I tried to make a model abstraction for the sqlite3 database since the database was so unruly to begin with. Here is an overview of how it works. I am not sure I succeeded in making something extremely useful but I hope I did.
