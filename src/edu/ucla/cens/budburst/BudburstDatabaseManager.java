@@ -16,6 +16,8 @@ public class BudburstDatabaseManager extends DatabaseManager {
 	public static final int FLOWERS = 1;
 	public static final int FRUITS = 2;
 
+	//Automatically creates all the correct databases which will be used with budburst
+	
 	public BudburstDatabaseManager(Context context) {
 		super(context);
 		createDatabase("species_phenophase", R.raw.species_phenophase_db, new SpeciesPhenophaseRow());
@@ -48,6 +50,7 @@ public class BudburstDatabaseManager extends DatabaseManager {
 		getDatabase("observation");
 	}
 
+	// removes the users databases (if they are logged out and log in as another user for example, the database should be cleared.
 	public void destroyUserDatabases() {
 		((SyncableDatabase) getDatabase("site")).removeAll();
 		((SyncableDatabase) getDatabase("plant")).removeAll();

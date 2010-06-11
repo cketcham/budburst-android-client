@@ -46,12 +46,17 @@ public class Budburst extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		//Starting point for application
 
 		startActivity(new Intent(this, SplashScreen.class));
 
+		// create references to the databaseManager and downloadManager
+		// this can both be used from other activites by calling Budburst.getDownloadManager() or Budburst.getDatabaseManager(). They allow you to access the downloadManager or databaseManager.
 		dbManager = new BudburstDatabaseManager(this);
 		downloadManager = new DownloadManager();
 
+		// Debugging code
 		// PreferencesManager.letUserIn("android4", "android4", this);
 
 		if (PreferencesManager.isFirstRun(this)) {

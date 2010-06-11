@@ -2,7 +2,7 @@ Project Budburst
 
 UCLA CENS project to write an android app to interface with http://budburst.ucar.edu/ to allow people to easily take images and make observations.
 
-I tried to make a model abstraction for the sqlite3 database since the database was so unruly to begin with. Here is an overview of how it works. I am not sure I succeeded in making something extremely useful but I hope I did.
+I tried to make a model abstraction for the sqlite3 database since the database was so unruly to begin with. I copied ideas I learned when using ruby on rails and appengine. I tried to apply those ideas to this problem. Here is an overview of how it works. I am not sure I succeeded in making something extremely useful but I hope I did.
 
 First there are different databases which you can instantiate which act on different kinds of models.
 	1. StaticDatabase - this database just holds data which it imports from and sql file which can be placed in the res/raw folder.
@@ -15,5 +15,8 @@ There are different kinds of models you can then use with these databases.
 	3. Syncable row. this is the row which should be used for the syncable database. it includes a field which tells if it is synced with the server or not.
 
 to make a new model you should extend the appropriate base model.  Any public fields will be saved to the database. you can also make functions which can be called on a model to get more information such as plant.species() will give me the SpeciesRow for the current plant.
+
+to query the database I use a databaseManager which keeps references to the datbases I created. If I want access to all the entries in the plant database I just use the databaseManager to find it. ex. myDatabaseManager.getDatabase("plant") will return the plant database. I can perform queries like all() which will return all the rows, find(id) which will find the row with the give id, and find("where clause") which will filter the query by the specified where clause.
+You create databases using the databaseManager as well. You can use either createDatabase, or createSyncableDatabase which specifies whether or not you have data that you wish to sync with a server or not.
 
 If you have any suggestions on how to make this better, please let me know. thanks.

@@ -38,7 +38,9 @@ public class SyncDatabases extends Activity implements Downloadable, Uploadable 
 
 	private final ArrayList<Download> downloads = new ArrayList<Download>();
 
-	/** Called when the activity is first created. */
+	// complicated code to work with downloading data from the budburst databases
+	// first any new observations or plants are uploaded.
+	// then any new sites, plants, and observations are downloaded
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

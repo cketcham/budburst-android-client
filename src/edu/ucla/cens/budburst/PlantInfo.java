@@ -46,6 +46,7 @@ public class PlantInfo extends Activity {
 
 	private ImageView img;
 
+	//this listens to see if you clicked the logout button in the preferences. if you have, it should hide this view.
 	private final BroadcastReceiver mLoggedInReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -59,9 +60,13 @@ public class PlantInfo extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sampleinfo);
 		
+		// this is the view that would display the observations image
 		img = (ImageView) this.findViewById(R.id.image);
 
+		// get the databaseManager
 		databaseManager = Budburst.getDatabaseManager();
+		
+		// when this activity is called some extra data is passed so we know which plant we should be looking at, and which phenophase we want to look at.
 		Bundle extras = getIntent().getExtras();
 		int chrono = extras.getInt("chrono", 0);
 		int stageID = extras.getInt("StageID", BudburstDatabaseManager.LEAVES);
@@ -86,25 +91,15 @@ public class PlantInfo extends Activity {
 		TextView state = (TextView) this.findViewById(R.id.state);
 		state.setText(phenophase.name);
 		
+		//set the button to take the photo
 		View take_photo = this.findViewById(R.id.take_photo);
 		take_photo.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				File ld = new File(Budburst.OBSERVATION_PATH);
-				if (ld.exists()) {
-					if (!ld.isDirectory()) {
-						// Should probably inform user ... hmm!
-						PlantInfo.this.finish();
-					}
-				} else {
-					if (!ld.mkdir()) {
-						PlantInfo.this.finish();
-
-					}
-				}
-
+				//just make a random_id for the image now. this will be the file name.
 				image_id = new Date().getTime();
 
+				//start the built-in camera, it will return in onActivityResult
 				Intent mediaCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				mediaCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Budburst.OBSERVATION_PATH, image_id + ".jpg")));
 				startActivityForResult(mediaCaptureIntent, PHOTO_CAPTURE_CODE);
@@ -123,6 +118,7 @@ public class PlantInfo extends Activity {
 		});
 		
 		if(observation != null) {
+			//this means an observation has been taken, so we should show the date it was taken and any note if there was one.
 			
 			//set date
 			TextView timestamp = (TextView) this.findViewById(R.id.timestamp_text);
@@ -133,18 +129,22 @@ public class PlantInfo extends Activity {
 			note.setText(observation.note);
 			
 		} else {
+			//since no observation has been taken yet, we should not show the date
 			this.findViewById(R.id.timestamp_text).setVisibility(View.GONE);
 			this.findViewById(R.id.timestamp_label).setVisibility(View.GONE);
 			
 			TextView make_obs_text = (TextView) this.findViewById(R.id.make_obs_text);
 			make_obs_text.setText("Make an Observation for this Phenophase");
 			
+			//and we should make a new observation for this plant and phenophase
+			//but it isnt saved to the db yet. you need to call put() to actually save it.
 			observation = new ObservationRow();
 			observation.species_id = plant.species_id;
 			observation.phenophase_id = phenophase._id;
 			observation.site_id = plant.site_id;
 		}
 
+		//the leaves button
 		buttonBar.add((Button) this.findViewById(R.id.button1));
 		buttonBar.get(0).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -157,6 +157,7 @@ public class PlantInfo extends Activity {
 			}
 		});
 
+		//The Flowers button
 		buttonBar.add((Button) this.findViewById(R.id.button2));
 		buttonBar.get(1).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -169,6 +170,7 @@ public class PlantInfo extends Activity {
 			}
 		});
 
+		//The Fruits button
 		buttonBar.add((Button) this.findViewById(R.id.button3));
 		buttonBar.get(2).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -184,9 +186,10 @@ public class PlantInfo extends Activity {
 		// set selected button
 		buttonBar.get(stageID).setSelected(true);
 
-		//populate the buttonbar
+		//populate the buttonbar on the bottom with phenophases
 		LinearLayout phenophaseBar = (LinearLayout) this.findViewById(R.id.phenophase_bar);
 
+		//for each of the phenophases go through and set the image and make it a button
 		for (Iterator<Row> i = phenophases.iterator(); i.hasNext();) {
 			final PhenophaseRow current = (PhenophaseRow) i.next();
 			final int phenophaseChrono = phenophases.indexOf(current);
@@ -204,9 +207,11 @@ public class PlantInfo extends Activity {
 
 			Bitmap icon = overlay(BitmapFactory.decodeStream(current.getImageStream(this, plant.species().protocol_id)));
 
+			//if it is not the current phenophase, grey out the icon
 			if (chrono != phenophaseChrono)
 				icon = overlay(icon, BitmapFactory.decodeResource(getResources(), R.drawable.translucent_gray));
 
+			//if this observation has been taken, display the checkmark
 			ObservationRow current_obs = plant.observations(current);
 			if (current_obs != null && current_obs.isSaved())
 				icon = overlay(icon, BitmapFactory.decodeResource(getResources(), R.drawable.check_mark));
@@ -215,28 +220,35 @@ public class PlantInfo extends Activity {
 			phenophaseBar.addView(button);
 		}
 
-
+		//the button to press to actually save the observation to the db.
 		Button save = (Button) this.findViewById(R.id.save);
 		save.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) { 
 				EditText note = (EditText) findViewById(R.id.notes);
 
+				//get the current note, and set the time.
 				observation.note = note.getText().toString();
 				observation.time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+				
+				//actually commit the data to the database
 				observation.put();
 				finish();
 			}
 		});
 		
+		//the button to press to cancel any changes
 		Button cancel = (Button) this.findViewById(R.id.cancel);
 		cancel.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) { 
 				//should restart the activity?
 				//startActivity(PlantInfo.this.getIntent());
+				//TODO: there might be an image leak here, if the user has taken a new photo, and then cancels, the image will probably still be on the sdcard.
+				//the new observation has not been commited so just finish
 				finish();
 			}
 		});
 
+		//this actually registers the reciever so it will be notified when the user logs out.
 		registerReceiver(mLoggedInReceiver, new IntentFilter(Constants.INTENT_ACTION_LOGGED_OUT));
 
 	}
@@ -245,7 +257,7 @@ public class PlantInfo extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
-		//set the image because it was replaced
+		//set the image because it was replaced, (but not saved in the db yet)
         if(image_id != null) {
         	observation.image_id = image_id;
         }
@@ -261,7 +273,7 @@ public class PlantInfo extends Activity {
 		unregisterReceiver(mLoggedInReceiver);
 	}
 
-
+	// just a helper function to overylay a bunch of bitmaps on eachother.
 	private Bitmap overlay(Bitmap... bitmaps) {
 		if (bitmaps.length == 0)
 			return null;
@@ -275,6 +287,7 @@ public class PlantInfo extends Activity {
 
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
+		//we should save the image_id incase the activity needs to be restarted
 		if (image_id != null)
 			savedInstanceState.putLong("image_id", image_id);
 
@@ -307,6 +320,7 @@ public class PlantInfo extends Activity {
 			} else {
 				
 				if (image_id != null) {
+					//the picture went through, update the observation, but don't commit it yet.
 					
 					observation.image_id = image_id;
 					showReplaceRemovePhotoButtons();
@@ -315,6 +329,7 @@ public class PlantInfo extends Activity {
 		}
 	}
 
+	//helper function to deal with the different states of the add image, replace image, remove image buttons and the actual observation image
 	private void showReplaceRemovePhotoButtons() {
 		TextView no_photo_text = (TextView) this.findViewById(R.id.no_photo_text);
 		TextView replace_photo_text = (TextView) this.findViewById(R.id.take_photo_text);

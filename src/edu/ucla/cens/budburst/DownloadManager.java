@@ -32,7 +32,19 @@ public class DownloadManager {
 	public DownloadManager() {
 		Log.d(TAG, "make download manager");
 	}
-
+	
+	// A simple downloadManager which can be used to download data from the web.
+	// you get a reference to the downloadManager from any Activity using Budburst.getDownloadManager().
+	// you can then call download, or upload with a download object d (which give the url and any parameters)
+	// it will store the data in the cache so it doesn't always have to go to the web.
+	
+	
+	//if you have an activity that you want to download content for, it shoud implement
+	//downloadable. you will have two functions consumeInputstream, and onDownloaded.
+	//consumeInputstream should return the inputstream returned by the http call into
+	//an object that can be used a String for example.\
+	//onDownloaded returns the object you created from consumeInputstream back to your activity
+	//this is where you can actually use the dat that you downloaded.
 	public void download(Downloadable context, int what, Download d) {
 		Log.d(TAG, "start to download for " + context.toString());
 		if (!cache.containsKey(d) || d.isVolitile()) {
@@ -45,7 +57,10 @@ public class DownloadManager {
 			context.onDownloaded(msg, d);
 		}
 	}
-
+	
+	//the asynchronus upload works slightly differently. any activity which wants to use
+	//upload should implement uploadable. that includes the function upload which is called
+	//asyncronusly
 	public void upload(Uploadable context, int what, Download d) {
 
 		new UploadTask().execute(new UploadObject(context, what, d));
@@ -94,6 +109,7 @@ public class DownloadManager {
 		}
 	}
 
+	// the actual download code which gets called asynchronously 
 	public class DownloadTask extends AsyncTask<DownloadObject, Void, DownloadObject> {
 
 		@Override
@@ -148,6 +164,7 @@ public class DownloadManager {
 
 	}
 
+	//the actual upload asyncTask
 	private class UploadTask extends AsyncTask<UploadObject, Void, UploadObject> {
 
 		@Override

@@ -9,6 +9,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+//the base database class which uses an sqlite database to store the data
+//you can call all(), find(id), or find(filter) on a database
 public class Database {
 	private final SQLiteOpenHelper dbHelper;
 
